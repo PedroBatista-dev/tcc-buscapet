@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { of } from 'rxjs';
-
 import { Vaccine } from '../shared/vaccine.model';
 import { VaccineService } from '../shared/vaccine.service';
 
