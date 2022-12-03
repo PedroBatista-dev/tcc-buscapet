@@ -7,4 +7,8 @@ export class Vaccine extends BaseResourceModel{
   ){
     super();
   }
+
+  static fromJson(jsonData: any): Vaccine {
+    return Object.assign(new Vaccine(0, ''), jsonData);
+  }
 }

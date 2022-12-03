@@ -10,6 +10,6 @@ import { Vaccine } from './vaccine.model';
 export class VaccineService extends BaseResourceService<Vaccine> {
 
   constructor(protected override injector: Injector) {
-    super("api/vaccines", injector);
+    super("api/vaccines", injector, Vaccine.fromJson);
   }
 }

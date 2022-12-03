@@ -1,24 +1,11 @@
-<nav aria-label="breadcrumb" class="mb-5">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item">
-      <a routerLink="/">Home</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">
-      Vacinas
-    </li>
-  </ol>
-</nav>
+<app-bread-crumb [items]="[{text: 'Vacinas'}]"></app-bread-crumb>
 
-<div class="row mb-4">
-  <div class="col">
-    <h1 class="h2 border-start ps-2">
-      Vacinas
-    </h1>
-  </div>
-  <div class="col">
-    <a routerLink="novo" class="btn btn-success float-end">Novo</a>
-  </div>
-</div>
+<app-page-header
+  page-title="Vacinas"
+  button-text="+ Novo"
+  button-link="novo"
+  button-class="btn-success">
+</app-page-header>
 
 <table class="table table-hover">
   <thead>
@@ -28,13 +15,13 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let vaccine of vaccines">
+    <tr *ngFor="let vaccine of resources">
       <td>
         <strong>{{vaccine.name}}</strong>
       </td>
       <td>
         <a [routerLink]="[vaccine.id, 'editar']" class="btn btn-outline-info btn-sm me-2">Editar</a>
-        <button (click)="deleteVaccine(vaccine)" class="btn btn-outline-danger btn-sm">Excluir</button>
+        <button (click)="deleteResource(vaccine)" class="btn btn-outline-danger btn-sm">Excluir</button>
       </td>
     </tr>
   </tbody>
