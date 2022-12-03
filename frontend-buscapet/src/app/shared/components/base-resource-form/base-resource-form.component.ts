@@ -1,5 +1,4 @@
-import { Token } from '@angular/compiler';
-import { AfterContentChecked, OnInit, Injector, Inject, Component } from '@angular/core';
+import { AfterContentChecked, OnInit, Injector, Inject, Directive } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -10,9 +9,7 @@ import * as toastr from 'toastr';
 import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../services/base-resource.service';
 
-@Component({
-  template: ''
-})
+@Directive()
 export abstract class BaseResourceFormComponent<T extends BaseResourceModel> implements OnInit, AfterContentChecked {
 
   currentAction!: string;
