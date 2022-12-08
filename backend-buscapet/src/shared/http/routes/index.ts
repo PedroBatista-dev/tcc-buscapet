@@ -1,9 +1,8 @@
 import { Router } from 'express';
+import animalsRouter from '@modules/animals/routes/animals.routes';
 
 const routes = Router();
 
-routes.get('/', (req, res) => {
-  return res.json({ message: 'Hello dev!' });
-});
+routes.use('/animals', animalsRouter);
 
 export default routes;
