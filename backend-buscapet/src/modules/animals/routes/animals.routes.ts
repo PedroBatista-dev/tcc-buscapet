@@ -1,9 +1,16 @@
 import { Router } from 'express';
 import AnimalsController from '../controllers/AnimalsController';
 import { celebrate, Joi, Segments } from 'celebrate';
+import multer from 'multer';
+import uploadConfig from '@config/upload';
+import AnimalAvatarController from '../controllers/AnimalAvatarController';
+import isAuthenticated from '../../../shared/http/middlewares/isAuthenticated';
 
 const animalsRouter = Router();
 const animalsController = new AnimalsController();
+const animalsAvatarController = new AnimalAvatarController();
+
+const upload = multer(uploadConfig);
 
 animalsRouter.get('/', animalsController.index);
 
@@ -57,6 +64,13 @@ animalsRouter.delete(
   '/:id',
   celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
   animalsController.delete,
+);
+
+animalsRouter.patch(
+  '/avatar',
+  isAuthenticated,
+  upload.single('avatar'),
+  animalsAvatarController.update,
 );
 
 export default animalsRouter;

@@ -1,5 +1,5 @@
 import { getCustomRepository } from 'typeorm';
-import { AnimalRepository } from '../typeorm/repositories/AnimalsRepository';
+import { AnimalsRepository } from '../typeorm/repositories/AnimalsRepository';
 import Animal from '../typeorm/entities/Animal';
 import AppError from '@shared/errors/AppError';
 
@@ -10,7 +10,7 @@ interface IRequest {
 
 class UpdateStatusAnimalService {
   public async execute({ id, status }: IRequest): Promise<Animal> {
-    const animalsRepository = getCustomRepository(AnimalRepository);
+    const animalsRepository = getCustomRepository(AnimalsRepository);
 
     const animal = await animalsRepository.findOne(id);
     if (!animal) {

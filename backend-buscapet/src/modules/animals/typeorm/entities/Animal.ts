@@ -29,6 +29,9 @@ class Animal {
   @Column()
   other_animals: string;
 
+  @Column()
+  avatar: string;
+
   @CreateDateColumn()
   created_at: Date;
 

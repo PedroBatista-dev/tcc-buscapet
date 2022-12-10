@@ -38,6 +38,11 @@ export class CreateAnimals1670502817755 implements MigrationInterface {
             type: 'varchar',
           },
           {
+            name: 'avatar',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'timestamp with time zone',
             default: 'now()',

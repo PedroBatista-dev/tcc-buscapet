@@ -1,6 +1,6 @@
 import AppError from '../../../shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import { AnimalRepository } from '../typeorm/repositories/AnimalsRepository';
+import { AnimalsRepository } from '../typeorm/repositories/AnimalsRepository';
 import Animal from '../typeorm/entities/Animal';
 
 interface IRequest {
@@ -19,7 +19,7 @@ class CreateAnimalService {
     size,
     other_animals,
   }: IRequest): Promise<Animal> {
-    const animalsRepository = getCustomRepository(AnimalRepository);
+    const animalsRepository = getCustomRepository(AnimalsRepository);
 
     const animalExists = await animalsRepository.findByName(name);
     if (animalExists) {

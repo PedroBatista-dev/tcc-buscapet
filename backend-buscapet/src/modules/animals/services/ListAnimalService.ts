@@ -1,10 +1,10 @@
 import { getCustomRepository } from 'typeorm';
-import { AnimalRepository } from '../typeorm/repositories/AnimalsRepository';
+import { AnimalsRepository } from '../typeorm/repositories/AnimalsRepository';
 import Animal from '../typeorm/entities/Animal';
 
 class ListAnimalService {
   public async execute(): Promise<Animal[]> {
-    const animalsRepository = getCustomRepository(AnimalRepository);
+    const animalsRepository = getCustomRepository(AnimalsRepository);
 
     const animals = await animalsRepository.find();
 
