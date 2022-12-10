@@ -10,6 +10,8 @@ const animalsRouter = Router();
 const animalsController = new AnimalsController();
 const animalsAvatarController = new AnimalAvatarController();
 
+animalsRouter.use(isAuthenticated);
+
 const upload = multer(uploadConfig);
 
 animalsRouter.get('/', animalsController.index);
@@ -68,7 +70,6 @@ animalsRouter.delete(
 
 animalsRouter.patch(
   '/avatar',
-  isAuthenticated,
   upload.single('avatar'),
   animalsAvatarController.update,
 );

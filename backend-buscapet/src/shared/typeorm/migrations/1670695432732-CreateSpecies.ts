@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateAnimals1670502817755 implements MigrationInterface {
+export class CreateSpecies1670695432732 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'animals',
+        name: 'species',
         columns: [
           {
             name: 'id',
@@ -18,29 +18,8 @@ export class CreateAnimals1670502817755 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'age',
-            type: 'int',
-          },
-          {
-            name: 'sex',
-            type: 'varchar',
-          },
-          {
-            name: 'size',
-            type: 'varchar',
-          },
-          {
-            name: 'status',
-            type: 'varchar',
-          },
-          {
-            name: 'other_animals',
-            type: 'varchar',
-          },
-          {
-            name: 'avatar',
-            type: 'varchar',
-            isNullable: true,
+            name: 'user_id',
+            type: 'uuid',
           },
           {
             name: 'created_at',
@@ -53,11 +32,21 @@ export class CreateAnimals1670502817755 implements MigrationInterface {
             default: 'now()',
           },
         ],
+        foreignKeys: [
+          {
+            name: 'SpecieUser',
+            referencedTableName: 'users',
+            referencedColumnNames: ['id'],
+            columnNames: ['user_id'],
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+        ],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('animals');
+    await queryRunner.dropTable('species');
   }
 }
