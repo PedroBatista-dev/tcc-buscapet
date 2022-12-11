@@ -5,15 +5,16 @@ import AppError from '@shared/errors/AppError';
 
 interface IRequest {
   id: string;
+  user_id: string;
 }
 
 class ShowSpecieService {
-  public async execute({ id }: IRequest): Promise<Specie> {
+  public async execute({ id, user_id }: IRequest): Promise<Specie> {
     const speciesRepository = getCustomRepository(SpeciesRepository);
 
-    const specie = await speciesRepository.findOne(id);
+    const specie = await speciesRepository.findById(id, user_id);
     if (!specie) {
-      throw new AppError('Espécie não existe!');
+      throw new AppError('Espécie não encontrada!');
     }
 
     return specie;

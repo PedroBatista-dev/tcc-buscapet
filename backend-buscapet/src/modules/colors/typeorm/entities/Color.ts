@@ -24,9 +24,9 @@ class Color {
 
   @ManyToOne(() => User, user => user.colors)
   @JoinColumn({ name: 'user_id' })
-  color: Color;
+  user: User;
 
-  @OneToMany(() => Animal, animal => animal.animal_color, {
+  @OneToMany(() => Animal, animal => animal.color, {
     cascade: true,
   })
   animals: Animal[];

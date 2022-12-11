@@ -4,15 +4,16 @@ import AppError from '@shared/errors/AppError';
 
 interface IRequest {
   id: string;
+  user_id: string;
 }
 
 class DeleteAnimalService {
-  public async execute({ id }: IRequest): Promise<void> {
+  public async execute({ id, user_id }: IRequest): Promise<void> {
     const animalsRepository = getCustomRepository(AnimalsRepository);
 
-    const animal = await animalsRepository.findOne(id);
+    const animal = await animalsRepository.findById(id, user_id);
     if (!animal) {
-      throw new AppError('Animal não existe!');
+      throw new AppError('Animal não encontrado!');
     }
 
     animalsRepository.remove(animal);

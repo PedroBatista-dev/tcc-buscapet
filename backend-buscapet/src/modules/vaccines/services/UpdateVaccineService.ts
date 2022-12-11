@@ -6,18 +6,19 @@ import AppError from '@shared/errors/AppError';
 interface IRequest {
   id: string;
   name: string;
+  user_id: string;
 }
 
 class UpdateVaccineService {
-  public async execute({ id, name }: IRequest): Promise<Vaccine> {
+  public async execute({ id, name, user_id }: IRequest): Promise<Vaccine> {
     const vaccinesRepository = getCustomRepository(VaccinesRepository);
 
-    const vaccine = await vaccinesRepository.findOne(id);
+    const vaccine = await vaccinesRepository.findById(id, user_id);
     if (!vaccine) {
-      throw new AppError('Vacina não existe!');
+      throw new AppError('Vacina não encontrada!');
     }
 
-    const vaccineExists = await vaccinesRepository.findByName(name);
+    const vaccineExists = await vaccinesRepository.findByName(name, user_id);
     if (vaccineExists && name !== vaccine.name) {
       throw new AppError('Já existe uma vacina com esse nome!');
     }

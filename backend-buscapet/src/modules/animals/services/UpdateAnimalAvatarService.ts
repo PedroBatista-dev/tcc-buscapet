@@ -9,19 +9,20 @@ import Animal from '../typeorm/entities/Animal';
 interface IRequest {
   animal_id: string;
   avatarFilename: string;
+  user_id: string;
 }
 
 class UpdateAnimalAvatarService {
   public async execute({
     animal_id,
     avatarFilename,
+    user_id,
   }: IRequest): Promise<Animal> {
     const animalsRepository = getCustomRepository(AnimalsRepository);
 
-    const animal = await animalsRepository.findById(animal_id);
-
+    const animal = await animalsRepository.findById(animal_id, user_id);
     if (!animal) {
-      throw new AppError('Animal não encontrado');
+      throw new AppError('Animal não encontrado!');
     }
 
     if (animal.avatar) {

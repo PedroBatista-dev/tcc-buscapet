@@ -10,6 +10,7 @@ interface IRequest {
   sex: string;
   size: string;
   other_animals: string;
+  user_id: string;
 }
 
 class UpdateAnimalService {
@@ -20,15 +21,16 @@ class UpdateAnimalService {
     sex,
     size,
     other_animals,
+    user_id,
   }: IRequest): Promise<Animal> {
     const animalsRepository = getCustomRepository(AnimalsRepository);
 
-    const animal = await animalsRepository.findOne(id);
+    const animal = await animalsRepository.findById(id, user_id);
     if (!animal) {
-      throw new AppError('Animal não existe!');
+      throw new AppError('Animal não encontrado!');
     }
 
-    const animalExists = await animalsRepository.findByName(name);
+    const animalExists = await animalsRepository.findByName(name, user_id);
     if (animalExists && name !== animal.name) {
       throw new AppError('Já existe um animal com esse nome!');
     }

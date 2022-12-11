@@ -6,18 +6,19 @@ import AppError from '@shared/errors/AppError';
 interface IRequest {
   id: string;
   name: string;
+  user_id: string;
 }
 
 class UpdateSpecieService {
-  public async execute({ id, name }: IRequest): Promise<Specie> {
+  public async execute({ id, name, user_id }: IRequest): Promise<Specie> {
     const speciesRepository = getCustomRepository(SpeciesRepository);
 
-    const specie = await speciesRepository.findOne(id);
+    const specie = await speciesRepository.findById(id, user_id);
     if (!specie) {
-      throw new AppError('Espécie não existe!');
+      throw new AppError('Espécie não encontrada!');
     }
 
-    const specieExists = await speciesRepository.findByName(name);
+    const specieExists = await speciesRepository.findByName(name, user_id);
     if (specieExists && name !== specie.name) {
       throw new AppError('Já existe uma espécie com esse nome!');
     }

@@ -25,19 +25,20 @@ export default class BreedsController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name } = request.body;
+    const { name, specie_id } = request.body;
 
     const createBreed = new CreateBreedService();
 
     const breed = await createBreed.execute({
       name,
+      specie_id,
     });
 
     return response.json(breed);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { name } = request.body;
+    const { name, specie_id } = request.body;
     const { id } = request.params;
 
     const updateBreed = new UpdateBreedService();
@@ -45,6 +46,7 @@ export default class BreedsController {
     const breed = await updateBreed.execute({
       id,
       name,
+      specie_id,
     });
 
     return response.json(breed);

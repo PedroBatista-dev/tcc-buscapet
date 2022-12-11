@@ -35,27 +35,27 @@ class User {
   @Column()
   document: string;
 
-  @OneToMany(() => Vaccine, vaccine => vaccine.vaccine, {
+  @OneToMany(() => Vaccine, vaccine => vaccine.user, {
     cascade: true,
   })
   vaccines: Vaccine[];
 
-  @OneToMany(() => Color, color => color.color, {
+  @OneToMany(() => Color, color => color.user, {
     cascade: true,
   })
   colors: Color[];
 
-  @OneToMany(() => Specie, specie => specie.specie, {
+  @OneToMany(() => Specie, specie => specie.user, {
     cascade: true,
   })
   species: Specie[];
 
-  @OneToMany(() => Breed, breed => breed.breed, {
+  @OneToMany(() => Breed, breed => breed.user, {
     cascade: true,
   })
   breeds: Breed[];
 
-  @OneToMany(() => Animal, animal => animal.animal, {
+  @OneToMany(() => Animal, animal => animal.user, {
     cascade: true,
   })
   animals: Animal[];

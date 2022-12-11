@@ -5,9 +5,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import VaccinesAnimals from './VaccinesAnimals';
 
 @Entity('vaccines')
 class Vaccine {
@@ -22,7 +24,16 @@ class Vaccine {
 
   @ManyToOne(() => User, user => user.vaccines)
   @JoinColumn({ name: 'user_id' })
-  vaccine: Vaccine;
+  user: User;
+
+  @OneToMany(
+    () => VaccinesAnimals,
+    vaccine_animals => vaccine_animals.vaccine,
+    {
+      cascade: true,
+    },
+  )
+  vaccine_animals: VaccinesAnimals[];
 
   @CreateDateColumn()
   created_at: Date;

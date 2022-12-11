@@ -28,13 +28,13 @@ class Breed {
 
   @ManyToOne(() => User, user => user.breeds)
   @JoinColumn({ name: 'user_id' })
-  breed: Breed;
+  user: User;
 
   @ManyToOne(() => Specie, specie => specie.breeds)
   @JoinColumn({ name: 'specie_id' })
   specie: Specie;
 
-  @OneToMany(() => Animal, animal => animal.animal_breed, {
+  @OneToMany(() => Animal, animal => animal.breed, {
     cascade: true,
   })
   animals: Animal[];

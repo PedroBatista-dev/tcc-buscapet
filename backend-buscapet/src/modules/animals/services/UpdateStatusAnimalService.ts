@@ -6,15 +6,16 @@ import AppError from '@shared/errors/AppError';
 interface IRequest {
   id: string;
   status: string;
+  user_id: string;
 }
 
 class UpdateStatusAnimalService {
-  public async execute({ id, status }: IRequest): Promise<Animal> {
+  public async execute({ id, status, user_id }: IRequest): Promise<Animal> {
     const animalsRepository = getCustomRepository(AnimalsRepository);
 
-    const animal = await animalsRepository.findOne(id);
+    const animal = await animalsRepository.findById(id, user_id);
     if (!animal) {
-      throw new AppError('Animal não existe!');
+      throw new AppError('Animal não encontrado!');
     }
 
     animal.status = status;

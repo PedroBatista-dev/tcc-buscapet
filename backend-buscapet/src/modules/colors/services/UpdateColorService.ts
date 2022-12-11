@@ -6,18 +6,19 @@ import AppError from '@shared/errors/AppError';
 interface IRequest {
   id: string;
   name: string;
+  user_id: string;
 }
 
 class UpdateColorService {
-  public async execute({ id, name }: IRequest): Promise<Color> {
+  public async execute({ id, name, user_id }: IRequest): Promise<Color> {
     const colorsRepository = getCustomRepository(ColorsRepository);
 
-    const color = await colorsRepository.findOne(id);
+    const color = await colorsRepository.findById(id, user_id);
     if (!color) {
-      throw new AppError('Cor não existe!');
+      throw new AppError('Cor não encontrada!');
     }
 
-    const colorExists = await colorsRepository.findByName(name);
+    const colorExists = await colorsRepository.findByName(name, user_id);
     if (colorExists && name !== color.name) {
       throw new AppError('Já existe uma cor com esse nome!');
     }
