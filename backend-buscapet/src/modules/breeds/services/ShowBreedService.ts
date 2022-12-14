@@ -5,15 +5,16 @@ import AppError from '@shared/errors/AppError';
 
 interface IRequest {
   id: string;
+  user_id: string;
 }
 
 class ShowBreedService {
-  public async execute({ id }: IRequest): Promise<Breed> {
+  public async execute({ id, user_id }: IRequest): Promise<Breed> {
     const breedsRepository = getCustomRepository(BreedsRepository);
 
-    const breed = await breedsRepository.findOne(id);
+    const breed = await breedsRepository.findById(id, user_id);
     if (!breed) {
-      throw new AppError('Raça não existe!');
+      throw new AppError('Raça não encontrada!');
     }
 
     return breed;

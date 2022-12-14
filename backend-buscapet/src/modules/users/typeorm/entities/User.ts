@@ -11,6 +11,7 @@ import {
 import Color from '../../../colors/typeorm/entities/Color';
 import Specie from '../../../species/typeorm/entities/Specie';
 import Breed from '../../../breeds/typeorm/entities/Breed';
+import Adoption from '../../../adoptions/typeorm/entities/Adoption';
 
 @Entity('users')
 class User {
@@ -59,6 +60,16 @@ class User {
     cascade: true,
   })
   animals: Animal[];
+
+  @OneToMany(() => Adoption, adoption => adoption.ong, {
+    cascade: true,
+  })
+  ong_adoptions: Adoption[];
+
+  @OneToMany(() => Adoption, adoption => adoption.adopter, {
+    cascade: true,
+  })
+  adopter_adoptions: Adoption[];
 
   @CreateDateColumn()
   created_at: Date;

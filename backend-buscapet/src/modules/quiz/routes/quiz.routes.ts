@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import ColorsController from '../controllers/QuizController';
+import QuizController from '../controllers/QuizController';
 import { celebrate, Joi, Segments } from 'celebrate';
 import isAuthenticated from '../../../shared/http/middlewares/isAuthenticated';
 
-const colorsRouter = Router();
-const colorsController = new ColorsController();
+const quizRouter = Router();
+const quizController = new QuizController();
 
-colorsRouter.use(isAuthenticated);
+quizRouter.use(isAuthenticated);
 
-colorsRouter.get('/', colorsController.show);
+quizRouter.get('/', quizController.show);
 
-colorsRouter.post(
+quizRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
@@ -30,10 +30,10 @@ colorsRouter.post(
       financial_conditions: Joi.string().required(),
     },
   }),
-  colorsController.create,
+  quizController.create,
 );
 
-colorsRouter.put(
+quizRouter.put(
   '/',
   celebrate({
     [Segments.BODY]: {
@@ -53,7 +53,7 @@ colorsRouter.put(
       financial_conditions: Joi.string().required(),
     },
   }),
-  colorsController.update,
+  quizController.update,
 );
 
-export default colorsRouter;
+export default quizRouter;

@@ -13,6 +13,7 @@ import Color from '../../../colors/typeorm/entities/Color';
 import Specie from '../../../species/typeorm/entities/Specie';
 import Breed from '../../../breeds/typeorm/entities/Breed';
 import VaccinesAnimals from '../../../vaccines/typeorm/entities/VaccinesAnimals';
+import Adoption from '../../../adoptions/typeorm/entities/Adoption';
 
 @Entity('animals')
 class Animal {
@@ -66,6 +67,9 @@ class Animal {
 
   @OneToMany(() => VaccinesAnimals, vaccine_animals => vaccine_animals.animal)
   vaccine_animals: VaccinesAnimals[];
+
+  @OneToMany(() => Adoption, adoption => adoption.animal)
+  adoption: Adoption[];
 
   @ManyToOne(() => User, user => user.animals)
   @JoinColumn({ name: 'user_id' })

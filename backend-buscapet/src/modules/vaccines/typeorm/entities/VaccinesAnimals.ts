@@ -15,6 +15,12 @@ class VaccinesAnimals {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
+  vaccine_id: string;
+
+  @Column()
+  animal_id: string;
+
   @ManyToOne(() => Vaccine, vaccine => vaccine.vaccine_animals)
   @JoinColumn({ name: 'vaccine_id' })
   vaccine: Vaccine;
@@ -22,12 +28,6 @@ class VaccinesAnimals {
   @ManyToOne(() => Animal, animal => animal.vaccine_animals)
   @JoinColumn({ name: 'animal_id' })
   animal: Animal;
-
-  @Column()
-  vaccine_id: string;
-
-  @Column()
-  animal_id: string;
 
   @CreateDateColumn()
   created_at: Date;
