@@ -33,10 +33,20 @@ class UsersRepository extends Repository<User> {
     return user;
   }
 
-  public async findByDocument(document: string): Promise<User | undefined> {
+  public async findByCnpj(cnpj: string): Promise<User | undefined> {
     const user = await this.findOne({
       where: {
-        document,
+        cnpj,
+      },
+    });
+
+    return user;
+  }
+
+  public async findByCpf(cpf: string): Promise<User | undefined> {
+    const user = await this.findOne({
+      where: {
+        cpf,
       },
     });
 

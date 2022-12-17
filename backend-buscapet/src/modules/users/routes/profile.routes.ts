@@ -16,7 +16,15 @@ profileRouter.put(
     [Segments.BODY]: {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      document: Joi.string().required(),
+      isOng: Joi.boolean().required(),
+      cpf: Joi.when('isOng', {
+        is: false,
+        then: Joi.string().required(),
+      }),
+      cnpj: Joi.when('isOng', {
+        is: true,
+        then: Joi.string().required(),
+      }),
     },
   }),
   profileController.update,

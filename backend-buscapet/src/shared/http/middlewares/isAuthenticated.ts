@@ -7,6 +7,7 @@ interface ITokenPayload {
   iat: number;
   exp: number;
   sub: string;
+  isOng: boolean;
 }
 
 export default function isAuthenticated(
@@ -14,10 +15,14 @@ export default function isAuthenticated(
   response: Response,
   next: NextFunction,
 ): void {
+  const baseUrl = request.baseUrl;
+  const urls_Ong = ['/colors'];
+  const urls_Adopter = [''];
+
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new AppError('JWT Token nao existe');
+    throw new AppError('JWT Token não existe');
   }
 
   const [, token] = authHeader.split(' ');
@@ -25,7 +30,11 @@ export default function isAuthenticated(
   try {
     const decodedToken = verify(token, authConfig.jwt.secret);
 
-    const { sub } = decodedToken as ITokenPayload;
+    const { sub, isOng } = decodedToken as ITokenPayload;
+
+    if (!isOng && urls_Ong.includes(baseUrl)) {
+      throw new AppError('');
+    }
 
     request.user = {
       id: sub,

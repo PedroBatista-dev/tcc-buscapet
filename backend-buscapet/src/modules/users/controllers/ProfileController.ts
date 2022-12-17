@@ -14,7 +14,7 @@ export default class ProfileController {
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { name, email, document } = request.body;
+    const { name, email, cpf, cnpj } = request.body;
     const user_id = request.user.id;
 
     const updateProfile = new UpdateProfileService();
@@ -23,7 +23,8 @@ export default class ProfileController {
       user_id,
       name,
       email,
-      document,
+      cpf,
+      cnpj,
     });
 
     return response.json(user);

@@ -3,13 +3,16 @@ import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/User';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
 import { hash } from 'bcryptjs';
+import * as cnpjs from '@fnando/cnpj';
+import * as cpfs from '@fnando/cpf';
 
 interface IRequest {
   name: string;
   email: string;
   password: string;
-  profile: string;
-  document: string;
+  isOng: boolean;
+  cpf: string;
+  cnpj: string;
 }
 
 class CreateUserService {
@@ -17,8 +20,9 @@ class CreateUserService {
     name,
     email,
     password,
-    profile,
-    document,
+    isOng,
+    cpf,
+    cnpj,
   }: IRequest): Promise<User> {
     const usersRepository = getCustomRepository(UsersRepository);
 
@@ -27,9 +31,24 @@ class CreateUserService {
       throw new AppError('Email já cadastrado!');
     }
 
-    const documentExists = await usersRepository.findByDocument(document);
-    if (documentExists) {
-      throw new AppError('Documento já cadastrado!');
+    if (isOng) {
+      const cnpjValid = cnpjs.isValid(cnpj);
+      if (!cnpjValid) {
+        throw new AppError('CNPJ inválido!');
+      }
+      const documentExists = await usersRepository.findByCnpj(cnpj);
+      if (documentExists) {
+        throw new AppError('CNPJ já cadastrado!');
+      }
+    } else {
+      const cnpjValid = cpfs.isValid(cpf);
+      if (!cnpjValid) {
+        throw new AppError('CPF inválido!');
+      }
+      const documentExists = await usersRepository.findByCpf(cpf);
+      if (documentExists) {
+        throw new AppError('CPF já cadastrado!');
+      }
     }
 
     const hashedPassword = await hash(password, 8);
@@ -38,8 +57,9 @@ class CreateUserService {
       name,
       email,
       password: hashedPassword,
-      profile,
-      document,
+      isOng,
+      cpf,
+      cnpj,
     });
 
     await usersRepository.save(user);

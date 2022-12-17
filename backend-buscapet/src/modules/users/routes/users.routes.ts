@@ -18,11 +18,18 @@ usersRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
+      name: Joi.string().min(3).required(),
       email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      profile: Joi.string().valid('Adotante', 'Ong').required(),
-      document: Joi.string().required(),
+      password: Joi.string().min(6).required(),
+      isOng: Joi.boolean().required(),
+      cpf: Joi.when('isOng', {
+        is: false,
+        then: Joi.string().required(),
+      }),
+      cnpj: Joi.when('isOng', {
+        is: true,
+        then: Joi.string().required(),
+      }),
     },
   }),
   usersController.create,

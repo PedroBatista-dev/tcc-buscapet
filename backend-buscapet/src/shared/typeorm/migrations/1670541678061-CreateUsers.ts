@@ -32,13 +32,20 @@ export class CreateUsers1670541678061 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'profile',
-            type: 'varchar',
+            name: 'isOng',
+            type: 'boolean',
           },
           {
-            name: 'document',
+            name: 'cpf',
             type: 'varchar',
             isUnique: true,
+            isNullable: true,
+          },
+          {
+            name: 'cnpj',
+            type: 'varchar',
+            isUnique: true,
+            isNullable: true,
           },
           {
             name: 'created_at',

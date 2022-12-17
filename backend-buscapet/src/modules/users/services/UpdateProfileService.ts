@@ -2,19 +2,23 @@ import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/User';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
+import * as cnpjs from '@fnando/cnpj';
+import * as cpfs from '@fnando/cpf';
 
 interface IRequest {
   user_id: string;
   name: string;
   email: string;
-  document: string;
+  cpf: string;
+  cnpj: string;
 }
 class UpdateProfileService {
   public async execute({
     user_id,
     name,
     email,
-    document,
+    cpf,
+    cnpj,
   }: IRequest): Promise<User> {
     const usersRepository = getCustomRepository(UsersRepository);
 
@@ -28,14 +32,30 @@ class UpdateProfileService {
       throw new AppError('Já existe um usuário cadastrado com esse email');
     }
 
-    const userUpdateDocument = await usersRepository.findByDocument(document);
-    if (userUpdateDocument && userUpdateDocument.id !== user_id) {
-      throw new AppError('Já existe um usuário cadastrado com esse documento');
+    if (user.isOng) {
+      const cnpjValid = cnpjs.isValid(cnpj);
+      if (!cnpjValid) {
+        throw new AppError('CNPJ inválido!');
+      }
+      const userUpdateDocument = await usersRepository.findByCnpj(cnpj);
+      if (userUpdateDocument && userUpdateDocument.id !== user_id) {
+        throw new AppError('Já existe um usuário cadastrado com esse cnpj');
+      }
+      user.cnpj = cnpj;
+    } else {
+      const cnpjValid = cpfs.isValid(cpf);
+      if (!cnpjValid) {
+        throw new AppError('CPF inválido!');
+      }
+      const userUpdateDocument = await usersRepository.findByCpf(cpf);
+      if (userUpdateDocument && userUpdateDocument.id !== user_id) {
+        throw new AppError('Já existe um usuário cadastrado com esse cpf');
+      }
+      user.cpf = cpf;
     }
 
     user.name = name;
     user.email = email;
-    user.document = document;
 
     await usersRepository.save(user);
 

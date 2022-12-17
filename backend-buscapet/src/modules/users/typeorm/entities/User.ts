@@ -31,10 +31,13 @@ class User {
   avatar: string;
 
   @Column()
-  profile: string;
+  isOng: boolean;
 
   @Column()
-  document: string;
+  cpf: string;
+
+  @Column()
+  cnpj: string;
 
   @OneToMany(() => Vaccine, vaccine => vaccine.user, {
     cascade: true,
