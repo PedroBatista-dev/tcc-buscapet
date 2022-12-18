@@ -16,7 +16,7 @@ class DeleteAnimalService {
       throw new AppError('Animal não encontrado!');
     }
 
-    animalsRepository.remove(animal);
+    await animalsRepository.remove(animal);
   }
 }
 

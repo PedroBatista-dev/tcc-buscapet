@@ -16,7 +16,7 @@ class DeleteBreedService {
       throw new AppError('Raça não encontrada!');
     }
 
-    breedsRepository.remove(breed);
+    await breedsRepository.remove(breed);
   }
 }
 

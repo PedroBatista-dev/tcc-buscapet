@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateVaccinesAnimals1670696648674 implements MigrationInterface {
+export class CreateAnimalsVaccines1671402434641 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'vaccines_animals',
+        name: 'animals_vaccines',
         columns: [
           {
             name: 'id',
@@ -34,7 +34,7 @@ export class CreateVaccinesAnimals1670696648674 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: 'VaccinesAnimalsVaccine',
+            name: 'AnimalsVaccinesVaccine',
             referencedTableName: 'vaccines',
             referencedColumnNames: ['id'],
             columnNames: ['vaccine_id'],
@@ -42,7 +42,7 @@ export class CreateVaccinesAnimals1670696648674 implements MigrationInterface {
             onUpdate: 'CASCADE',
           },
           {
-            name: 'VaccinesAnimalsAnimal',
+            name: 'AnimalsVaccinesAnimal',
             referencedTableName: 'animals',
             referencedColumnNames: ['id'],
             columnNames: ['animal_id'],
@@ -55,6 +55,6 @@ export class CreateVaccinesAnimals1670696648674 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('vaccines_animals');
+    await queryRunner.dropTable('animals_vaccines');
   }
 }

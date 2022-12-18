@@ -12,8 +12,8 @@ import {
 import Color from '../../../colors/typeorm/entities/Color';
 import Specie from '../../../species/typeorm/entities/Specie';
 import Breed from '../../../breeds/typeorm/entities/Breed';
-import VaccinesAnimals from '../../../vaccines/typeorm/entities/VaccinesAnimals';
 import Adoption from '../../../adoptions/typeorm/entities/Adoption';
+import AnimalsVaccines from './AnimalsVaccines';
 
 @Entity('animals')
 class Animal {
@@ -65,8 +65,10 @@ class Animal {
   @JoinColumn({ name: 'breed_id' })
   breed: Breed;
 
-  @OneToMany(() => VaccinesAnimals, vaccine_animals => vaccine_animals.animal)
-  vaccine_animals: VaccinesAnimals[];
+  @OneToMany(() => AnimalsVaccines, animals_vaccine => animals_vaccine.animal, {
+    cascade: true,
+  })
+  animals_vaccine: AnimalsVaccines[];
 
   @OneToMany(() => Adoption, adoption => adoption.animal)
   adoption: Adoption[];

@@ -16,7 +16,7 @@ class DeleteVaccineService {
       throw new AppError('Vacina não encontrada!');
     }
 
-    vaccinesRepository.remove(vaccine);
+    await vaccinesRepository.remove(vaccine);
   }
 }
 

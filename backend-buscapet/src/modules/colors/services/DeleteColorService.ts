@@ -16,7 +16,7 @@ class DeleteColorService {
       throw new AppError('Cor não encontrada!');
     }
 
-    colorsRepository.remove(color);
+    await colorsRepository.remove(color);
   }
 }
 

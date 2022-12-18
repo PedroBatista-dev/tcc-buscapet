@@ -28,9 +28,18 @@ animalsRouter.post(
     [Segments.BODY]: {
       name: Joi.string().required(),
       age: Joi.number().required(),
-      sex: Joi.string().valid('Macho', 'Fêmea').required(),
-      size: Joi.string().valid('Pequeno', 'Médio', 'Grande').required(),
+      sex: Joi.string().valid('M', 'F').required(),
+      size: Joi.string().valid('P', 'M', 'G').required(),
       other_animals: Joi.string().required(),
+      color_id: Joi.string().uuid().required(),
+      breed_id: Joi.string().uuid().required(),
+      specie_id: Joi.string().uuid().required(),
+      vaccines: Joi.array().items(
+        Joi.object().keys({
+          id: Joi.string().uuid(),
+          name: Joi.string().min(2),
+        }),
+      ),
     },
   }),
   animalsController.create,
@@ -42,9 +51,18 @@ animalsRouter.put(
     [Segments.BODY]: {
       name: Joi.string().required(),
       age: Joi.number().required(),
-      sex: Joi.string().valid('Macho', 'Fêmea').required(),
-      size: Joi.string().valid('Pequeno', 'Médio', 'Grande').required(),
+      sex: Joi.string().valid('M', 'F').required(),
+      size: Joi.string().valid('P', 'M', 'G').required(),
       other_animals: Joi.string().required(),
+      color_id: Joi.string().uuid().required(),
+      breed_id: Joi.string().uuid().required(),
+      specie_id: Joi.string().uuid().required(),
+      vaccines: Joi.array().items(
+        Joi.object().keys({
+          id: Joi.string().uuid(),
+          name: Joi.string().min(2),
+        }),
+      ),
     },
     [Segments.PARAMS]: { id: Joi.string().uuid().required() },
   }),

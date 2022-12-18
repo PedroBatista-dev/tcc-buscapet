@@ -1,5 +1,9 @@
 import Vaccine from '../entities/Vaccine';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
+
+interface IFindVaccines {
+  id: string;
+}
 
 @EntityRepository(Vaccine)
 export class VaccinesRepository extends Repository<Vaccine> {
@@ -29,5 +33,17 @@ export class VaccinesRepository extends Repository<Vaccine> {
     });
 
     return vaccine;
+  }
+
+  public async findAllByIds(vaccines: IFindVaccines[]): Promise<Vaccine[]> {
+    const vaccineIds = vaccines.map(vaccine => vaccine.id);
+
+    const existsVaccines = await this.find({
+      where: {
+        id: In(vaccineIds),
+      },
+    });
+
+    return existsVaccines;
   }
 }

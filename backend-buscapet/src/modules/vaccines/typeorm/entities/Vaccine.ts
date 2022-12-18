@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import VaccinesAnimals from './VaccinesAnimals';
+import AnimalsVaccines from '../../../animals/typeorm/entities/AnimalsVaccines';
 
 @Entity('vaccines')
 class Vaccine {
@@ -26,14 +26,8 @@ class Vaccine {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToMany(
-    () => VaccinesAnimals,
-    vaccine_animals => vaccine_animals.vaccine,
-    {
-      cascade: true,
-    },
-  )
-  vaccine_animals: VaccinesAnimals[];
+  @OneToMany(() => AnimalsVaccines, animals_vaccine => animals_vaccine.vaccine)
+  animals_vaccine: AnimalsVaccines[];
 
   @CreateDateColumn()
   created_at: Date;

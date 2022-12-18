@@ -16,7 +16,7 @@ class DeleteSpecieService {
       throw new AppError('Espécie não encontrada!');
     }
 
-    speciesRepository.remove(specie);
+    await speciesRepository.remove(specie);
   }
 }
 

@@ -29,7 +29,17 @@ export default class AnimalsController {
 
   public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { name, age, sex, size, other_animals } = request.body;
+    const {
+      name,
+      age,
+      sex,
+      size,
+      other_animals,
+      color_id,
+      breed_id,
+      specie_id,
+      vaccines,
+    } = request.body;
 
     const createAnimal = new CreateAnimalService();
 
@@ -39,6 +49,10 @@ export default class AnimalsController {
       sex,
       size,
       other_animals,
+      color_id,
+      breed_id,
+      specie_id,
+      vaccines,
       user_id,
     });
 
@@ -47,7 +61,17 @@ export default class AnimalsController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { name, age, sex, size, other_animals } = request.body;
+    const {
+      name,
+      age,
+      sex,
+      size,
+      other_animals,
+      color_id,
+      breed_id,
+      specie_id,
+      vaccines,
+    } = request.body;
     const { id } = request.params;
 
     const updateAnimal = new UpdateAnimalService();
@@ -59,6 +83,10 @@ export default class AnimalsController {
       sex,
       size,
       other_animals,
+      color_id,
+      breed_id,
+      specie_id,
+      vaccines,
       user_id,
     });
 

@@ -16,7 +16,7 @@ export default function isAuthenticated(
   next: NextFunction,
 ): void {
   const baseUrl = request.baseUrl;
-  const urls_Ong = ['/colors', '/species', '/vaccines', '/breeds'];
+  const urls_Ong = ['/colors', '/species', '/vaccines', '/breeds', '/animals'];
   const urls_Adopter = ['/quiz'];
 
   const authHeader = request.headers.authorization;

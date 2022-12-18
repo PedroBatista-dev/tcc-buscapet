@@ -14,6 +14,7 @@ class ListAnimalService {
       where: {
         user_id,
       },
+      relations: ['color', 'specie', 'breed', 'animals_vaccine'],
     });
 
     return animals;

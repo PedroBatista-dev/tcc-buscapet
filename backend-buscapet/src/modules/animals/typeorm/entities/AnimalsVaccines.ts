@@ -1,3 +1,4 @@
+import Vaccine from '../../../vaccines/typeorm/entities/Vaccine';
 import {
   Column,
   CreateDateColumn,
@@ -7,11 +8,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import Animal from '../../../animals/typeorm/entities/Animal';
-import Vaccine from './Vaccine';
+import Animal from './Animal';
 
-@Entity('vaccines_animals')
-class VaccinesAnimals {
+@Entity('animals_vaccines')
+class AnimalsVaccines {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,11 +21,11 @@ class VaccinesAnimals {
   @Column()
   animal_id: string;
 
-  @ManyToOne(() => Vaccine, vaccine => vaccine.vaccine_animals)
+  @ManyToOne(() => Vaccine, vaccine => vaccine.animals_vaccine)
   @JoinColumn({ name: 'vaccine_id' })
   vaccine: Vaccine;
 
-  @ManyToOne(() => Animal, animal => animal.vaccine_animals)
+  @ManyToOne(() => Animal, animal => animal.animals_vaccine)
   @JoinColumn({ name: 'animal_id' })
   animal: Animal;
 
@@ -36,4 +36,4 @@ class VaccinesAnimals {
   updated_at: Date;
 }
 
-export default VaccinesAnimals;
+export default AnimalsVaccines;
