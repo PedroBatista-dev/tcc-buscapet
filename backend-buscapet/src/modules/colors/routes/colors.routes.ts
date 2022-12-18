@@ -20,7 +20,7 @@ colorsRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
+      name: Joi.string().min(2).required(),
     },
   }),
   colorsController.create,
@@ -30,7 +30,7 @@ colorsRouter.put(
   '/:id',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
+      name: Joi.string().min(2).required(),
     },
     [Segments.PARAMS]: { id: Joi.string().uuid().required() },
   }),

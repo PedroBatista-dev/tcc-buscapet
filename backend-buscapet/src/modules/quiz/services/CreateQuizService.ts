@@ -17,8 +17,8 @@ interface IRequest {
   profile_instragam: string;
   for_who: string;
   why_adopt: string;
-  average_life: string;
-  financial_conditions: string;
+  average_life: boolean;
+  financial_conditions: boolean;
   user_id: string;
 }
 

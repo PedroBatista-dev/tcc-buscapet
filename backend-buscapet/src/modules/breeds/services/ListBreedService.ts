@@ -14,6 +14,7 @@ class ListBreedService {
       where: {
         user_id,
       },
+      relations: ['specie'],
     });
 
     return breeds;

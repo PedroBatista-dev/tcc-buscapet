@@ -26,6 +26,7 @@ export class BreedsRepository extends Repository<Breed> {
         id,
         user_id,
       },
+      relations: ['specie'],
     });
 
     return breed;

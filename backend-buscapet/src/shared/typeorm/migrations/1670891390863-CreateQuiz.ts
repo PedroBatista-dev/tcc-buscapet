@@ -16,22 +16,18 @@ export class CreateQuiz1670891390863 implements MigrationInterface {
           {
             name: 'birth_date',
             type: 'timestamp with time zone',
-            isNullable: true,
           },
           {
             name: 'marital_status',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'professional_activity',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'address',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'complement',
@@ -41,22 +37,18 @@ export class CreateQuiz1670891390863 implements MigrationInterface {
           {
             name: 'district',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'city',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'state',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'cep',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'profile_instragam',
@@ -66,22 +58,18 @@ export class CreateQuiz1670891390863 implements MigrationInterface {
           {
             name: 'for_who',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'why_adopt',
             type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'average_life',
-            type: 'varchar',
-            isNullable: true,
+            type: 'boolean',
           },
           {
             name: 'financial_conditions',
-            type: 'varchar',
-            isNullable: true,
+            type: 'boolean',
           },
           {
             name: 'user_id',

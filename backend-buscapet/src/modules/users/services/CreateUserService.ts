@@ -58,8 +58,8 @@ class CreateUserService {
       email,
       password: hashedPassword,
       isOng,
-      cpf,
-      cnpj,
+      cpf: isOng ? '' : cpf,
+      cnpj: isOng ? cnpj : '',
     });
 
     await usersRepository.save(user);

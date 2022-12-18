@@ -37,6 +37,7 @@ class CreateBreedService {
     const breed = breedsRepository.create({
       name,
       specie: specieExists,
+      user_id,
     });
 
     await breedsRepository.save(breed);

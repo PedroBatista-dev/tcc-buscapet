@@ -16,8 +16,8 @@ export default function isAuthenticated(
   next: NextFunction,
 ): void {
   const baseUrl = request.baseUrl;
-  const urls_Ong = ['/colors'];
-  const urls_Adopter = [''];
+  const urls_Ong = ['/colors', '/species', '/vaccines', '/breeds'];
+  const urls_Adopter = ['/quiz'];
 
   const authHeader = request.headers.authorization;
 
@@ -32,7 +32,10 @@ export default function isAuthenticated(
 
     const { sub, isOng } = decodedToken as ITokenPayload;
 
-    if (!isOng && urls_Ong.includes(baseUrl)) {
+    if (
+      (!isOng && urls_Ong.includes(baseUrl)) ||
+      (isOng && urls_Adopter.includes(baseUrl))
+    ) {
       throw new AppError('');
     }
 

@@ -20,7 +20,7 @@ breedsRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
+      name: Joi.string().min(2).required(),
       specie_id: Joi.string().uuid().required(),
     },
   }),
@@ -31,7 +31,7 @@ breedsRouter.put(
   '/:id',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
+      name: Joi.string().min(2).required(),
       specie_id: Joi.string().uuid().required(),
     },
     [Segments.PARAMS]: { id: Joi.string().uuid().required() },

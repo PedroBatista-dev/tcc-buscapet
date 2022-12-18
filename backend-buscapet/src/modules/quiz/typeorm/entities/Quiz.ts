@@ -51,10 +51,10 @@ class Quiz {
   why_adopt: string;
 
   @Column()
-  average_life: string;
+  average_life: boolean;
 
   @Column()
-  financial_conditions: string;
+  financial_conditions: boolean;
 
   @Column()
   user_id: string;
