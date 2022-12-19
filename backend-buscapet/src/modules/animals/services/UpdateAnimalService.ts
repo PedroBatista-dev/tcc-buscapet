@@ -80,7 +80,10 @@ class UpdateAnimalService {
       throw new AppError('Raça não pertence a espécie informada!');
     }
 
-    const existsVaccines = await vaccinesRepository.findAllByIds(vaccines);
+    const existsVaccines = await vaccinesRepository.findAllByIds(
+      vaccines,
+      user_id,
+    );
     if (!existsVaccines.length) {
       throw new AppError(
         'Não foram encontradas as vacinas com os ids informados!',

@@ -35,12 +35,16 @@ export class VaccinesRepository extends Repository<Vaccine> {
     return vaccine;
   }
 
-  public async findAllByIds(vaccines: IFindVaccines[]): Promise<Vaccine[]> {
+  public async findAllByIds(
+    vaccines: IFindVaccines[],
+    user_id: string,
+  ): Promise<Vaccine[]> {
     const vaccineIds = vaccines.map(vaccine => vaccine.id);
 
     const existsVaccines = await this.find({
       where: {
         id: In(vaccineIds),
+        user_id,
       },
     });
 

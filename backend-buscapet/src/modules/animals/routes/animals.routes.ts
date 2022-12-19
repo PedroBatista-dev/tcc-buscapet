@@ -5,9 +5,11 @@ import multer from 'multer';
 import uploadConfig from '@config/upload';
 import AnimalAvatarController from '../controllers/AnimalAvatarController';
 import isAuthenticated from '../../../shared/http/middlewares/isAuthenticated';
+import AnimalStatusController from '../controllers/AnimalStatusController';
 
 const animalsRouter = Router();
 const animalsController = new AnimalsController();
+const animalStatusController = new AnimalStatusController();
 const animalsAvatarController = new AnimalAvatarController();
 
 animalsRouter.use(isAuthenticated);
@@ -77,7 +79,7 @@ animalsRouter.put(
     },
     [Segments.PARAMS]: { id: Joi.string().uuid().required() },
   }),
-  animalsController.updateStatus,
+  animalStatusController.update,
 );
 
 animalsRouter.delete(
@@ -87,7 +89,7 @@ animalsRouter.delete(
 );
 
 animalsRouter.patch(
-  '/avatar/:id',
+  '/:id/avatar',
   celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
   upload.single('avatar'),
   animalsAvatarController.update,

@@ -75,7 +75,10 @@ class CreateAnimalService {
       throw new AppError('Já existe um animal com esse nome!');
     }
 
-    const existsVaccines = await vaccinesRepository.findAllByIds(vaccines);
+    const existsVaccines = await vaccinesRepository.findAllByIds(
+      vaccines,
+      user_id,
+    );
     if (!existsVaccines.length) {
       throw new AppError(
         'Não foram encontradas as vacinas com os ids informados!',

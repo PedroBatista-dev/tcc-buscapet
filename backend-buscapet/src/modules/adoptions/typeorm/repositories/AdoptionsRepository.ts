@@ -16,4 +16,20 @@ export class AdoptionsRepository extends Repository<Adoption> {
 
     return adoption;
   }
+
+  public async findByIdAndStatus(
+    id: string,
+    ong_id: string,
+    status: string,
+  ): Promise<Adoption | undefined> {
+    const adoption = await this.findOne({
+      where: {
+        id,
+        ong_id,
+        status,
+      },
+    });
+
+    return adoption;
+  }
 }

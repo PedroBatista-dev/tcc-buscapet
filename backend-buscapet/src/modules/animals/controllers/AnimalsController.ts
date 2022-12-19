@@ -4,7 +4,6 @@ import DeleteAnimalService from '../services/DeleteAnimalService';
 import ListAnimalService from '../services/ListAnimalService';
 import ShowAnimalService from '../services/ShowAnimalService';
 import UpdateAnimalService from '../services/UpdateAnimalService';
-import UpdateStatusAnimalService from '../services/UpdateStatusAnimalService';
 
 export default class AnimalsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -87,25 +86,6 @@ export default class AnimalsController {
       breed_id,
       specie_id,
       vaccines,
-      user_id,
-    });
-
-    return response.json(animal);
-  }
-
-  public async updateStatus(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
-    const user_id = request.user.id;
-    const { status } = request.body;
-    const { id } = request.params;
-
-    const updateStatusAnimal = new UpdateStatusAnimalService();
-
-    const animal = await updateStatusAnimal.execute({
-      id,
-      status,
       user_id,
     });
 
