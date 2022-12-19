@@ -3,7 +3,7 @@ import UpdateAnimalAvatarService from '../services/UpdateAnimalAvatarService';
 
 export default class AnimalAvatarController {
   public async update(request: Request, response: Response): Promise<Response> {
-    const { id } = request.body;
+    const { id } = request.params;
     const user_id = request.user.id;
 
     const updateAvatar = new UpdateAnimalAvatarService();

@@ -1,4 +1,4 @@
-import { getCustomRepository, getRepository } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import { AnimalsRepository } from '../typeorm/repositories/AnimalsRepository';
 import Animal from '../typeorm/entities/Animal';
 import AppError from '@shared/errors/AppError';
@@ -7,6 +7,7 @@ import { BreedsRepository } from '@modules/breeds/typeorm/repositories/BreedsRep
 import { SpeciesRepository } from '@modules/species/typeorm/repositories/SpeciesRepository';
 import { VaccinesRepository } from '@modules/vaccines/typeorm/repositories/VaccinesRepository';
 import AnimalsVaccines from '../typeorm/entities/AnimalsVaccines';
+import { AnimalsVaccinesRepository } from '../typeorm/repositories/AnimalsVaccinesRepository';
 
 interface IVaccine {
   id: string;
@@ -46,7 +47,9 @@ class UpdateAnimalService {
     const breedsRepository = getCustomRepository(BreedsRepository);
     const speciesRepository = getCustomRepository(SpeciesRepository);
     const vaccinesRepository = getCustomRepository(VaccinesRepository);
-    const animalsVaccinesRepository = getRepository(AnimalsVaccines);
+    const animalsVaccinesRepository = getCustomRepository(
+      AnimalsVaccinesRepository,
+    );
 
     const animal = await animalsRepository.findById(id, user_id);
     if (!animal) {
@@ -98,7 +101,10 @@ class UpdateAnimalService {
       vaccine_id: vaccine.id,
     }));
 
-    await animalsVaccinesRepository.softRemove({ animal_id: id });
+    const animalsVaccinesExists =
+      await animalsVaccinesRepository.findAllByAnimalId(id);
+
+    await animalsVaccinesRepository.remove(animalsVaccinesExists);
 
     animal.name = name;
     animal.age = age;

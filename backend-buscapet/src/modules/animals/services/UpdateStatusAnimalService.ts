@@ -18,6 +18,10 @@ class UpdateStatusAnimalService {
       throw new AppError('Animal não encontrado!');
     }
 
+    if (animal.status === status) {
+      throw new AppError(`Animal já possui o status ${animal.status}`);
+    }
+
     animal.status = status;
 
     await animalsRepository.save(animal);

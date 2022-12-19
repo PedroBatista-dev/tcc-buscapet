@@ -87,7 +87,8 @@ animalsRouter.delete(
 );
 
 animalsRouter.patch(
-  '/avatar',
+  '/avatar/:id',
+  celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
   upload.single('avatar'),
   animalsAvatarController.update,
 );
