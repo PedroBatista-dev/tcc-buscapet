@@ -5,24 +5,49 @@ import AppError from '@shared/errors/AppError';
 
 interface IRequest {
   id: string;
-  ong_id: string;
+  user_id: string;
   status: string;
+  isOng: boolean;
 }
 
 class ShowAdoptionService {
-  public async execute({ id, ong_id, status }: IRequest): Promise<Adoption> {
+  public async execute({
+    id,
+    user_id,
+    status,
+    isOng,
+  }: IRequest): Promise<Adoption> {
     const adoptionsRepository = getCustomRepository(AdoptionsRepository);
 
-    const adoption = await adoptionsRepository.findByIdAndStatus(
-      id,
-      ong_id,
-      status,
-    );
-    if (!adoption) {
-      throw new AppError('Adoção não encontrada!');
-    }
+    if (isOng) {
+      const adoption = await adoptionsRepository.findOne({
+        where: {
+          id,
+          ong_id: user_id,
+          status,
+        },
+        relations: ['ong', 'adopter', 'animal'],
+      });
+      if (!adoption) {
+        throw new AppError('Adoção não encontrada!');
+      }
 
-    return adoption;
+      return adoption;
+    } else {
+      const adoption = await adoptionsRepository.findOne({
+        where: {
+          id,
+          adopter_id: user_id,
+          status,
+        },
+        relations: ['ong', 'adopter', 'animal'],
+      });
+      if (!adoption) {
+        throw new AppError('Adoção não encontrada!');
+      }
+
+      return adoption;
+    }
   }
 }
 

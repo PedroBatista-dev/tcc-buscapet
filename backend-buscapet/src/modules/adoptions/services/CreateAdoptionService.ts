@@ -8,13 +8,22 @@ import { AnimalsRepository } from '@modules/animals/typeorm/repositories/Animals
 interface IRequest {
   animal_id: string;
   adopter_id: string;
+  isOng: boolean;
 }
 
 class CreateAdoptionService {
-  public async execute({ animal_id, adopter_id }: IRequest): Promise<Adoption> {
+  public async execute({
+    animal_id,
+    adopter_id,
+    isOng,
+  }: IRequest): Promise<Adoption> {
     const usersRepository = getCustomRepository(UsersRepository);
     const animalsRepository = getCustomRepository(AnimalsRepository);
     const adoptionsRepository = getCustomRepository(AdoptionsRepository);
+
+    if (isOng) {
+      throw new AppError('JWT Token inválido');
+    }
 
     const animalExists = await animalsRepository.findOne({
       where: {
@@ -36,6 +45,17 @@ class CreateAdoptionService {
     const adopterExists = await usersRepository.findById(adopter_id);
     if (!adopterExists) {
       throw new AppError('Adotante não encontrado!');
+    }
+
+    const adoptionExists = await adoptionsRepository.findOne({
+      where: {
+        animal_id,
+        adopter_id,
+        ong_id: ongExists.id,
+      },
+    });
+    if (adoptionExists) {
+      throw new AppError('Pedido de adoção já existe!');
     }
 
     const adoption = adoptionsRepository.create({

@@ -5,31 +5,27 @@ import { EntityRepository, Repository } from 'typeorm';
 export class AdoptionsRepository extends Repository<Adoption> {
   public async findById(
     id: string,
-    ong_id: string,
+    user_id: string,
+    isOng: boolean,
   ): Promise<Adoption | undefined> {
-    const adoption = await this.findOne({
-      where: {
-        id,
-        ong_id,
-      },
-    });
+    if (isOng) {
+      const adoption = await this.findOne({
+        where: {
+          id,
+          ong_id: user_id,
+        },
+      });
 
-    return adoption;
-  }
+      return adoption;
+    } else {
+      const adoption = await this.findOne({
+        where: {
+          id,
+          adopter_id: user_id,
+        },
+      });
 
-  public async findByIdAndStatus(
-    id: string,
-    ong_id: string,
-    status: string,
-  ): Promise<Adoption | undefined> {
-    const adoption = await this.findOne({
-      where: {
-        id,
-        ong_id,
-        status,
-      },
-    });
-
-    return adoption;
+      return adoption;
+    }
   }
 }

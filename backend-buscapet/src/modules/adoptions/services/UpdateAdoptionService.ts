@@ -7,13 +7,23 @@ interface IRequest {
   id: string;
   status: string;
   ong_id: string;
+  isOng: boolean;
 }
 
 class UpdateAdoptionService {
-  public async execute({ id, status, ong_id }: IRequest): Promise<Adoption> {
+  public async execute({
+    id,
+    status,
+    ong_id,
+    isOng,
+  }: IRequest): Promise<Adoption> {
     const adoptionsRepository = getCustomRepository(AdoptionsRepository);
 
-    const adoption = await adoptionsRepository.findById(id, ong_id);
+    if (!isOng) {
+      throw new AppError('JWT Token inválido');
+    }
+
+    const adoption = await adoptionsRepository.findById(id, ong_id, isOng);
     if (!adoption) {
       throw new AppError('Adoção não encontrada!');
     }

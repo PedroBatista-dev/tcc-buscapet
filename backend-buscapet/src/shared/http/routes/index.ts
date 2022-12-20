@@ -10,11 +10,7 @@ import speciesRouter from '../../../modules/species/routes/species.routes';
 import breedsRouter from '../../../modules/breeds/routes/breeds.routes';
 import quizRouter from '../../../modules/quiz/routes/quiz.routes';
 import animalsAdopterRouter from '../../../modules/animals/routes/animalsAdopter.routes';
-import adoptionsApprovedRouter from '../../../modules/adoptions/routes/adoptionsApproved.routes';
-import adoptionsFailedRouter from '../../../modules/adoptions/routes/adoptionsFailed.routes';
-import adoptionsRequestedRouter from '../../../modules/adoptions/routes/adoptionsRequested.routes';
-import adoptionsOngRouter from '../../../modules/adoptions/routes/adoptionsOng.routes';
-import adoptionsAdopterRouter from '../../../modules/adoptions/routes/adoptionsAdopter.routes';
+import adoptionsRouter from '../../../modules/adoptions/routes/adoptions.routes';
 
 const routes = Router();
 
@@ -29,10 +25,6 @@ routes.use('/colors', colorsRouter);
 routes.use('/species', speciesRouter);
 routes.use('/breeds', breedsRouter);
 routes.use('/quiz', quizRouter);
-routes.use('/adoptions-ong', adoptionsOngRouter);
-routes.use('/adoptions-adopter', adoptionsAdopterRouter);
-routes.use('/adoptions-approved', adoptionsApprovedRouter);
-routes.use('/adoptions-failed', adoptionsFailedRouter);
-routes.use('/adoptions-requested', adoptionsRequestedRouter);
+routes.use('/adoptions', adoptionsRouter);
 
 export default routes;
