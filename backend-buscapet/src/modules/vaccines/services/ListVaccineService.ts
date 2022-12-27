@@ -6,17 +6,27 @@ interface IRequest {
   user_id: string;
 }
 
+interface IPaginateVaccine {
+  from: number;
+  to: number;
+  per_page: number;
+  total: number;
+  current_page: number;
+  prev_page: number;
+  next_page: number;
+  data: Vaccine[];
+}
+
 class ListVaccineService {
-  public async execute({ user_id }: IRequest): Promise<Vaccine[]> {
+  public async execute({ user_id }: IRequest): Promise<IPaginateVaccine> {
     const vaccinesRepository = getCustomRepository(VaccinesRepository);
 
-    const vaccines = await vaccinesRepository.find({
-      where: {
-        user_id,
-      },
-    });
+    const vaccines = await vaccinesRepository
+      .createQueryBuilder('vaccine')
+      .where('vaccine.user_id = :user_id', { user_id })
+      .paginate();
 
-    return vaccines;
+    return vaccines as IPaginateVaccine;
   }
 }
 

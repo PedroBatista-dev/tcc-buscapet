@@ -6,17 +6,28 @@ interface IRequest {
   user_id: string;
 }
 
+interface IPaginateSpecie {
+  from: number;
+  to: number;
+  per_page: number;
+  total: number;
+  current_page: number;
+  prev_page: number;
+  next_page: number;
+  data: Specie[];
+}
+
 class ListSpecieService {
-  public async execute({ user_id }: IRequest): Promise<Specie[]> {
+  public async execute({ user_id }: IRequest): Promise<IPaginateSpecie> {
     const speciesRepository = getCustomRepository(SpeciesRepository);
 
-    const species = await speciesRepository.find({
-      where: {
-        user_id,
-      },
-    });
+    const species = await speciesRepository
+      .createQueryBuilder('specie')
+      .leftJoinAndSelect('specie.breeds', 'breed')
+      .where('specie.user_id = :user_id', { user_id })
+      .paginate();
 
-    return species;
+    return species as IPaginateSpecie;
   }
 }
 

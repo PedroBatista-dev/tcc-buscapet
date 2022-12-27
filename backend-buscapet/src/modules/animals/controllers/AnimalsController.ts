@@ -8,26 +8,29 @@ import UpdateAnimalService from '../services/UpdateAnimalService';
 export default class AnimalsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const isOng = request.user.isOng;
     const listAnimals = new ListAnimalService();
 
-    const animals = await listAnimals.execute({ user_id });
+    const animals = await listAnimals.execute({ user_id, isOng });
 
     return response.json(animals);
   }
 
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const isOng = request.user.isOng;
     const { id } = request.params;
 
     const showAnimal = new ShowAnimalService();
 
-    const animal = await showAnimal.execute({ id, user_id });
+    const animal = await showAnimal.execute({ id, user_id, isOng });
 
     return response.json(animal);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const isOng = request.user.isOng;
     const {
       name,
       age,
@@ -53,6 +56,7 @@ export default class AnimalsController {
       specie_id,
       vaccines,
       user_id,
+      isOng,
     });
 
     return response.json(animal);
@@ -60,6 +64,7 @@ export default class AnimalsController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const isOng = request.user.isOng;
     const {
       name,
       age,
@@ -87,6 +92,7 @@ export default class AnimalsController {
       specie_id,
       vaccines,
       user_id,
+      isOng,
     });
 
     return response.json(animal);
@@ -94,11 +100,12 @@ export default class AnimalsController {
 
   public async delete(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const isOng = request.user.isOng;
     const { id } = request.params;
 
     const deleteAnimal = new DeleteAnimalService();
 
-    await deleteAnimal.execute({ id, user_id });
+    await deleteAnimal.execute({ id, user_id, isOng });
 
     return response.json([]);
   }

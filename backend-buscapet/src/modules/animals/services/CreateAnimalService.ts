@@ -24,6 +24,7 @@ interface IRequest {
   specie_id: string;
   vaccines: IVaccine[];
   user_id: string;
+  isOng: boolean;
 }
 
 class CreateAnimalService {
@@ -38,6 +39,7 @@ class CreateAnimalService {
     specie_id,
     vaccines,
     user_id,
+    isOng,
   }: IRequest): Promise<Animal> {
     const usersRepository = getCustomRepository(UsersRepository);
     const colorsRepository = getCustomRepository(ColorsRepository);
@@ -45,6 +47,10 @@ class CreateAnimalService {
     const speciesRepository = getCustomRepository(SpeciesRepository);
     const vaccinesRepository = getCustomRepository(VaccinesRepository);
     const animalsRepository = getCustomRepository(AnimalsRepository);
+
+    if (!isOng) {
+      throw new AppError('JWT Token inválido');
+    }
 
     const userExists = await usersRepository.findById(user_id);
     if (!userExists) {
