@@ -1,8 +1,8 @@
 import AppError from '../../../shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import { VaccinesRepository } from '../typeorm/repositories/VaccinesRepository';
-import Vaccine from '../typeorm/entities/Vaccine';
-import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository';
+import { VaccinesRepository } from '../infra/typeorm/repositories/VaccinesRepository';
+import Vaccine from '../infra/typeorm/entities/Vaccine';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 interface IRequest {
   name: string;
@@ -24,7 +24,7 @@ class CreateVaccineService {
       throw new AppError('Já existe uma vacina com esse nome!');
     }
 
-    const vaccine = vaccinesRepository.create({
+    const vaccine = await vaccinesRepository.create({
       name,
       user_id,
     });

@@ -1,9 +1,9 @@
 import AppError from '../../../shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import { AdoptionsRepository } from '../typeorm/repositories/AdoptionsRepository';
-import Adoption from '../typeorm/entities/Adoption';
-import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository';
-import { AnimalsRepository } from '@modules/animals/typeorm/repositories/AnimalsRepository';
+import { AdoptionsRepository } from '../infra/typeorm/repositories/AdoptionsRepository';
+import Adoption from '../infra/typeorm/entities/Adoption';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
+import { AnimalsRepository } from '@modules/animals/infra/typeorm/repositories/AnimalsRepository';
 
 interface IRequest {
   animal_id: string;
@@ -47,18 +47,16 @@ class CreateAdoptionService {
       throw new AppError('Adotante não encontrado!');
     }
 
-    const adoptionExists = await adoptionsRepository.findOne({
-      where: {
-        animal_id,
-        adopter_id,
-        ong_id: ongExists.id,
-      },
-    });
+    const adoptionExists = await adoptionsRepository.findByAnimalOngAdopter(
+      animal_id,
+      adopter_id,
+      ongExists.id,
+    );
     if (adoptionExists) {
       throw new AppError('Pedido de adoção já existe!');
     }
 
-    const adoption = adoptionsRepository.create({
+    const adoption = await adoptionsRepository.create({
       status: 'Solicitada',
       animal: animalExists,
       ong: ongExists,

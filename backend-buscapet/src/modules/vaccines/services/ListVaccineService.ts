@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
-import { VaccinesRepository } from '../typeorm/repositories/VaccinesRepository';
-import Vaccine from '../typeorm/entities/Vaccine';
+import { VaccinesRepository } from '../infra/typeorm/repositories/VaccinesRepository';
+import Vaccine from '../infra/typeorm/entities/Vaccine';
 
 interface IRequest {
   user_id: string;

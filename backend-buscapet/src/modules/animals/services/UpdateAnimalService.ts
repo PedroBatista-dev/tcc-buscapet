@@ -1,13 +1,13 @@
 import { getCustomRepository } from 'typeorm';
-import { AnimalsRepository } from '../typeorm/repositories/AnimalsRepository';
-import Animal from '../typeorm/entities/Animal';
+import { AnimalsRepository } from '../infra/typeorm/repositories/AnimalsRepository';
+import Animal from '../infra/typeorm/entities/Animal';
 import AppError from '@shared/errors/AppError';
-import { ColorsRepository } from '@modules/colors/typeorm/repositories/ColorsRepository';
-import { BreedsRepository } from '@modules/breeds/typeorm/repositories/BreedsRepository';
-import { SpeciesRepository } from '@modules/species/typeorm/repositories/SpeciesRepository';
-import { VaccinesRepository } from '@modules/vaccines/typeorm/repositories/VaccinesRepository';
-import AnimalsVaccines from '../typeorm/entities/AnimalsVaccines';
-import { AnimalsVaccinesRepository } from '../typeorm/repositories/AnimalsVaccinesRepository';
+import { ColorsRepository } from '@modules/colors/infra/typeorm/repositories/ColorsRepository';
+import { BreedsRepository } from '@modules/breeds/infra/typeorm/repositories/BreedsRepository';
+import { SpeciesRepository } from '@modules/species/infra/typeorm/repositories/SpeciesRepository';
+import { VaccinesRepository } from '@modules/vaccines/infra/typeorm/repositories/VaccinesRepository';
+import AnimalsVaccines from '../infra/typeorm/entities/AnimalsVaccines';
+import { AnimalsVaccinesRepository } from '../infra/typeorm/repositories/AnimalsVaccinesRepository';
 
 interface IVaccine {
   id: string;

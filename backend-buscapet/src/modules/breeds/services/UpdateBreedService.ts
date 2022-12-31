@@ -1,8 +1,8 @@
 import { getCustomRepository } from 'typeorm';
-import { BreedsRepository } from '../typeorm/repositories/BreedsRepository';
-import Breed from '../typeorm/entities/Breed';
+import { BreedsRepository } from '../infra/typeorm/repositories/BreedsRepository';
+import Breed from '../infra/typeorm/entities/Breed';
 import AppError from '@shared/errors/AppError';
-import { SpeciesRepository } from '@modules/species/typeorm/repositories/SpeciesRepository';
+import { SpeciesRepository } from '@modules/species/infra/typeorm/repositories/SpeciesRepository';
 
 interface IRequest {
   id: string;

@@ -1,8 +1,8 @@
 import AppError from '../../../shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import { SpeciesRepository } from '../typeorm/repositories/SpeciesRepository';
-import Specie from '../typeorm/entities/Specie';
-import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository';
+import { SpeciesRepository } from '../infra/typeorm/repositories/SpeciesRepository';
+import Specie from '../infra/typeorm/entities/Specie';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 interface IRequest {
   name: string;
@@ -24,7 +24,7 @@ class CreateSpecieService {
       throw new AppError('Já existe uma espécie com esse nome!');
     }
 
-    const specie = speciesRepository.create({
+    const specie = await speciesRepository.create({
       name,
       user_id,
     });

@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
-import { BreedsRepository } from '../typeorm/repositories/BreedsRepository';
-import Breed from '../typeorm/entities/Breed';
+import { BreedsRepository } from '../infra/typeorm/repositories/BreedsRepository';
+import Breed from '../infra/typeorm/entities/Breed';
 
 interface IRequest {
   user_id: string;

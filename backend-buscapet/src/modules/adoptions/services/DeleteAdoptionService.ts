@@ -1,5 +1,5 @@
 import { getCustomRepository } from 'typeorm';
-import { AdoptionsRepository } from '../typeorm/repositories/AdoptionsRepository';
+import { AdoptionsRepository } from '../infra/typeorm/repositories/AdoptionsRepository';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

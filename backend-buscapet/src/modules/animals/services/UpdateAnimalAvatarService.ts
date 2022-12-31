@@ -3,8 +3,8 @@ import path from 'path';
 import { getCustomRepository } from 'typeorm';
 import uploadConfig from '../../../config/upload';
 import fs from 'fs';
-import { AnimalsRepository } from '../typeorm/repositories/AnimalsRepository';
-import Animal from '../typeorm/entities/Animal';
+import { AnimalsRepository } from '../infra/typeorm/repositories/AnimalsRepository';
+import Animal from '../infra/typeorm/entities/Animal';
 
 interface IRequest {
   animal_id: string;

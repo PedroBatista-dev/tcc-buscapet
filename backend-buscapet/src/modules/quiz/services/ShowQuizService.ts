@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
-import { QuizRepository } from '../typeorm/repositories/QuizRepository';
-import Quiz from '../typeorm/entities/Quiz';
+import { QuizRepository } from '../infra/typeorm/repositories/QuizRepository';
+import Quiz from '../infra/typeorm/entities/Quiz';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

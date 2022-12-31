@@ -1,8 +1,8 @@
 import AppError from '../../../shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import { ColorsRepository } from '../typeorm/repositories/ColorsRepository';
-import Color from '../typeorm/entities/Color';
-import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository';
+import { ColorsRepository } from '../infra/typeorm/repositories/ColorsRepository';
+import Color from '../infra/typeorm/entities/Color';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 interface IRequest {
   name: string;
@@ -24,7 +24,7 @@ class CreateColorService {
       throw new AppError('Já existe uma cor com esse nome!');
     }
 
-    const color = colorsRepository.create({
+    const color = await colorsRepository.create({
       name,
       user_id,
     });

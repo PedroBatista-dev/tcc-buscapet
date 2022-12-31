@@ -1,0 +1,76 @@
+import Vaccine from '../entities/Vaccine';
+import { getRepository, In, Repository } from 'typeorm';
+import { IVaccinesRepository } from '@modules/vaccines/domain/repositories/IVaccinesRepository';
+import { ICreateVaccine } from '@modules/vaccines/domain/models/ICreateVaccine';
+
+interface IFindVaccines {
+  id: string;
+}
+
+export class VaccinesRepository implements IVaccinesRepository {
+  constructor(private ormRepository: Repository<Vaccine>) {
+    this.ormRepository = getRepository(Vaccine);
+  }
+
+  public async create({ name, user_id }: ICreateVaccine): Promise<Vaccine> {
+    const vaccine = this.ormRepository.create({ name, user_id });
+
+    await this.ormRepository.save(vaccine);
+
+    return vaccine;
+  }
+
+  public async save(vaccine: Vaccine): Promise<Vaccine> {
+    await this.ormRepository.save(vaccine);
+
+    return vaccine;
+  }
+
+  public async remove(vaccine: Vaccine): Promise<void> {
+    await this.ormRepository.remove(vaccine);
+  }
+
+  public async findByName(
+    name: string,
+    user_id: string,
+  ): Promise<Vaccine | undefined> {
+    const vaccine = this.ormRepository.findOne({
+      where: {
+        name,
+        user_id,
+      },
+    });
+
+    return vaccine;
+  }
+
+  public async findById(
+    id: string,
+    user_id: string,
+  ): Promise<Vaccine | undefined> {
+    const vaccine = await this.ormRepository.findOne({
+      where: {
+        id,
+        user_id,
+      },
+    });
+
+    return vaccine;
+  }
+
+  public async findAllByIds(
+    vaccines: IFindVaccines[],
+    user_id: string,
+  ): Promise<Vaccine[]> {
+    const vaccineIds = vaccines.map(vaccine => vaccine.id);
+
+    const existsVaccines = await this.ormRepository.find({
+      where: {
+        id: In(vaccineIds),
+        user_id,
+      },
+    });
+
+    return existsVaccines;
+  }
+}

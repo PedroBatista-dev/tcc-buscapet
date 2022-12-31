@@ -3,8 +3,8 @@ import { compare } from 'bcryptjs';
 import { Secret, sign } from 'jsonwebtoken';
 import authConfig from '../../../config/auth';
 import { getCustomRepository } from 'typeorm';
-import UsersRepository from '../typeorm/repositories/UsersRepository';
-import User from '../typeorm/entities/User';
+import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
+import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
   email: string;

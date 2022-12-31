@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
-import { AdoptionsRepository } from '../typeorm/repositories/AdoptionsRepository';
-import Adoption from '../typeorm/entities/Adoption';
+import { AdoptionsRepository } from '../infra/typeorm/repositories/AdoptionsRepository';
+import Adoption from '../infra/typeorm/entities/Adoption';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {
@@ -19,35 +19,17 @@ class ShowAdoptionService {
   }: IRequest): Promise<Adoption> {
     const adoptionsRepository = getCustomRepository(AdoptionsRepository);
 
-    if (isOng) {
-      const adoption = await adoptionsRepository.findOne({
-        where: {
-          id,
-          ong_id: user_id,
-          status,
-        },
-        relations: ['ong', 'adopter', 'animal'],
-      });
-      if (!adoption) {
-        throw new AppError('Adoção não encontrada!');
-      }
-
-      return adoption;
-    } else {
-      const adoption = await adoptionsRepository.findOne({
-        where: {
-          id,
-          adopter_id: user_id,
-          status,
-        },
-        relations: ['ong', 'adopter', 'animal'],
-      });
-      if (!adoption) {
-        throw new AppError('Adoção não encontrada!');
-      }
-
-      return adoption;
+    const adoption = await adoptionsRepository.findByIdUserStatus(
+      id,
+      user_id,
+      status,
+      isOng,
+    );
+    if (!adoption) {
+      throw new AppError('Adoção não encontrada!');
     }
+
+    return adoption;
   }
 }
 

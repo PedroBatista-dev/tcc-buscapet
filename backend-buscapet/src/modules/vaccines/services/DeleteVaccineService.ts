@@ -1,5 +1,5 @@
 import { getCustomRepository } from 'typeorm';
-import { VaccinesRepository } from '../typeorm/repositories/VaccinesRepository';
+import { VaccinesRepository } from '../infra/typeorm/repositories/VaccinesRepository';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

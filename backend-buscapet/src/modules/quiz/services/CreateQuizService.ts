@@ -1,8 +1,8 @@
 import AppError from '../../../shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import { QuizRepository } from '../typeorm/repositories/QuizRepository';
-import Quiz from '../typeorm/entities/Quiz';
-import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository';
+import { QuizRepository } from '../infra/typeorm/repositories/QuizRepository';
+import Quiz from '../infra/typeorm/entities/Quiz';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 interface IRequest {
   birth_date: Date;

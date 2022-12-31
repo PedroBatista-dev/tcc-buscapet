@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
-import { SpeciesRepository } from '../typeorm/repositories/SpeciesRepository';
-import Specie from '../typeorm/entities/Specie';
+import { SpeciesRepository } from '../infra/typeorm/repositories/SpeciesRepository';
+import Specie from '../infra/typeorm/entities/Specie';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

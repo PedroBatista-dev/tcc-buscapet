@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
-import { AdoptionsRepository } from '../typeorm/repositories/AdoptionsRepository';
-import Adoption from '../typeorm/entities/Adoption';
+import { AdoptionsRepository } from '../infra/typeorm/repositories/AdoptionsRepository';
+import Adoption from '../infra/typeorm/entities/Adoption';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

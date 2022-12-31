@@ -1,9 +1,9 @@
 import AppError from '../../../shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import { BreedsRepository } from '../typeorm/repositories/BreedsRepository';
-import Breed from '../typeorm/entities/Breed';
-import { SpeciesRepository } from '@modules/species/typeorm/repositories/SpeciesRepository';
-import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository';
+import { BreedsRepository } from '../infra/typeorm/repositories/BreedsRepository';
+import Breed from '../infra/typeorm/entities/Breed';
+import { SpeciesRepository } from '@modules/species/infra/typeorm/repositories/SpeciesRepository';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 interface IRequest {
   name: string;
@@ -34,7 +34,7 @@ class CreateBreedService {
       );
     }
 
-    const breed = breedsRepository.create({
+    const breed = await breedsRepository.create({
       name,
       specie: specieExists,
       user_id,

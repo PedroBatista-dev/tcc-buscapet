@@ -1,5 +1,5 @@
 import { getCustomRepository } from 'typeorm';
-import { BreedsRepository } from '../typeorm/repositories/BreedsRepository';
+import { BreedsRepository } from '../infra/typeorm/repositories/BreedsRepository';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

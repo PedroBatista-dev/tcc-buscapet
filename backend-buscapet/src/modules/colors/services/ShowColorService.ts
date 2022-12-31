@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
-import { ColorsRepository } from '../typeorm/repositories/ColorsRepository';
-import Color from '../typeorm/entities/Color';
+import { ColorsRepository } from '../infra/typeorm/repositories/ColorsRepository';
+import Color from '../infra/typeorm/entities/Color';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {
