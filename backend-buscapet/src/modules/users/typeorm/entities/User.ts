@@ -1,5 +1,3 @@
-import Animal from '../../../animals/typeorm/entities/Animal';
-import Vaccine from '../../../vaccines/typeorm/entities/Vaccine';
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +6,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude, Expose } from 'class-transformer';
+
+import Animal from '../../../animals/typeorm/entities/Animal';
+import Vaccine from '../../../vaccines/typeorm/entities/Vaccine';
 import Color from '../../../colors/typeorm/entities/Color';
 import Specie from '../../../species/typeorm/entities/Specie';
 import Breed from '../../../breeds/typeorm/entities/Breed';
@@ -25,6 +27,7 @@ class User {
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column()
@@ -79,6 +82,15 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Expose({ name: 'avatar_url' })
+  getAvatarUrl(): string | null {
+    if (!this.avatar) {
+      return null;
+    }
+
+    return `${process.env.APP_API_URL}/files/${this.avatar}`;
+  }
 }
 
 export default User;
