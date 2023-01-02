@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import CreateSpecieService from '../../../services/CreateSpecieService';
 import DeleteSpecieService from '../../../services/DeleteSpecieService';
 import ListSpecieService from '../../../services/ListSpecieService';
@@ -8,7 +9,8 @@ import UpdateSpecieService from '../../../services/UpdateSpecieService';
 export default class SpeciesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const listSpecies = new ListSpecieService();
+
+    const listSpecies = container.resolve(ListSpecieService);
 
     const species = await listSpecies.execute({ user_id });
 
@@ -19,7 +21,7 @@ export default class SpeciesController {
     const user_id = request.user.id;
     const { id } = request.params;
 
-    const showSpecie = new ShowSpecieService();
+    const showSpecie = container.resolve(ShowSpecieService);
 
     const specie = await showSpecie.execute({ id, user_id });
 
@@ -30,7 +32,7 @@ export default class SpeciesController {
     const user_id = request.user.id;
     const { name } = request.body;
 
-    const createSpecie = new CreateSpecieService();
+    const createSpecie = container.resolve(CreateSpecieService);
 
     const specie = await createSpecie.execute({
       name,
@@ -45,7 +47,7 @@ export default class SpeciesController {
     const { name } = request.body;
     const { id } = request.params;
 
-    const updateSpecie = new UpdateSpecieService();
+    const updateSpecie = container.resolve(UpdateSpecieService);
 
     const specie = await updateSpecie.execute({
       id,
@@ -60,7 +62,7 @@ export default class SpeciesController {
     const user_id = request.user.id;
     const { id } = request.params;
 
-    const deleteSpecie = new DeleteSpecieService();
+    const deleteSpecie = container.resolve(DeleteSpecieService);
 
     await deleteSpecie.execute({ id, user_id });
 

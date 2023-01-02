@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import UpdateStatusAnimalService from '../../../services/UpdateStatusAnimalService';
 
 export default class AnimalStatusController {
@@ -7,7 +8,7 @@ export default class AnimalStatusController {
     const { status } = request.body;
     const { id } = request.params;
 
-    const updateStatusAnimal = new UpdateStatusAnimalService();
+    const updateStatusAnimal = container.resolve(UpdateStatusAnimalService);
 
     const animal = await updateStatusAnimal.execute({
       id,

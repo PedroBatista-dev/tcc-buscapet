@@ -1,7 +1,7 @@
-import { getCustomRepository } from 'typeorm';
-import { ColorsRepository } from '../infra/typeorm/repositories/ColorsRepository';
-import Color from '../infra/typeorm/entities/Color';
 import AppError from '@shared/errors/AppError';
+import { IColorsRepository } from '../domain/repositories/IColorsRepository';
+import { inject, injectable } from 'tsyringe';
+import { IColor } from '../domain/models/IColor';
 
 interface IRequest {
   id: string;
@@ -9,23 +9,27 @@ interface IRequest {
   user_id: string;
 }
 
+@injectable()
 class UpdateColorService {
-  public async execute({ id, name, user_id }: IRequest): Promise<Color> {
-    const colorsRepository = getCustomRepository(ColorsRepository);
+  constructor(
+    @inject('ColorsRepository')
+    private colorsRepository: IColorsRepository,
+  ) {}
 
-    const color = await colorsRepository.findById(id, user_id);
+  public async execute({ id, name, user_id }: IRequest): Promise<IColor> {
+    const color = await this.colorsRepository.findById(id, user_id);
     if (!color) {
       throw new AppError('Cor não encontrada!');
     }
 
-    const colorExists = await colorsRepository.findByName(name, user_id);
+    const colorExists = await this.colorsRepository.findByName(name, user_id);
     if (colorExists && name !== color.name) {
       throw new AppError('Já existe uma cor com esse nome!');
     }
 
     color.name = name;
 
-    await colorsRepository.save(color);
+    await this.colorsRepository.save(color);
 
     return color;
   }

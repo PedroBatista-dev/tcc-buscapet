@@ -2,6 +2,7 @@ import Vaccine from '../entities/Vaccine';
 import { getRepository, In, Repository } from 'typeorm';
 import { IVaccinesRepository } from '@modules/vaccines/domain/repositories/IVaccinesRepository';
 import { ICreateVaccine } from '@modules/vaccines/domain/models/ICreateVaccine';
+import { IPaginateVaccine } from '@modules/vaccines/domain/models/IPaginateVaccine';
 
 interface IFindVaccines {
   id: string;
@@ -13,7 +14,7 @@ export class VaccinesRepository implements IVaccinesRepository {
   }
 
   public async create({ name, user_id }: ICreateVaccine): Promise<Vaccine> {
-    const vaccine = this.ormRepository.create({ name, user_id });
+    const vaccine = await this.ormRepository.create({ name, user_id });
 
     await this.ormRepository.save(vaccine);
 
@@ -30,11 +31,20 @@ export class VaccinesRepository implements IVaccinesRepository {
     await this.ormRepository.remove(vaccine);
   }
 
+  public async findAll(user_id: string): Promise<IPaginateVaccine> {
+    const vaccine = await this.ormRepository
+      .createQueryBuilder('vaccine')
+      .where('vaccine.user_id = :user_id', { user_id })
+      .paginate();
+
+    return vaccine as IPaginateVaccine;
+  }
+
   public async findByName(
     name: string,
     user_id: string,
   ): Promise<Vaccine | undefined> {
-    const vaccine = this.ormRepository.findOne({
+    const vaccine = await this.ormRepository.findOne({
       where: {
         name,
         user_id,

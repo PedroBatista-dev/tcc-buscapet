@@ -8,6 +8,7 @@ import { pagination } from 'typeorm-pagination';
 import routes from './routes';
 import AppError from '@shared/errors/AppError';
 import '@shared/infra/typeorm';
+import '@shared/container';
 import uploadConfig from '@config/upload';
 
 const app = express();
@@ -29,6 +30,8 @@ app.use(
         message: error.message,
       });
     }
+
+    console.log(error);
 
     return response.status(500).json({
       status: 'error',

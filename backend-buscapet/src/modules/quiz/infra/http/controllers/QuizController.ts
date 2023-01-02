@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import CreateQuizService from '../../../services/CreateQuizService';
 import ShowQuizService from '../../../services/ShowQuizService';
 import UpdateQuizService from '../../../services/UpdateQuizService';
@@ -7,7 +8,7 @@ export default class QuizController {
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
-    const showQuiz = new ShowQuizService();
+    const showQuiz = container.resolve(ShowQuizService);
 
     const quiz = await showQuiz.execute({ user_id });
 
@@ -33,7 +34,7 @@ export default class QuizController {
     } = request.body;
     const user_id = request.user.id;
 
-    const createQuiz = new CreateQuizService();
+    const createQuiz = container.resolve(CreateQuizService);
 
     const quiz = await createQuiz.execute({
       birth_date,
@@ -75,7 +76,7 @@ export default class QuizController {
     } = request.body;
     const user_id = request.user.id;
 
-    const updateQuiz = new UpdateQuizService();
+    const updateQuiz = container.resolve(UpdateQuizService);
 
     const quiz = await updateQuiz.execute({
       birth_date,

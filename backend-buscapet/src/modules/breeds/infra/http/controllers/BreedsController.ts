@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import CreateBreedService from '../../../services/CreateBreedService';
 import DeleteBreedService from '../../../services/DeleteBreedService';
 import ListBreedService from '../../../services/ListBreedService';
@@ -7,8 +8,9 @@ import UpdateBreedService from '../../../services/UpdateBreedService';
 
 export default class BreedsController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const listBreeds = new ListBreedService();
     const user_id = request.user.id;
+
+    const listBreeds = container.resolve(ListBreedService);
 
     const breeds = await listBreeds.execute({ user_id });
 
@@ -19,7 +21,7 @@ export default class BreedsController {
     const user_id = request.user.id;
     const { id } = request.params;
 
-    const showBreed = new ShowBreedService();
+    const showBreed = container.resolve(ShowBreedService);
 
     const breed = await showBreed.execute({ id, user_id });
 
@@ -30,7 +32,7 @@ export default class BreedsController {
     const user_id = request.user.id;
     const { name, specie_id } = request.body;
 
-    const createBreed = new CreateBreedService();
+    const createBreed = container.resolve(CreateBreedService);
 
     const breed = await createBreed.execute({
       name,
@@ -46,7 +48,7 @@ export default class BreedsController {
     const { name, specie_id } = request.body;
     const { id } = request.params;
 
-    const updateBreed = new UpdateBreedService();
+    const updateBreed = container.resolve(UpdateBreedService);
 
     const breed = await updateBreed.execute({
       id,
@@ -62,7 +64,7 @@ export default class BreedsController {
     const user_id = request.user.id;
     const { id } = request.params;
 
-    const deleteBreed = new DeleteBreedService();
+    const deleteBreed = container.resolve(DeleteBreedService);
 
     await deleteBreed.execute({ id, user_id });
 

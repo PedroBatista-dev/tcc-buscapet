@@ -1,33 +1,22 @@
-import { getCustomRepository } from 'typeorm';
-import { SpeciesRepository } from '../infra/typeorm/repositories/SpeciesRepository';
-import Specie from '../infra/typeorm/entities/Specie';
+import { inject, injectable } from 'tsyringe';
+import { IPaginateSpecie } from '../domain/models/IPaginateSpecie';
+import { ISpeciesRepository } from '../domain/repositories/ISpeciesRepository';
 
 interface IRequest {
   user_id: string;
 }
 
-interface IPaginateSpecie {
-  from: number;
-  to: number;
-  per_page: number;
-  total: number;
-  current_page: number;
-  prev_page: number;
-  next_page: number;
-  data: Specie[];
-}
-
+@injectable()
 class ListSpecieService {
+  constructor(
+    @inject('SpeciesRepository')
+    private speciesRepository: ISpeciesRepository,
+  ) {}
+
   public async execute({ user_id }: IRequest): Promise<IPaginateSpecie> {
-    const speciesRepository = getCustomRepository(SpeciesRepository);
+    const species = await this.speciesRepository.findAll(user_id);
 
-    const species = await speciesRepository
-      .createQueryBuilder('specie')
-      .leftJoinAndSelect('specie.breeds', 'breed')
-      .where('specie.user_id = :user_id', { user_id })
-      .paginate();
-
-    return species as IPaginateSpecie;
+    return species;
   }
 }
 

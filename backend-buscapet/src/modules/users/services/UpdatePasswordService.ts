@@ -1,23 +1,28 @@
 import AppError from '@shared/errors/AppError';
 import { compare, hash } from 'bcryptjs';
-import { getCustomRepository } from 'typeorm';
-import User from '../infra/typeorm/entities/User';
-import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
+import { inject, injectable } from 'tsyringe';
+import { IUser } from '../domain/models/IUser';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 
 interface IRequest {
   user_id: string;
   password: string;
   old_password: string;
 }
+
+@injectable()
 class UpdatePasswordService {
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+  ) {}
+
   public async execute({
     user_id,
     password,
     old_password,
-  }: IRequest): Promise<User> {
-    const usersRepository = getCustomRepository(UsersRepository);
-
-    const user = await usersRepository.findById(user_id);
+  }: IRequest): Promise<IUser> {
+    const user = await this.usersRepository.findById(user_id);
     if (!user) {
       throw new AppError('Usuário não encontrado');
     }
@@ -29,7 +34,7 @@ class UpdatePasswordService {
 
     user.password = await hash(password, 8);
 
-    await usersRepository.save(user);
+    await this.usersRepository.save(user);
 
     return user;
   }

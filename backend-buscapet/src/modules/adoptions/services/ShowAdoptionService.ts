@@ -1,7 +1,7 @@
-import { getCustomRepository } from 'typeorm';
-import { AdoptionsRepository } from '../infra/typeorm/repositories/AdoptionsRepository';
-import Adoption from '../infra/typeorm/entities/Adoption';
 import AppError from '@shared/errors/AppError';
+import { inject, injectable } from 'tsyringe';
+import { IAdoptionsRepository } from '../domain/repositories/IAdoptionsRepository';
+import { IAdoption } from '../domain/models/IAdoption';
 
 interface IRequest {
   id: string;
@@ -10,16 +10,20 @@ interface IRequest {
   isOng: boolean;
 }
 
+@injectable()
 class ShowAdoptionService {
+  constructor(
+    @inject('AdoptionsRepository')
+    private adoptionsRepository: IAdoptionsRepository,
+  ) {}
+
   public async execute({
     id,
     user_id,
     status,
     isOng,
-  }: IRequest): Promise<Adoption> {
-    const adoptionsRepository = getCustomRepository(AdoptionsRepository);
-
-    const adoption = await adoptionsRepository.findByIdUserStatus(
+  }: IRequest): Promise<IAdoption> {
+    const adoption = await this.adoptionsRepository.findByIdUserStatus(
       id,
       user_id,
       status,

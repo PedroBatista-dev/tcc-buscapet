@@ -1,7 +1,7 @@
-import { getCustomRepository } from 'typeorm';
-import { AnimalsRepository } from '../infra/typeorm/repositories/AnimalsRepository';
-import Animal from '../infra/typeorm/entities/Animal';
 import AppError from '@shared/errors/AppError';
+import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
+import { inject, injectable } from 'tsyringe';
+import { IAnimal } from '../domain/models/IAnimal';
 
 interface IRequest {
   id: string;
@@ -9,15 +9,19 @@ interface IRequest {
   isOng: boolean;
 }
 
+@injectable()
 class ShowAnimalService {
-  public async execute({ id, user_id, isOng }: IRequest): Promise<Animal> {
-    const animalsRepository = getCustomRepository(AnimalsRepository);
+  constructor(
+    @inject('AnimalsRepository')
+    private animalsRepository: IAnimalsRepository,
+  ) {}
 
+  public async execute({ id, user_id, isOng }: IRequest): Promise<IAnimal> {
     if (!isOng) {
       throw new AppError('JWT Token inválido');
     }
 
-    const animal = await animalsRepository.findById(id, user_id);
+    const animal = await this.animalsRepository.findById(id, user_id);
     if (!animal) {
       throw new AppError('Animal não encontrado!');
     }

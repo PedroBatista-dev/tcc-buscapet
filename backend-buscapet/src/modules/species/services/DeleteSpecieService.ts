@@ -1,22 +1,26 @@
-import { getCustomRepository } from 'typeorm';
-import { SpeciesRepository } from '../infra/typeorm/repositories/SpeciesRepository';
 import AppError from '@shared/errors/AppError';
+import { inject, injectable } from 'tsyringe';
+import { ISpeciesRepository } from '../domain/repositories/ISpeciesRepository';
 
 interface IRequest {
   id: string;
   user_id: string;
 }
 
+@injectable()
 class DeleteSpecieService {
-  public async execute({ id, user_id }: IRequest): Promise<void> {
-    const speciesRepository = getCustomRepository(SpeciesRepository);
+  constructor(
+    @inject('SpeciesRepository')
+    private speciesRepository: ISpeciesRepository,
+  ) {}
 
-    const specie = await speciesRepository.findById(id, user_id);
+  public async execute({ id, user_id }: IRequest): Promise<void> {
+    const specie = await this.speciesRepository.findById(id, user_id);
     if (!specie) {
       throw new AppError('Espécie não encontrada!');
     }
 
-    await speciesRepository.remove(specie);
+    await this.speciesRepository.remove(specie);
   }
 }
 

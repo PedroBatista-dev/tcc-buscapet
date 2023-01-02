@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import CreateAnimalService from '../../../services/CreateAnimalService';
 import DeleteAnimalService from '../../../services/DeleteAnimalService';
 import ListAnimalService from '../../../services/ListAnimalService';
@@ -9,7 +10,8 @@ export default class AnimalsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
     const isOng = request.user.isOng;
-    const listAnimals = new ListAnimalService();
+
+    const listAnimals = container.resolve(ListAnimalService);
 
     const animals = await listAnimals.execute({ user_id, isOng });
 
@@ -21,7 +23,7 @@ export default class AnimalsController {
     const isOng = request.user.isOng;
     const { id } = request.params;
 
-    const showAnimal = new ShowAnimalService();
+    const showAnimal = container.resolve(ShowAnimalService);
 
     const animal = await showAnimal.execute({ id, user_id, isOng });
 
@@ -43,7 +45,7 @@ export default class AnimalsController {
       vaccines,
     } = request.body;
 
-    const createAnimal = new CreateAnimalService();
+    const createAnimal = container.resolve(CreateAnimalService);
 
     const animal = await createAnimal.execute({
       name,
@@ -78,7 +80,7 @@ export default class AnimalsController {
     } = request.body;
     const { id } = request.params;
 
-    const updateAnimal = new UpdateAnimalService();
+    const updateAnimal = container.resolve(UpdateAnimalService);
 
     const animal = await updateAnimal.execute({
       id,
@@ -103,7 +105,7 @@ export default class AnimalsController {
     const isOng = request.user.isOng;
     const { id } = request.params;
 
-    const deleteAnimal = new DeleteAnimalService();
+    const deleteAnimal = container.resolve(DeleteAnimalService);
 
     await deleteAnimal.execute({ id, user_id, isOng });
 

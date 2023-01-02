@@ -1,18 +1,22 @@
-import { getCustomRepository } from 'typeorm';
-import { VaccinesRepository } from '../infra/typeorm/repositories/VaccinesRepository';
-import Vaccine from '../infra/typeorm/entities/Vaccine';
 import AppError from '@shared/errors/AppError';
+import { inject, injectable } from 'tsyringe';
+import { IVaccine } from '../domain/models/IVaccine';
+import { IVaccinesRepository } from '../domain/repositories/IVaccinesRepository';
 
 interface IRequest {
   id: string;
   user_id: string;
 }
 
+@injectable()
 class ShowVaccineService {
-  public async execute({ id, user_id }: IRequest): Promise<Vaccine> {
-    const vaccinesRepository = getCustomRepository(VaccinesRepository);
+  constructor(
+    @inject('VaccinesRepository')
+    private vaccinesRepository: IVaccinesRepository,
+  ) {}
 
-    const vaccine = await vaccinesRepository.findById(id, user_id);
+  public async execute({ id, user_id }: IRequest): Promise<IVaccine> {
+    const vaccine = await this.vaccinesRepository.findById(id, user_id);
     if (!vaccine) {
       throw new AppError('Vacina não encontrada!');
     }

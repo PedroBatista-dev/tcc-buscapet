@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import CreateColorService from '../../../services/CreateColorService';
 import DeleteColorService from '../../../services/DeleteColorService';
 import ListColorService from '../../../services/ListColorService';
@@ -9,7 +10,7 @@ export default class ColorsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
-    const listColors = new ListColorService();
+    const listColors = container.resolve(ListColorService);
 
     const colors = await listColors.execute({ user_id });
 
@@ -20,7 +21,7 @@ export default class ColorsController {
     const { id } = request.params;
     const user_id = request.user.id;
 
-    const showColor = new ShowColorService();
+    const showColor = container.resolve(ShowColorService);
 
     const color = await showColor.execute({ id, user_id });
 
@@ -31,7 +32,7 @@ export default class ColorsController {
     const { name } = request.body;
     const user_id = request.user.id;
 
-    const createColor = new CreateColorService();
+    const createColor = container.resolve(CreateColorService);
 
     const color = await createColor.execute({
       name,
@@ -46,7 +47,7 @@ export default class ColorsController {
     const { id } = request.params;
     const user_id = request.user.id;
 
-    const updateColor = new UpdateColorService();
+    const updateColor = container.resolve(UpdateColorService);
 
     const color = await updateColor.execute({
       id,
@@ -61,7 +62,7 @@ export default class ColorsController {
     const { id } = request.params;
     const user_id = request.user.id;
 
-    const deleteColor = new DeleteColorService();
+    const deleteColor = container.resolve(DeleteColorService);
 
     await deleteColor.execute({ id, user_id });
 

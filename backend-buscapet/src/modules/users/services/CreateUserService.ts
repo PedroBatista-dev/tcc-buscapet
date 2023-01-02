@@ -1,10 +1,10 @@
 import AppError from '../../../shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import User from '../infra/typeorm/entities/User';
-import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
 import { hash } from 'bcryptjs';
 import * as cnpjs from '@fnando/cnpj';
 import * as cpfs from '@fnando/cpf';
+import { inject, injectable } from 'tsyringe';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
+import { IUser } from '../domain/models/IUser';
 
 interface IRequest {
   name: string;
@@ -15,7 +15,13 @@ interface IRequest {
   cnpj: string;
 }
 
+@injectable()
 class CreateUserService {
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+  ) {}
+
   public async execute({
     name,
     email,
@@ -23,10 +29,8 @@ class CreateUserService {
     isOng,
     cpf,
     cnpj,
-  }: IRequest): Promise<User> {
-    const usersRepository = getCustomRepository(UsersRepository);
-
-    const emailExists = await usersRepository.findByEmail(email);
+  }: IRequest): Promise<IUser> {
+    const emailExists = await this.usersRepository.findByEmail(email);
     if (emailExists) {
       throw new AppError('Email já cadastrado!');
     }
@@ -36,7 +40,7 @@ class CreateUserService {
       if (!cnpjValid) {
         throw new AppError('CNPJ inválido!');
       }
-      const documentExists = await usersRepository.findByCnpj(cnpj);
+      const documentExists = await this.usersRepository.findByCnpj(cnpj);
       if (documentExists) {
         throw new AppError('CNPJ já cadastrado!');
       }
@@ -45,7 +49,7 @@ class CreateUserService {
       if (!cnpjValid) {
         throw new AppError('CPF inválido!');
       }
-      const documentExists = await usersRepository.findByCpf(cpf);
+      const documentExists = await this.usersRepository.findByCpf(cpf);
       if (documentExists) {
         throw new AppError('CPF já cadastrado!');
       }
@@ -53,7 +57,7 @@ class CreateUserService {
 
     const hashedPassword = await hash(password, 8);
 
-    const user = usersRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
@@ -61,8 +65,6 @@ class CreateUserService {
       cpf: isOng ? undefined : cpf,
       cnpj: isOng ? cnpj : undefined,
     });
-
-    await usersRepository.save(user);
 
     return user;
   }

@@ -1,32 +1,22 @@
-import { getCustomRepository } from 'typeorm';
-import { VaccinesRepository } from '../infra/typeorm/repositories/VaccinesRepository';
-import Vaccine from '../infra/typeorm/entities/Vaccine';
+import { inject, injectable } from 'tsyringe';
+import { IPaginateVaccine } from '../domain/models/IPaginateVaccine';
+import { IVaccinesRepository } from '../domain/repositories/IVaccinesRepository';
 
 interface IRequest {
   user_id: string;
 }
 
-interface IPaginateVaccine {
-  from: number;
-  to: number;
-  per_page: number;
-  total: number;
-  current_page: number;
-  prev_page: number;
-  next_page: number;
-  data: Vaccine[];
-}
-
+@injectable()
 class ListVaccineService {
+  constructor(
+    @inject('VaccinesRepository')
+    private vaccinesRepository: IVaccinesRepository,
+  ) {}
+
   public async execute({ user_id }: IRequest): Promise<IPaginateVaccine> {
-    const vaccinesRepository = getCustomRepository(VaccinesRepository);
+    const vaccines = await this.vaccinesRepository.findAll(user_id);
 
-    const vaccines = await vaccinesRepository
-      .createQueryBuilder('vaccine')
-      .where('vaccine.user_id = :user_id', { user_id })
-      .paginate();
-
-    return vaccines as IPaginateVaccine;
+    return vaccines;
   }
 }
 

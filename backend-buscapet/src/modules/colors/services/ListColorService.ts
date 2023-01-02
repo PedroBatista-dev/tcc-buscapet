@@ -1,32 +1,22 @@
-import { getCustomRepository } from 'typeorm';
-import { ColorsRepository } from '../infra/typeorm/repositories/ColorsRepository';
-import Color from '../infra/typeorm/entities/Color';
+import { inject, injectable } from 'tsyringe';
+import { IPaginateColor } from '../domain/models/IPaginateColor';
+import { IColorsRepository } from '../domain/repositories/IColorsRepository';
 
 interface IRequest {
   user_id: string;
 }
 
-interface IPaginateColor {
-  from: number;
-  to: number;
-  per_page: number;
-  total: number;
-  current_page: number;
-  prev_page: number;
-  next_page: number;
-  data: Color[];
-}
-
+@injectable()
 class ListColorService {
+  constructor(
+    @inject('ColorsRepository')
+    private colorsRepository: IColorsRepository,
+  ) {}
+
   public async execute({ user_id }: IRequest): Promise<IPaginateColor> {
-    const colorsRepository = getCustomRepository(ColorsRepository);
+    const colors = await this.colorsRepository.findAll(user_id);
 
-    const colors = await colorsRepository
-      .createQueryBuilder('color')
-      .where('color.user_id = :id', { id: user_id })
-      .paginate();
-
-    return colors as IPaginateColor;
+    return colors;
   }
 }
 

@@ -1,35 +1,34 @@
 import AppError from '../../../shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import { ColorsRepository } from '../infra/typeorm/repositories/ColorsRepository';
-import Color from '../infra/typeorm/entities/Color';
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
+import { inject, injectable } from 'tsyringe';
+import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
+import { IColorsRepository } from '../domain/repositories/IColorsRepository';
+import { IColor } from '../domain/models/IColor';
+import { ICreateColor } from '../domain/models/ICreateColor';
 
-interface IRequest {
-  name: string;
-  user_id: string;
-}
-
+@injectable()
 class CreateColorService {
-  public async execute({ name, user_id }: IRequest): Promise<Color> {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const colorsRepository = getCustomRepository(ColorsRepository);
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+    @inject('ColorsRepository')
+    private colorsRepository: IColorsRepository,
+  ) {}
 
-    const userExists = await usersRepository.findById(user_id);
+  public async execute({ name, user_id }: ICreateColor): Promise<IColor> {
+    const userExists = await this.usersRepository.findById(user_id);
     if (!userExists) {
       throw new AppError('Usuário não encontrado!');
     }
 
-    const colorExists = await colorsRepository.findByName(name, user_id);
+    const colorExists = await this.colorsRepository.findByName(name, user_id);
     if (colorExists) {
       throw new AppError('Já existe uma cor com esse nome!');
     }
 
-    const color = await colorsRepository.create({
+    const color = await this.colorsRepository.create({
       name,
       user_id,
     });
-
-    await colorsRepository.save(color);
 
     return color;
   }

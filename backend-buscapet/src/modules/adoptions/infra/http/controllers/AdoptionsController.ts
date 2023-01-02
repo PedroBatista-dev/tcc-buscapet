@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import CreateAdoptionService from '../../../services/CreateAdoptionService';
 import DeleteAdoptionService from '../../../services/DeleteAdoptionService';
 import ListAdoptionService from '../../../services/ListAdoptionService';
@@ -11,7 +12,7 @@ export default class AdoptionsController {
     const isOng = request.user.isOng;
     const status = request.query.status as string;
 
-    const listAdoptions = new ListAdoptionService();
+    const listAdoptions = container.resolve(ListAdoptionService);
 
     const adoptions = await listAdoptions.execute({ user_id, status, isOng });
 
@@ -24,7 +25,7 @@ export default class AdoptionsController {
     const isOng = request.user.isOng;
     const status = 'Solicitada';
 
-    const showAdoption = new ShowAdoptionService();
+    const showAdoption = container.resolve(ShowAdoptionService);
 
     const adoption = await showAdoption.execute({ id, user_id, status, isOng });
 
@@ -36,7 +37,7 @@ export default class AdoptionsController {
     const adopter_id = request.user.id;
     const isOng = request.user.isOng;
 
-    const createAdoption = new CreateAdoptionService();
+    const createAdoption = container.resolve(CreateAdoptionService);
 
     const adoption = await createAdoption.execute({
       animal_id,
@@ -53,7 +54,7 @@ export default class AdoptionsController {
     const ong_id = request.user.id;
     const isOng = request.user.isOng;
 
-    const updateAdoption = new UpdateAdoptionService();
+    const updateAdoption = container.resolve(UpdateAdoptionService);
 
     const adoption = await updateAdoption.execute({
       id,
@@ -70,7 +71,7 @@ export default class AdoptionsController {
     const isOng = request.user.isOng;
     const { id } = request.params;
 
-    const deleteAdoption = new DeleteAdoptionService();
+    const deleteAdoption = container.resolve(DeleteAdoptionService);
 
     await deleteAdoption.execute({ id, adopter_id, isOng });
 

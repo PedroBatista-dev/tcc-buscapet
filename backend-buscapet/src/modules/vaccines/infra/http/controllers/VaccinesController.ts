@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import CreateVaccineService from '../../../services/CreateVaccineService';
 import DeleteVaccineService from '../../../services/DeleteVaccineService';
 import ListVaccineService from '../../../services/ListVaccineService';
@@ -8,7 +9,8 @@ import UpdateVaccineService from '../../../services/UpdateVaccineService';
 export default class VaccinesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const listVaccines = new ListVaccineService();
+
+    const listVaccines = container.resolve(ListVaccineService);
 
     const vaccines = await listVaccines.execute({ user_id });
 
@@ -19,7 +21,7 @@ export default class VaccinesController {
     const user_id = request.user.id;
     const { id } = request.params;
 
-    const showVaccine = new ShowVaccineService();
+    const showVaccine = container.resolve(ShowVaccineService);
 
     const vaccine = await showVaccine.execute({ id, user_id });
 
@@ -30,7 +32,7 @@ export default class VaccinesController {
     const user_id = request.user.id;
     const { name } = request.body;
 
-    const createVaccine = new CreateVaccineService();
+    const createVaccine = container.resolve(CreateVaccineService);
 
     const vaccine = await createVaccine.execute({
       name,
@@ -45,7 +47,7 @@ export default class VaccinesController {
     const { name } = request.body;
     const { id } = request.params;
 
-    const updateVaccine = new UpdateVaccineService();
+    const updateVaccine = container.resolve(UpdateVaccineService);
 
     const vaccine = await updateVaccine.execute({
       id,
@@ -60,7 +62,7 @@ export default class VaccinesController {
     const user_id = request.user.id;
     const { id } = request.params;
 
-    const deleteVaccine = new DeleteVaccineService();
+    const deleteVaccine = container.resolve(DeleteVaccineService);
 
     await deleteVaccine.execute({ id, user_id });
 

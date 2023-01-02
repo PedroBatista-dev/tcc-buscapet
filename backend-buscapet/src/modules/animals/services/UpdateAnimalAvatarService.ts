@@ -1,10 +1,10 @@
 import AppError from '@shared/errors/AppError';
 import path from 'path';
-import { getCustomRepository } from 'typeorm';
 import uploadConfig from '../../../config/upload';
 import fs from 'fs';
-import { AnimalsRepository } from '../infra/typeorm/repositories/AnimalsRepository';
-import Animal from '../infra/typeorm/entities/Animal';
+import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
+import { inject, injectable } from 'tsyringe';
+import { IAnimal } from '../domain/models/IAnimal';
 
 interface IRequest {
   animal_id: string;
@@ -12,15 +12,19 @@ interface IRequest {
   user_id: string;
 }
 
+@injectable()
 class UpdateAnimalAvatarService {
+  constructor(
+    @inject('AnimalsRepository')
+    private animalsRepository: IAnimalsRepository,
+  ) {}
+
   public async execute({
     animal_id,
     avatarFilename,
     user_id,
-  }: IRequest): Promise<Animal> {
-    const animalsRepository = getCustomRepository(AnimalsRepository);
-
-    const animal = await animalsRepository.findById(animal_id, user_id);
+  }: IRequest): Promise<IAnimal> {
+    const animal = await this.animalsRepository.findById(animal_id, user_id);
     if (!animal) {
       throw new AppError('Animal não encontrado!');
     }
@@ -41,7 +45,7 @@ class UpdateAnimalAvatarService {
 
     animal.avatar = avatarFilename;
 
-    await animalsRepository.save(animal);
+    await this.animalsRepository.save(animal);
 
     return animal;
   }

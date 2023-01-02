@@ -1,12 +1,13 @@
 import AppError from '../../../shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import { AnimalsRepository } from '../infra/typeorm/repositories/AnimalsRepository';
-import Animal from '../infra/typeorm/entities/Animal';
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
-import { ColorsRepository } from '@modules/colors/infra/typeorm/repositories/ColorsRepository';
-import { BreedsRepository } from '@modules/breeds/infra/typeorm/repositories/BreedsRepository';
-import { SpeciesRepository } from '@modules/species/infra/typeorm/repositories/SpeciesRepository';
-import { VaccinesRepository } from '@modules/vaccines/infra/typeorm/repositories/VaccinesRepository';
+import { ICreateAnimalsVaccines } from '../domain/models/ICreateAnimalsVaccines';
+import { inject, injectable } from 'tsyringe';
+import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
+import { IVaccinesRepository } from '@modules/vaccines/domain/repositories/IVaccinesRepository';
+import { IBreedsRepository } from '@modules/breeds/domain/repositories/IBreedsRepository';
+import { IColorsRepository } from '@modules/colors/domain/repositories/IColorsRepository';
+import { ISpeciesRepository } from '@modules/species/domain/repositories/ISpeciesRepository';
+import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
+import { IAnimal } from '../domain/models/IAnimal';
 
 interface IVaccine {
   id: string;
@@ -27,7 +28,23 @@ interface IRequest {
   isOng: boolean;
 }
 
+@injectable()
 class CreateAnimalService {
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+    @inject('ColorsRepository')
+    private colorsRepository: IColorsRepository,
+    @inject('BreedsRepository')
+    private breedsRepository: IBreedsRepository,
+    @inject('SpeciesRepository')
+    private speciesRepository: ISpeciesRepository,
+    @inject('VaccinesRepository')
+    private vaccinesRepository: IVaccinesRepository,
+    @inject('AnimalsRepository')
+    private animalsRepository: IAnimalsRepository,
+  ) {}
+
   public async execute({
     name,
     age,
@@ -40,34 +57,30 @@ class CreateAnimalService {
     vaccines,
     user_id,
     isOng,
-  }: IRequest): Promise<Animal> {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const colorsRepository = getCustomRepository(ColorsRepository);
-    const breedsRepository = getCustomRepository(BreedsRepository);
-    const speciesRepository = getCustomRepository(SpeciesRepository);
-    const vaccinesRepository = getCustomRepository(VaccinesRepository);
-    const animalsRepository = getCustomRepository(AnimalsRepository);
-
+  }: IRequest): Promise<IAnimal> {
     if (!isOng) {
       throw new AppError('JWT Token inválido');
     }
 
-    const userExists = await usersRepository.findById(user_id);
+    const userExists = await this.usersRepository.findById(user_id);
     if (!userExists) {
       throw new AppError('Usuário não encontrado!');
     }
 
-    const colorExists = await colorsRepository.findById(color_id, user_id);
+    const colorExists = await this.colorsRepository.findById(color_id, user_id);
     if (!colorExists) {
       throw new AppError('Cor não encontrada!');
     }
 
-    const specieExists = await speciesRepository.findById(specie_id, user_id);
+    const specieExists = await this.speciesRepository.findById(
+      specie_id,
+      user_id,
+    );
     if (!specieExists) {
       throw new AppError('Espécie não encontrada!');
     }
 
-    const breedExists = await breedsRepository.findById(breed_id, user_id);
+    const breedExists = await this.breedsRepository.findById(breed_id, user_id);
     if (!breedExists) {
       throw new AppError('Raça não encontrada!');
     }
@@ -76,12 +89,12 @@ class CreateAnimalService {
       throw new AppError('Raça não pertence a espécie informada!');
     }
 
-    const animalExists = await animalsRepository.findByName(name, user_id);
+    const animalExists = await this.animalsRepository.findByName(name, user_id);
     if (animalExists) {
       throw new AppError('Já existe um animal com esse nome!');
     }
 
-    const existsVaccines = await vaccinesRepository.findAllByIds(
+    const existsVaccines = await this.vaccinesRepository.findAllByIds(
       vaccines,
       user_id,
     );
@@ -101,11 +114,13 @@ class CreateAnimalService {
       );
     }
 
-    const serializedVaccines = vaccines.map(vaccine => ({
-      vaccine_id: vaccine.id,
-    }));
+    const idVaccines: ICreateAnimalsVaccines[] = [];
 
-    const animal = animalsRepository.create({
+    vaccines.forEach(vaccine => {
+      idVaccines.push({ vaccine_id: vaccine.id });
+    });
+
+    const animal = await this.animalsRepository.create({
       name,
       age,
       sex,
@@ -115,11 +130,9 @@ class CreateAnimalService {
       color: colorExists,
       breed: breedExists,
       specie: specieExists,
-      animals_vaccine: serializedVaccines,
+      animals_vaccine: idVaccines,
       user_id,
     });
-
-    await animalsRepository.save(animal);
 
     return animal;
   }

@@ -1,6 +1,6 @@
-import { getCustomRepository } from 'typeorm';
-import { AdoptionsRepository } from '../infra/typeorm/repositories/AdoptionsRepository';
-import Adoption from '../infra/typeorm/entities/Adoption';
+import { inject, injectable } from 'tsyringe';
+import { IPaginateAdoption } from '../domain/models/IPaginateVaccine';
+import { IAdoptionsRepository } from '../domain/repositories/IAdoptionsRepository';
 
 interface IRequest {
   user_id: string;
@@ -8,48 +8,25 @@ interface IRequest {
   isOng: boolean;
 }
 
-interface IPaginateAdoption {
-  from: number;
-  to: number;
-  per_page: number;
-  total: number;
-  current_page: number;
-  prev_page: number;
-  next_page: number;
-  data: Adoption[];
-}
-
+@injectable()
 class ListAdoptionService {
+  constructor(
+    @inject('AdoptionsRepository')
+    private adoptionsRepository: IAdoptionsRepository,
+  ) {}
+
   public async execute({
     user_id,
     status,
     isOng,
   }: IRequest): Promise<IPaginateAdoption> {
-    const adoptionsRepository = getCustomRepository(AdoptionsRepository);
+    const adoptions = await this.adoptionsRepository.findAll(
+      user_id,
+      status,
+      isOng,
+    );
 
-    if (isOng) {
-      const adoptions = await adoptionsRepository
-        .createQueryBuilder('adoption')
-        .innerJoinAndSelect('adoption.ong', 'ong')
-        .innerJoinAndSelect('adoption.adopter', 'adopter')
-        .innerJoinAndSelect('adoption.animal', 'animal')
-        .where('adoption.ong_id = :user_id', { user_id })
-        .andWhere('adoption.status = :status', { status })
-        .paginate();
-
-      return adoptions as IPaginateAdoption;
-    } else {
-      const adoptions = await adoptionsRepository
-        .createQueryBuilder('adoption')
-        .innerJoinAndSelect('adoption.ong', 'ong')
-        .innerJoinAndSelect('adoption.adopter', 'adopter')
-        .innerJoinAndSelect('adoption.animal', 'animal')
-        .where('adoption.adopter_id = :user_id', { user_id })
-        .andWhere('adoption.status = :status', { status })
-        .paginate();
-
-      return adoptions as IPaginateAdoption;
-    }
+    return adoptions;
   }
 }
 

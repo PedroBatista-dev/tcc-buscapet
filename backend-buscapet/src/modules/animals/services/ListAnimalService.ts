@@ -1,49 +1,23 @@
-import { getCustomRepository } from 'typeorm';
-import { AnimalsRepository } from '../infra/typeorm/repositories/AnimalsRepository';
-import Animal from '../infra/typeorm/entities/Animal';
+import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
+import { inject, injectable } from 'tsyringe';
+import { IPaginateAnimal } from '../domain/models/IPaginateAnimal';
 
 interface IRequest {
   user_id: string;
   isOng: boolean;
 }
 
-interface IPaginateAnimal {
-  from: number;
-  to: number;
-  per_page: number;
-  total: number;
-  current_page: number;
-  prev_page: number;
-  next_page: number;
-  data: Animal[];
-}
-
+@injectable()
 class ListAnimalService {
+  constructor(
+    @inject('AnimalsRepository')
+    private animalsRepository: IAnimalsRepository,
+  ) {}
+
   public async execute({ user_id, isOng }: IRequest): Promise<IPaginateAnimal> {
-    const animalsRepository = getCustomRepository(AnimalsRepository);
+    const animals = await this.animalsRepository.findAll(user_id, isOng);
 
-    if (isOng) {
-      const animals = await animalsRepository
-        .createQueryBuilder('adoption')
-        .innerJoinAndSelect('adoption.color', 'color')
-        .innerJoinAndSelect('adoption.specie', 'specie')
-        .innerJoinAndSelect('adoption.breed', 'breed')
-        .innerJoinAndSelect('adoption.animals_vaccine', 'animals_vaccine')
-        .where('adoption.user_id = :user_id', { user_id })
-        .paginate();
-
-      return animals as IPaginateAnimal;
-    } else {
-      const animals = await animalsRepository
-        .createQueryBuilder('adoption')
-        .innerJoinAndSelect('adoption.color', 'color')
-        .innerJoinAndSelect('adoption.specie', 'specie')
-        .innerJoinAndSelect('adoption.breed', 'breed')
-        .innerJoinAndSelect('adoption.animals_vaccine', 'animals_vaccine')
-        .paginate();
-
-      return animals as IPaginateAnimal;
-    }
+    return animals;
   }
 }
 

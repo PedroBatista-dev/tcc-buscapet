@@ -1,9 +1,9 @@
 import AppError from '@shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import User from '../infra/typeorm/entities/User';
-import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
 import * as cnpjs from '@fnando/cnpj';
 import * as cpfs from '@fnando/cpf';
+import { IUsersRepository } from '../domain/repositories/IUsersRepository';
+import { inject, injectable } from 'tsyringe';
+import { IUser } from '../domain/models/IUser';
 
 interface IRequest {
   user_id: string;
@@ -12,22 +12,27 @@ interface IRequest {
   cpf: string;
   cnpj: string;
 }
+
+@injectable()
 class UpdateProfileService {
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+  ) {}
+
   public async execute({
     user_id,
     name,
     email,
     cpf,
     cnpj,
-  }: IRequest): Promise<User> {
-    const usersRepository = getCustomRepository(UsersRepository);
-
-    const user = await usersRepository.findById(user_id);
+  }: IRequest): Promise<IUser> {
+    const user = await this.usersRepository.findById(user_id);
     if (!user) {
       throw new AppError('Usuário não encontrado');
     }
 
-    const userUpdateEmail = await usersRepository.findByEmail(email);
+    const userUpdateEmail = await this.usersRepository.findByEmail(email);
     if (userUpdateEmail && userUpdateEmail.id !== user_id) {
       throw new AppError('Já existe um usuário cadastrado com esse email');
     }
@@ -37,7 +42,7 @@ class UpdateProfileService {
       if (!cnpjValid) {
         throw new AppError('CNPJ inválido!');
       }
-      const userUpdateDocument = await usersRepository.findByCnpj(cnpj);
+      const userUpdateDocument = await this.usersRepository.findByCnpj(cnpj);
       if (userUpdateDocument && userUpdateDocument.id !== user_id) {
         throw new AppError('Já existe um usuário cadastrado com esse cnpj');
       }
@@ -47,7 +52,7 @@ class UpdateProfileService {
       if (!cnpjValid) {
         throw new AppError('CPF inválido!');
       }
-      const userUpdateDocument = await usersRepository.findByCpf(cpf);
+      const userUpdateDocument = await this.usersRepository.findByCpf(cpf);
       if (userUpdateDocument && userUpdateDocument.id !== user_id) {
         throw new AppError('Já existe um usuário cadastrado com esse cpf');
       }
@@ -57,7 +62,7 @@ class UpdateProfileService {
     user.name = name;
     user.email = email;
 
-    await usersRepository.save(user);
+    await this.usersRepository.save(user);
 
     return user;
   }

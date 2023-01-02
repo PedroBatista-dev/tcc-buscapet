@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 import UpdateAnimalAvatarService from '../../../services/UpdateAnimalAvatarService';
 
 export default class AnimalAvatarController {
@@ -6,7 +7,7 @@ export default class AnimalAvatarController {
     const { id } = request.params;
     const user_id = request.user.id;
 
-    const updateAvatar = new UpdateAnimalAvatarService();
+    const updateAvatar = container.resolve(UpdateAnimalAvatarService);
 
     const animal = updateAvatar.execute({
       animal_id: id,

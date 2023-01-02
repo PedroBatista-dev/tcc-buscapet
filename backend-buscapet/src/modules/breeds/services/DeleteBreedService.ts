@@ -1,22 +1,26 @@
-import { getCustomRepository } from 'typeorm';
-import { BreedsRepository } from '../infra/typeorm/repositories/BreedsRepository';
 import AppError from '@shared/errors/AppError';
+import { IBreedsRepository } from '../domain/repositories/IBreedsRepository';
+import { inject, injectable } from 'tsyringe';
 
 interface IRequest {
   id: string;
   user_id: string;
 }
 
+@injectable()
 class DeleteBreedService {
-  public async execute({ id, user_id }: IRequest): Promise<void> {
-    const breedsRepository = getCustomRepository(BreedsRepository);
+  constructor(
+    @inject('BreedsRepository')
+    private breedsRepository: IBreedsRepository,
+  ) {}
 
-    const breed = await breedsRepository.findById(id, user_id);
+  public async execute({ id, user_id }: IRequest): Promise<void> {
+    const breed = await this.breedsRepository.findById(id, user_id);
     if (!breed) {
       throw new AppError('Raça não encontrada!');
     }
 
-    await breedsRepository.remove(breed);
+    await this.breedsRepository.remove(breed);
   }
 }
 

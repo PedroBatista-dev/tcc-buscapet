@@ -2,6 +2,7 @@ import Specie from '../entities/Specie';
 import { getRepository, Repository } from 'typeorm';
 import { ISpeciesRepository } from '@modules/species/domain/repositories/ISpeciesRepository';
 import { ICreateSpecie } from '@modules/species/domain/models/ICreateSpecie';
+import { IPaginateSpecie } from '@modules/species/domain/models/IPaginateSpecie';
 
 export class SpeciesRepository implements ISpeciesRepository {
   constructor(private ormRepository: Repository<Specie>) {
@@ -24,6 +25,16 @@ export class SpeciesRepository implements ISpeciesRepository {
 
   public async remove(specie: Specie): Promise<void> {
     await this.ormRepository.remove(specie);
+  }
+
+  public async findAll(user_id: string): Promise<IPaginateSpecie> {
+    const specie = await this.ormRepository
+      .createQueryBuilder('specie')
+      .leftJoinAndSelect('specie.breeds', 'breed')
+      .where('specie.user_id = :user_id', { user_id })
+      .paginate();
+
+    return specie as IPaginateSpecie;
   }
 
   public async findByName(

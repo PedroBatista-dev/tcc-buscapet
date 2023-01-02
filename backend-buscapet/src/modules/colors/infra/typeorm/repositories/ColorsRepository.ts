@@ -2,6 +2,7 @@ import Color from '../entities/Color';
 import { getRepository, Repository } from 'typeorm';
 import { IColorsRepository } from '@modules/colors/domain/repositories/IColorsRepository';
 import { ICreateColor } from '@modules/colors/domain/models/ICreateColor';
+import { IPaginateColor } from '@modules/colors/domain/models/IPaginateColor';
 
 export class ColorsRepository implements IColorsRepository {
   constructor(private ormRepository: Repository<Color>) {
@@ -24,6 +25,15 @@ export class ColorsRepository implements IColorsRepository {
 
   public async remove(color: Color): Promise<void> {
     await this.ormRepository.remove(color);
+  }
+
+  public async findAll(user_id: string): Promise<IPaginateColor> {
+    const color = await this.ormRepository
+      .createQueryBuilder('color')
+      .where('color.user_id = :user_id', { user_id })
+      .paginate();
+
+    return color as IPaginateColor;
   }
 
   public async findByName(

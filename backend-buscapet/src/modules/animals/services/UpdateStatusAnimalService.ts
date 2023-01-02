@@ -1,7 +1,7 @@
-import { getCustomRepository } from 'typeorm';
-import { AnimalsRepository } from '../infra/typeorm/repositories/AnimalsRepository';
-import Animal from '../infra/typeorm/entities/Animal';
 import AppError from '@shared/errors/AppError';
+import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
+import { inject, injectable } from 'tsyringe';
+import { IAnimal } from '../domain/models/IAnimal';
 
 interface IRequest {
   id: string;
@@ -9,11 +9,15 @@ interface IRequest {
   user_id: string;
 }
 
+@injectable()
 class UpdateStatusAnimalService {
-  public async execute({ id, status, user_id }: IRequest): Promise<Animal> {
-    const animalsRepository = getCustomRepository(AnimalsRepository);
+  constructor(
+    @inject('AnimalsRepository')
+    private animalsRepository: IAnimalsRepository,
+  ) {}
 
-    const animal = await animalsRepository.findById(id, user_id);
+  public async execute({ id, status, user_id }: IRequest): Promise<IAnimal> {
+    const animal = await this.animalsRepository.findById(id, user_id);
     if (!animal) {
       throw new AppError('Animal não encontrado!');
     }
@@ -24,7 +28,7 @@ class UpdateStatusAnimalService {
 
     animal.status = status;
 
-    await animalsRepository.save(animal);
+    await this.animalsRepository.save(animal);
 
     return animal;
   }

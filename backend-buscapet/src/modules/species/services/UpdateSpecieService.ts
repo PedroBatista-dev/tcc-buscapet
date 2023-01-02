@@ -1,7 +1,7 @@
-import { getCustomRepository } from 'typeorm';
-import { SpeciesRepository } from '../infra/typeorm/repositories/SpeciesRepository';
-import Specie from '../infra/typeorm/entities/Specie';
 import AppError from '@shared/errors/AppError';
+import { inject, injectable } from 'tsyringe';
+import { ISpecie } from '../domain/models/ISpecie';
+import { ISpeciesRepository } from '../domain/repositories/ISpeciesRepository';
 
 interface IRequest {
   id: string;
@@ -9,23 +9,27 @@ interface IRequest {
   user_id: string;
 }
 
+@injectable()
 class UpdateSpecieService {
-  public async execute({ id, name, user_id }: IRequest): Promise<Specie> {
-    const speciesRepository = getCustomRepository(SpeciesRepository);
+  constructor(
+    @inject('SpeciesRepository')
+    private speciesRepository: ISpeciesRepository,
+  ) {}
 
-    const specie = await speciesRepository.findById(id, user_id);
+  public async execute({ id, name, user_id }: IRequest): Promise<ISpecie> {
+    const specie = await this.speciesRepository.findById(id, user_id);
     if (!specie) {
       throw new AppError('Espécie não encontrada!');
     }
 
-    const specieExists = await speciesRepository.findByName(name, user_id);
+    const specieExists = await this.speciesRepository.findByName(name, user_id);
     if (specieExists && name !== specie.name) {
       throw new AppError('Já existe uma espécie com esse nome!');
     }
 
     specie.name = name;
 
-    await speciesRepository.save(specie);
+    await this.speciesRepository.save(specie);
 
     return specie;
   }

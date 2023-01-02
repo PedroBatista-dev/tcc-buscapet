@@ -1,22 +1,25 @@
-import { getCustomRepository } from 'typeorm';
-import { ColorsRepository } from '../infra/typeorm/repositories/ColorsRepository';
 import AppError from '@shared/errors/AppError';
+import { inject, injectable } from 'tsyringe';
+import { IColorsRepository } from '../domain/repositories/IColorsRepository';
 
 interface IRequest {
   id: string;
   user_id: string;
 }
 
+@injectable()
 class DeleteColorService {
+  constructor(
+    @inject('ColorsRepository')
+    private colorsRepository: IColorsRepository,
+  ) {}
   public async execute({ id, user_id }: IRequest): Promise<void> {
-    const colorsRepository = getCustomRepository(ColorsRepository);
-
-    const color = await colorsRepository.findById(id, user_id);
+    const color = await this.colorsRepository.findById(id, user_id);
     if (!color) {
       throw new AppError('Cor não encontrada!');
     }
 
-    await colorsRepository.remove(color);
+    await this.colorsRepository.remove(color);
   }
 }
 

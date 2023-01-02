@@ -1,35 +1,37 @@
 import AppError from '../../../shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import { VaccinesRepository } from '../infra/typeorm/repositories/VaccinesRepository';
-import Vaccine from '../infra/typeorm/entities/Vaccine';
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
+import { IVaccinesRepository } from '../domain/repositories/IVaccinesRepository';
+import { ICreateVaccine } from '../domain/models/ICreateVaccine';
+import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
+import { IVaccine } from '../domain/models/IVaccine';
+import { inject, injectable } from 'tsyringe';
 
-interface IRequest {
-  name: string;
-  user_id: string;
-}
-
+@injectable()
 class CreateVaccineService {
-  public async execute({ name, user_id }: IRequest): Promise<Vaccine> {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const vaccinesRepository = getCustomRepository(VaccinesRepository);
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+    @inject('VaccinesRepository')
+    private vaccinesRepository: IVaccinesRepository,
+  ) {}
 
-    const userExists = await usersRepository.findById(user_id);
+  public async execute({ name, user_id }: ICreateVaccine): Promise<IVaccine> {
+    const userExists = await this.usersRepository.findById(user_id);
     if (!userExists) {
       throw new AppError('Usuário não encontrado!');
     }
 
-    const vaccineExists = await vaccinesRepository.findByName(name, user_id);
+    const vaccineExists = await this.vaccinesRepository.findByName(
+      name,
+      user_id,
+    );
     if (vaccineExists) {
       throw new AppError('Já existe uma vacina com esse nome!');
     }
 
-    const vaccine = await vaccinesRepository.create({
+    const vaccine = await this.vaccinesRepository.create({
       name,
       user_id,
     });
-
-    await vaccinesRepository.save(vaccine);
 
     return vaccine;
   }
