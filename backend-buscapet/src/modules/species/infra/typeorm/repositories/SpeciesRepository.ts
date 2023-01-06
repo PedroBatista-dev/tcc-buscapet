@@ -5,7 +5,9 @@ import { ICreateSpecie } from '@modules/species/domain/models/ICreateSpecie';
 import { IPaginateSpecie } from '@modules/species/domain/models/IPaginateSpecie';
 
 export class SpeciesRepository implements ISpeciesRepository {
-  constructor(private ormRepository: Repository<Specie>) {
+  private ormRepository: Repository<Specie>;
+
+  constructor() {
     this.ormRepository = getRepository(Specie);
   }
 

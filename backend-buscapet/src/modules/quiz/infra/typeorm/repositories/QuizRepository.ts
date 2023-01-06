@@ -4,7 +4,9 @@ import { IQuizRepository } from '@modules/quiz/domain/repositories/IQuizReposito
 import { ICreateQuiz } from '@modules/quiz/domain/models/ICreateQuiz';
 
 export class QuizRepository implements IQuizRepository {
-  constructor(private ormRepository: Repository<Quiz>) {
+  private ormRepository: Repository<Quiz>;
+
+  constructor() {
     this.ormRepository = getRepository(Quiz);
   }
 

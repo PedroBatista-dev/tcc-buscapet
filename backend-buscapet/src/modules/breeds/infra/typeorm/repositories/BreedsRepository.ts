@@ -5,7 +5,9 @@ import { ICreateBreed } from '@modules/breeds/domain/models/ICreateBreed';
 import { IPaginateBreed } from '@modules/breeds/domain/models/IPaginateBreed';
 
 export class BreedsRepository implements IBreedsRepository {
-  constructor(private ormRepository: Repository<Breed>) {
+  private ormRepository: Repository<Breed>;
+
+  constructor() {
     this.ormRepository = getRepository(Breed);
   }
 

@@ -5,7 +5,9 @@ import { ICreateAnimal } from '@modules/animals/domain/models/ICreateAnimal';
 import { IPaginateAnimal } from '@modules/animals/domain/models/IPaginateAnimal';
 
 export class AnimalsRepository implements IAnimalsRepository {
-  constructor(private ormRepository: Repository<Animal>) {
+  private ormRepository: Repository<Animal>;
+
+  constructor() {
     this.ormRepository = getRepository(Animal);
   }
 

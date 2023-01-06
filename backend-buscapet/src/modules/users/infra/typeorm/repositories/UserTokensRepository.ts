@@ -3,7 +3,9 @@ import { getRepository, Repository } from 'typeorm';
 import UserToken from '../entities/UserToken';
 
 class UserTokensRepository implements IUserTokensRepository {
-  constructor(private ormRepository: Repository<UserToken>) {
+  private ormRepository: Repository<UserToken>;
+
+  constructor() {
     this.ormRepository = getRepository(UserToken);
   }
 

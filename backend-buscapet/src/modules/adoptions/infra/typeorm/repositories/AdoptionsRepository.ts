@@ -5,7 +5,9 @@ import { ICreateAdoption } from '@modules/adoptions/domain/models/ICreateAdoptio
 import { IPaginateAdoption } from '@modules/adoptions/domain/models/IPaginateVaccine';
 
 export class AdoptionsRepository implements IAdoptionsRepository {
-  constructor(private ormRepository: Repository<Adoption>) {
+  private ormRepository: Repository<Adoption>;
+
+  constructor() {
     this.ormRepository = getRepository(Adoption);
   }
 

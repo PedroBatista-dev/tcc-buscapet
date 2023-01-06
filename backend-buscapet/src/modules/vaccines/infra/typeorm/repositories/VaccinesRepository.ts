@@ -4,12 +4,10 @@ import { IVaccinesRepository } from '@modules/vaccines/domain/repositories/IVacc
 import { ICreateVaccine } from '@modules/vaccines/domain/models/ICreateVaccine';
 import { IPaginateVaccine } from '@modules/vaccines/domain/models/IPaginateVaccine';
 
-interface IFindVaccines {
-  id: string;
-}
-
 export class VaccinesRepository implements IVaccinesRepository {
-  constructor(private ormRepository: Repository<Vaccine>) {
+  private ormRepository: Repository<Vaccine>;
+
+  constructor() {
     this.ormRepository = getRepository(Vaccine);
   }
 
@@ -69,7 +67,7 @@ export class VaccinesRepository implements IVaccinesRepository {
   }
 
   public async findAllByIds(
-    vaccines: IFindVaccines[],
+    vaccines: Vaccine[],
     user_id: string,
   ): Promise<Vaccine[]> {
     const vaccineIds = vaccines.map(vaccine => vaccine.id);

@@ -8,11 +8,7 @@ import { IColorsRepository } from '@modules/colors/domain/repositories/IColorsRe
 import { ISpeciesRepository } from '@modules/species/domain/repositories/ISpeciesRepository';
 import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
 import { IAnimal } from '../domain/models/IAnimal';
-
-interface IVaccine {
-  id: string;
-  name: string;
-}
+import { IVaccine } from '@modules/vaccines/domain/models/IVaccine';
 
 interface IRequest {
   name: string;

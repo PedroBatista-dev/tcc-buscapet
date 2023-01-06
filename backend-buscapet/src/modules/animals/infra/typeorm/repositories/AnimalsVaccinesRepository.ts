@@ -3,7 +3,9 @@ import { getRepository, Repository } from 'typeorm';
 import AnimalsVaccines from '../entities/AnimalsVaccines';
 
 export class AnimalsVaccinesRepository implements IAnimalsVaccinesRepository {
-  constructor(private ormRepository: Repository<AnimalsVaccines>) {
+  private ormRepository: Repository<AnimalsVaccines>;
+
+  constructor() {
     this.ormRepository = getRepository(AnimalsVaccines);
   }
 
