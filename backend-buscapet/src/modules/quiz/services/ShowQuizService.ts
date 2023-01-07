@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import { IQuizRepository } from '../domain/repositories/IQuizRepository';
 import { inject, injectable } from 'tsyringe';
 import { IQuiz } from '../domain/models/IQuiz';
