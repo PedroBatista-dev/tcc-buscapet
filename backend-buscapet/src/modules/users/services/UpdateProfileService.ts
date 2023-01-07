@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import * as cnpjs from '@fnando/cnpj';
 import * as cpfs from '@fnando/cpf';
 import { IUsersRepository } from '../domain/repositories/IUsersRepository';

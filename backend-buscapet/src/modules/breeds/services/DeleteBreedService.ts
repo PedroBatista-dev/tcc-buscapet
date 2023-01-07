@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import { IBreedsRepository } from '../domain/repositories/IBreedsRepository';
 import { inject, injectable } from 'tsyringe';
 

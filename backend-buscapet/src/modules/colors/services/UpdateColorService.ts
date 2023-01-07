@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import { IColorsRepository } from '../domain/repositories/IColorsRepository';
 import { inject, injectable } from 'tsyringe';
 import { IColor } from '../domain/models/IColor';

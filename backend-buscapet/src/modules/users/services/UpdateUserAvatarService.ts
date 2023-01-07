@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import path from 'path';
 import uploadConfig from '../../../config/upload';
 import fs from 'fs';

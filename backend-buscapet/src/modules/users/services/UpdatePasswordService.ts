@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import { compare, hash } from 'bcryptjs';
 import { inject, injectable } from 'tsyringe';
 import { IUser } from '../domain/models/IUser';

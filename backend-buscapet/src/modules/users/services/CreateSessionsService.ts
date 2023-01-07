@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import { Secret, sign } from 'jsonwebtoken';
 import authConfig from '../../../config/auth';

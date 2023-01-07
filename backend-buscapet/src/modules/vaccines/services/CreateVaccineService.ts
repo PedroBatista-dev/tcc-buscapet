@@ -1,7 +1,7 @@
 import AppError from '../../../shared/errors/AppError';
 import { IVaccinesRepository } from '../domain/repositories/IVaccinesRepository';
 import { ICreateVaccine } from '../domain/models/ICreateVaccine';
-import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
+import { IUsersRepository } from '../../users/domain/repositories/IUsersRepository';
 import { IVaccine } from '../domain/models/IVaccine';
 import { inject, injectable } from 'tsyringe';
 
