@@ -80,7 +80,6 @@ export class FakeVaccinesRepository implements IVaccinesRepository {
     const idVaccines = this.vaccines.filter(
       vaccine => vaccines.includes(vaccine) && vaccine.user_id === user_id,
     );
-
     return idVaccines;
   }
 }

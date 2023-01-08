@@ -7,11 +7,12 @@ import Breed from '../../../infra/typeorm/entities/Breed';
 export class FakeBreedsRepository implements IBreedsRepository {
   private breeds: Breed[] = [];
 
-  public async create({ name, user_id }: ICreateBreed): Promise<Breed> {
+  public async create({ name, specie, user_id }: ICreateBreed): Promise<Breed> {
     const breed = new Breed();
 
     breed.id = uuidv4();
     breed.name = name;
+    breed.specie_id = specie.id;
     breed.user_id = user_id;
 
     this.breeds.push(breed);

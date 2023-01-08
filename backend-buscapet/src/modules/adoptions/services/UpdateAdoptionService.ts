@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import { IAdoption } from '../domain/models/IAdoption';
 import { IAdoptionsRepository } from '../domain/repositories/IAdoptionsRepository';

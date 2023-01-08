@@ -1,6 +1,6 @@
 import { IAdoption } from '../models/IAdoption';
 import { ICreateAdoption } from '../models/ICreateAdoption';
-import { IPaginateAdoption } from '../models/IPaginateVaccine';
+import { IPaginateAdoption } from '../models/IPaginateAdoption';
 
 export interface IAdoptionsRepository {
   findById(

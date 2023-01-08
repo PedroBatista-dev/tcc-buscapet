@@ -2,7 +2,7 @@ import Adoption from '../entities/Adoption';
 import { getRepository, Repository } from 'typeorm';
 import { IAdoptionsRepository } from '@modules/adoptions/domain/repositories/IAdoptionsRepository';
 import { ICreateAdoption } from '@modules/adoptions/domain/models/ICreateAdoption';
-import { IPaginateAdoption } from '@modules/adoptions/domain/models/IPaginateVaccine';
+import { IPaginateAdoption } from '@modules/adoptions/domain/models/IPaginateAdoption';
 
 export class AdoptionsRepository implements IAdoptionsRepository {
   private ormRepository: Repository<Adoption>;

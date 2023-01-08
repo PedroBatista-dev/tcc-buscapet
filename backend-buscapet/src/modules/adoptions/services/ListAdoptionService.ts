@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { IPaginateAdoption } from '../domain/models/IPaginateVaccine';
+import { IPaginateAdoption } from '../domain/models/IPaginateAdoption';
 import { IAdoptionsRepository } from '../domain/repositories/IAdoptionsRepository';
 
 interface IRequest {
