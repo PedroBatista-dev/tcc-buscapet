@@ -1,30 +1,21 @@
 import 'reflect-metadata';
 import { FakeUsersRepository } from '../../../users/domain/repositories/fakes/FakeUsersRepository';
-import CreateUserService from '../../../users/services/CreateUserService';
 import { IUser } from '../../../users/domain/models/IUser';
 import { FakeSpeciesRepository } from '../../domain/repositories/fakes/FakeSpeciesRepository';
-import CreateSpecieService from '../CreateSpecieService';
 import ListSpecieService from '../ListSpecieService';
 
 let fakeUsersRepository: FakeUsersRepository;
-let createUser: CreateUserService;
 let user: IUser;
 let fakeSpeciesRepository: FakeSpeciesRepository;
-let createSpecie: CreateSpecieService;
 let listSpecie: ListSpecieService;
 
 describe('ListSpecie', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
     fakeSpeciesRepository = new FakeSpeciesRepository();
-    createSpecie = new CreateSpecieService(
-      fakeUsersRepository,
-      fakeSpeciesRepository,
-    );
     listSpecie = new ListSpecieService(fakeSpeciesRepository);
 
-    user = await createUser.execute({
+    user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -33,13 +24,13 @@ describe('ListSpecie', () => {
       cnpj: '65.658.849/0001-00',
     });
 
-    await createSpecie.execute({
+    await fakeSpeciesRepository.create({
       name: 'canina',
       user_id: user.id,
     });
   });
 
-  it('Deveria ser capaz de listar as espécies', async () => {
+  it('Deve ser capaz de listar as espécies', async () => {
     const species = await listSpecie.execute({ user_id: user.id });
 
     expect(species.data).toEqual(

@@ -31,7 +31,7 @@ export class FakeAnimalsRepository implements IAnimalsRepository {
     animal.color_id = color.id;
     animal.breed_id = breed.id;
     animal.specie_id = specie.id;
-    animal.status = 'Criado';
+    animal.status = status;
     animal.user_id = user_id;
 
     this.animals.push(animal);
@@ -40,7 +40,10 @@ export class FakeAnimalsRepository implements IAnimalsRepository {
   }
 
   public async save(animal: Animal): Promise<Animal> {
-    Object.assign(this.animals, animal);
+    const findIndex = this.animals.findIndex(
+      findAnimal => findAnimal.id === animal.id,
+    );
+    this.animals[findIndex] = animal;
 
     return animal;
   }

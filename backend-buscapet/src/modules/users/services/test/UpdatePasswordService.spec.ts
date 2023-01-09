@@ -1,22 +1,25 @@
 import 'reflect-metadata';
 import { FakeUsersRepository } from '../../domain/repositories/fakes/FakeUsersRepository';
 import UpdatePasswordService from '../UpdatePasswordService';
-import CreateUserService from '../CreateUserService';
 import AppError from '../../../../shared/errors/AppError';
 import { IUser } from '../../domain/models/IUser';
+import FakeHashProvider from '../../providers/HashProvider/fakes/FakeHashProvider';
 
 let fakeUsersRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
 let updatePassword: UpdatePasswordService;
-let createUser: CreateUserService;
 let user: IUser;
 
-describe('ShowProfile', () => {
+describe('UpdatePassword', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    updatePassword = new UpdatePasswordService(fakeUsersRepository);
-    createUser = new CreateUserService(fakeUsersRepository);
+    fakeHashProvider = new FakeHashProvider();
+    updatePassword = new UpdatePasswordService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
 
-    user = await createUser.execute({
+    user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -26,7 +29,7 @@ describe('ShowProfile', () => {
     });
   });
 
-  it('Deveria ser capaz de atualizar a senha de um usuário pelo seu id', async () => {
+  it('Deve ser capaz de atualizar a senha de um usuário pelo seu id', async () => {
     const updateAvatar = await updatePassword.execute({
       user_id: user.id,
       password: 'user12',
@@ -37,18 +40,28 @@ describe('ShowProfile', () => {
       expect.objectContaining({
         name: 'user',
         email: 'user@email.com',
-        isOng: true,
+        isOng: user.isOng,
         cnpj: '65.658.849/0001-00',
       }),
     );
   });
 
-  it('Não deveria ser capaz de atualizar a senha de um usuário com um id inválido', () => {
+  it('Não deve ser capaz de atualizar a senha de um usuário com um id inválido', () => {
     expect(
       updatePassword.execute({
         user_id: 'abcd',
         password: 'user12',
         old_password: 'user123',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Não deve ser capaz de atualizar a senha de um usuário com senha diferente da senha antiga', () => {
+    expect(
+      updatePassword.execute({
+        user_id: user.id,
+        password: 'user1212',
+        old_password: 'abc123',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

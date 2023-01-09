@@ -18,6 +18,7 @@ import { IAdoptionsRepository } from '@modules/adoptions/domain/repositories/IAd
 import { AdoptionsRepository } from '@modules/adoptions/infra/typeorm/repositories/AdoptionsRepository';
 import { IAnimalsVaccinesRepository } from '@modules/animals/domain/repositories/IAnimalsvaccinesRepository';
 import { AnimalsVaccinesRepository } from '@modules/animals/infra/typeorm/repositories/AnimalsVaccinesRepository';
+import '@modules/users/providers';
 
 container.registerSingleton<IVaccinesRepository>(
   'VaccinesRepository',

@@ -1,14 +1,12 @@
 import 'reflect-metadata';
 import AppError from '../../../../shared/errors/AppError';
 import { FakeUsersRepository } from '../../../users/domain/repositories/fakes/FakeUsersRepository';
-import CreateUserService from '../../../users/services/CreateUserService';
 import { IUser } from '../../../users/domain/models/IUser';
 import { FakeQuizRepository } from '../../domain/repositories/fakes/FakeQuizRepository';
 import CreateQuizService from '../CreateQuizService';
 import { IQuiz } from '../../domain/models/IQuiz';
 
 let fakeUsersRepository: FakeUsersRepository;
-let createUser: CreateUserService;
 let user: IUser;
 let fakeQuizRepository: FakeQuizRepository;
 let createQuiz: CreateQuizService;
@@ -17,12 +15,11 @@ let quiz: IQuiz;
 describe('CreateQuiz', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
 
     fakeQuizRepository = new FakeQuizRepository();
     createQuiz = new CreateQuizService(fakeUsersRepository, fakeQuizRepository);
 
-    user = await createUser.execute({
+    user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -50,11 +47,11 @@ describe('CreateQuiz', () => {
     });
   });
 
-  it('Deveria ser capaz de criar um novo questinário', async () => {
+  it('Deve ser capaz de criar um novo questinário', async () => {
     expect(quiz).toHaveProperty('id');
   });
 
-  it('Não deveria ser capaz de criar um questionário com id de usuário inválido', async () => {
+  it('Não deve ser capaz de criar um questionário com id de usuário inválido', async () => {
     expect(
       createQuiz.execute({
         birth_date: new Date('1995-03-17'),
@@ -76,7 +73,7 @@ describe('CreateQuiz', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um questionário para um usuário com um questionário já cadastrado', async () => {
+  it('Não deve ser capaz de criar um questionário para um usuário com um questionário já cadastrado', async () => {
     expect(
       createQuiz.execute({
         birth_date: new Date('1995-03-17'),

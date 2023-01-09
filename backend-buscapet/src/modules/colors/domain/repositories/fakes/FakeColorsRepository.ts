@@ -20,7 +20,10 @@ export class FakeColorsRepository implements IColorsRepository {
   }
 
   public async save(color: Color): Promise<Color> {
-    Object.assign(this.colors, color);
+    const findIndex = this.colors.findIndex(
+      findColor => findColor.id === color.id,
+    );
+    this.colors[findIndex] = color;
 
     return color;
   }

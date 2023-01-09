@@ -27,7 +27,10 @@ export class FakeAdoptionsRepository implements IAdoptionsRepository {
   }
 
   public async save(adoption: Adoption): Promise<Adoption> {
-    Object.assign(this.adoptions, adoption);
+    const findIndex = this.adoptions.findIndex(
+      findAdoption => findAdoption.id === adoption.id,
+    );
+    this.adoptions[findIndex] = adoption;
 
     return adoption;
   }

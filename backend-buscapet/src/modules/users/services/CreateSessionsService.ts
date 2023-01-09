@@ -1,10 +1,10 @@
 import AppError from '../../../shared/errors/AppError';
-import { compare } from 'bcryptjs';
 import { Secret, sign } from 'jsonwebtoken';
 import authConfig from '../../../config/auth';
 import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 import { IUser } from '../domain/models/IUser';
+import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   email: string;
@@ -21,6 +21,8 @@ class CreateSessionsService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
@@ -29,7 +31,10 @@ class CreateSessionsService {
       throw new AppError('Email ou senha incorretos!', 401);
     }
 
-    const passwordConfirmed = await compare(password, user.password);
+    const passwordConfirmed = await this.hashProvider.compareHash(
+      password,
+      user.password,
+    );
     if (!passwordConfirmed) {
       throw new AppError('Email ou senha incorretos!', 401);
     }

@@ -48,7 +48,8 @@ export class FakeQuizRepository implements IQuizRepository {
   }
 
   public async save(quiz: Quiz): Promise<Quiz> {
-    Object.assign(this.quiz, quiz);
+    const findIndex = this.quiz.findIndex(findQuiz => findQuiz.id === quiz.id);
+    this.quiz[findIndex] = quiz;
 
     return quiz;
   }

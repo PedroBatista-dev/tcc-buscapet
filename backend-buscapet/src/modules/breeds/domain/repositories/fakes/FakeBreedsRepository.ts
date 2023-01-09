@@ -21,7 +21,10 @@ export class FakeBreedsRepository implements IBreedsRepository {
   }
 
   public async save(breed: Breed): Promise<Breed> {
-    Object.assign(this.breeds, breed);
+    const findIndex = this.breeds.findIndex(
+      findBreed => findBreed.id === breed.id,
+    );
+    this.breeds[findIndex] = breed;
 
     return breed;
   }

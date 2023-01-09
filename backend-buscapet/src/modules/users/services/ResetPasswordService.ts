@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import { isAfter, addHours } from 'date-fns';
 import { hash } from 'bcryptjs';
 import { inject } from 'tsyringe';

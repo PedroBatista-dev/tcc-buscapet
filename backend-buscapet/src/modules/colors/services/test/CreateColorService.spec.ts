@@ -1,14 +1,12 @@
 import 'reflect-metadata';
 import AppError from '../../../../shared/errors/AppError';
 import { FakeUsersRepository } from '../../../users/domain/repositories/fakes/FakeUsersRepository';
-import CreateUserService from '../../../users/services/CreateUserService';
 import { IUser } from '../../../users/domain/models/IUser';
 import { FakeColorsRepository } from '../../domain/repositories/fakes/FakeColorsRepository';
 import CreateColorService from '../CreateColorService';
 import { IColor } from '../../domain/models/IColor';
 
 let fakeUsersRepository: FakeUsersRepository;
-let createUser: CreateUserService;
 let user: IUser;
 let fakeColorsRepository: FakeColorsRepository;
 let createColor: CreateColorService;
@@ -17,14 +15,13 @@ let color: IColor;
 describe('CreateColor', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
     fakeColorsRepository = new FakeColorsRepository();
     createColor = new CreateColorService(
       fakeUsersRepository,
       fakeColorsRepository,
     );
 
-    user = await createUser.execute({
+    user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -39,11 +36,11 @@ describe('CreateColor', () => {
     });
   });
 
-  it('Deveria ser capaz de criar uma nova cor', async () => {
+  it('Deve ser capaz de criar uma nova cor', async () => {
     expect(color).toHaveProperty('id');
   });
 
-  it('Não deveria ser capaz de criar uma cor com id de usuário inválido', async () => {
+  it('Não deve ser capaz de criar uma cor com id de usuário inválido', async () => {
     expect(
       createColor.execute({
         name: 'caramelo',
@@ -52,7 +49,7 @@ describe('CreateColor', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar uma cor com o nome ja cadastrado', async () => {
+  it('Não deve ser capaz de criar uma cor com o nome ja cadastrado', async () => {
     expect(
       createColor.execute({
         name: 'preto',

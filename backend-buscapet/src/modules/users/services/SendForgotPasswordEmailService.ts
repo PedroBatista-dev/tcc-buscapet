@@ -1,6 +1,6 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import path from 'path';
-import EtherealMail from '@config/mail/EtherealMail';
+import EtherealMail from '../../../config/mail/EtherealMail';
 import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 import { IUserTokensRepository } from '../domain/repositories/IUserTokensRepository';
 import { inject, injectable } from 'tsyringe';

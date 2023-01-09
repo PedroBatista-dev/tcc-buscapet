@@ -1,8 +1,8 @@
 import AppError from '../../../shared/errors/AppError';
-import { compare, hash } from 'bcryptjs';
 import { inject, injectable } from 'tsyringe';
 import { IUser } from '../domain/models/IUser';
 import { IUsersRepository } from '../domain/repositories/IUsersRepository';
+import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   user_id: string;
@@ -15,6 +15,8 @@ class UpdatePasswordService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({
@@ -27,12 +29,15 @@ class UpdatePasswordService {
       throw new AppError('Usuário não encontrado');
     }
 
-    const checkOldPassword = await compare(old_password, user.password);
+    const checkOldPassword = await this.hashProvider.compareHash(
+      old_password,
+      user.password,
+    );
     if (!checkOldPassword) {
       throw new AppError('Senha antiga não é igual a senha salva no usuário');
     }
 
-    user.password = await hash(password, 8);
+    user.password = await this.hashProvider.generateHash(password);
 
     await this.usersRepository.save(user);
 

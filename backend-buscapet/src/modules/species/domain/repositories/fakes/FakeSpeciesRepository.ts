@@ -20,7 +20,10 @@ export class FakeSpeciesRepository implements ISpeciesRepository {
   }
 
   public async save(specie: Specie): Promise<Specie> {
-    Object.assign(this.species, specie);
+    const findIndex = this.species.findIndex(
+      findSpecie => findSpecie.id === specie.id,
+    );
+    this.species[findIndex] = specie;
 
     return specie;
   }

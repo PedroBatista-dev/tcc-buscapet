@@ -1,51 +1,39 @@
 import 'reflect-metadata';
 import AppError from '../../../../shared/errors/AppError';
 import { FakeUsersRepository } from '../../../users/domain/repositories/fakes/FakeUsersRepository';
-import CreateUserService from '../../../users/services/CreateUserService';
 import { IUser } from '../../../users/domain/models/IUser';
 import { FakeAdoptionsRepository } from '../../domain/repositories/fakes/FakeAdoptionsRepository';
 import CreateAdoptionService from '../CreateAdoptionService';
 import { IAdoption } from '../../domain/models/IAdoption';
 import { FakeColorsRepository } from '../../../colors/domain/repositories/fakes/FakeColorsRepository';
-import CreateColorService from '../../../colors/services/CreateColorService';
 import { IColor } from '../../../colors/domain/models/IColor';
 import { FakeSpeciesRepository } from '../../../species/domain/repositories/fakes/FakeSpeciesRepository';
-import CreateSpecieService from '../../../species/services/CreateSpecieService';
 import { ISpecie } from '../../../species/domain/models/ISpecie';
 import { FakeBreedsRepository } from '../../../breeds/domain/repositories/fakes/FakeBreedsRepository';
-import CreateBreedService from '../../../breeds/services/CreateBreedService';
 import { IBreed } from '../../../breeds/domain/models/IBreed';
 import { FakeVaccinesRepository } from '../../../vaccines/domain/repositories/fakes/FakeVaccinesRepository';
-import CreateVaccineService from '../../../vaccines/services/CreateVaccineService';
 import { IVaccine } from '../../../vaccines/domain/models/IVaccine';
 import { FakeAnimalsRepository } from '../../../animals/domain/repositories/fakes/FakeAnimalsRepository';
-import CreateAnimalService from '../../../animals/services/CreateAnimalService';
 import { IAnimal } from '../../../animals/domain/models/IAnimal';
 import UpdateStatusAnimalService from '../../../animals/services/UpdateStatusAnimalService';
 
 let fakeUsersRepository: FakeUsersRepository;
-let createUser: CreateUserService;
 let userJ: IUser;
 let userF: IUser;
 
 let fakeColorsRepository: FakeColorsRepository;
-let createColor: CreateColorService;
 let color: IColor;
 
 let fakeSpeciesRepository: FakeSpeciesRepository;
-let createSpecie: CreateSpecieService;
 let specie: ISpecie;
 
 let fakeBreedsRepository: FakeBreedsRepository;
-let createBreed: CreateBreedService;
 let breed: IBreed;
 
 let fakeVaccinesRepository: FakeVaccinesRepository;
-let createVaccine: CreateVaccineService;
 let vaccine: IVaccine;
 
 let fakeAnimalsRepository: FakeAnimalsRepository;
-let createAnimal: CreateAnimalService;
 let updateStatusAnimal: UpdateStatusAnimalService;
 let animal: IAnimal;
 
@@ -56,42 +44,16 @@ let adoption: IAdoption;
 describe('CreateAdoption', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
 
     fakeColorsRepository = new FakeColorsRepository();
-    createColor = new CreateColorService(
-      fakeUsersRepository,
-      fakeColorsRepository,
-    );
 
     fakeSpeciesRepository = new FakeSpeciesRepository();
-    createSpecie = new CreateSpecieService(
-      fakeUsersRepository,
-      fakeSpeciesRepository,
-    );
 
     fakeBreedsRepository = new FakeBreedsRepository();
-    createBreed = new CreateBreedService(
-      fakeUsersRepository,
-      fakeBreedsRepository,
-      fakeSpeciesRepository,
-    );
 
     fakeVaccinesRepository = new FakeVaccinesRepository();
-    createVaccine = new CreateVaccineService(
-      fakeUsersRepository,
-      fakeVaccinesRepository,
-    );
 
     fakeAnimalsRepository = new FakeAnimalsRepository();
-    createAnimal = new CreateAnimalService(
-      fakeUsersRepository,
-      fakeColorsRepository,
-      fakeBreedsRepository,
-      fakeSpeciesRepository,
-      fakeVaccinesRepository,
-      fakeAnimalsRepository,
-    );
     updateStatusAnimal = new UpdateStatusAnimalService(fakeAnimalsRepository);
 
     fakeAdoptionsRepository = new FakeAdoptionsRepository();
@@ -101,7 +63,7 @@ describe('CreateAdoption', () => {
       fakeAnimalsRepository,
     );
 
-    userJ = await createUser.execute({
+    userJ = await fakeUsersRepository.create({
       name: 'user J',
       email: 'userj@email.com',
       password: 'userj123',
@@ -110,7 +72,7 @@ describe('CreateAdoption', () => {
       cnpj: '65.658.849/0001-00',
     });
 
-    userF = await createUser.execute({
+    userF = await fakeUsersRepository.create({
       name: 'userf',
       email: 'userf@email.com',
       password: 'userf123',
@@ -119,39 +81,39 @@ describe('CreateAdoption', () => {
       cnpj: '',
     });
 
-    color = await createColor.execute({
+    color = await fakeColorsRepository.create({
       name: 'preto',
       user_id: userJ.id,
     });
 
-    specie = await createSpecie.execute({
+    specie = await fakeSpeciesRepository.create({
       name: 'canina',
       user_id: userJ.id,
     });
 
-    breed = await createBreed.execute({
+    breed = await fakeBreedsRepository.create({
       name: 'lulu',
-      specie_id: specie.id,
+      specie: specie,
       user_id: userJ.id,
     });
 
-    vaccine = await createVaccine.execute({
+    vaccine = await fakeVaccinesRepository.create({
       name: 'v8',
       user_id: userJ.id,
     });
 
-    animal = await createAnimal.execute({
+    animal = await fakeAnimalsRepository.create({
       name: 'Pingo',
       age: 12,
       sex: 'M',
       size: 'M',
       other_animals: 'Não',
-      color_id: color.id,
-      breed_id: breed.id,
-      specie_id: specie.id,
-      vaccines: [vaccine],
+      color: color,
+      breed: breed,
+      specie: specie,
       user_id: userJ.id,
-      isOng: userJ.isOng,
+      status: 'Criado',
+      animals_vaccine: [{ vaccine_id: vaccine.id }],
     });
 
     await updateStatusAnimal.execute({
@@ -167,11 +129,11 @@ describe('CreateAdoption', () => {
     });
   });
 
-  it('Deveria ser capaz de criar uma nova adoção', async () => {
+  it('Deve ser capaz de criar uma nova adoção', async () => {
     expect(adoption).toHaveProperty('id');
   });
 
-  it('Não deveria ser capaz de criar uma adoção com id do animal inválido', async () => {
+  it('Não deve ser capaz de criar uma adoção com id do animal inválido', async () => {
     expect(
       createAdoption.execute({
         animal_id: 'abc',
@@ -181,11 +143,47 @@ describe('CreateAdoption', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar uma adoção com id do adotante inválido', async () => {
+  it('Não deve ser capaz de criar uma adoção com id do adotante inválido', async () => {
     expect(
       createAdoption.execute({
         animal_id: animal.id,
         adopter_id: 'abc',
+        isOng: userF.isOng,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Não deve ser capaz de criar uma adoção com usuário sem permissão', async () => {
+    expect(
+      createAdoption.execute({
+        animal_id: animal.id,
+        adopter_id: userJ.id,
+        isOng: userJ.isOng,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Não deve ser capaz de criar uma adoção com status inválido', async () => {
+    await updateStatusAnimal.execute({
+      id: animal.id,
+      status: 'Criado',
+      user_id: userJ.id,
+    });
+
+    expect(
+      createAdoption.execute({
+        animal_id: animal.id,
+        adopter_id: userF.id,
+        isOng: userF.isOng,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Não deve ser capaz de criar uma adoção repetida', async () => {
+    expect(
+      createAdoption.execute({
+        animal_id: animal.id,
+        adopter_id: userF.id,
         isOng: userF.isOng,
       }),
     ).rejects.toBeInstanceOf(AppError);

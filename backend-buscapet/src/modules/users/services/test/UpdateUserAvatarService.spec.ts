@@ -1,22 +1,19 @@
 import 'reflect-metadata';
 import { FakeUsersRepository } from '../../domain/repositories/fakes/FakeUsersRepository';
 import UpdateUserAvatarService from '../UpdateUserAvatarService';
-import CreateUserService from '../CreateUserService';
 import AppError from '../../../../shared/errors/AppError';
 import { IUser } from '../../domain/models/IUser';
 
 let fakeUsersRepository: FakeUsersRepository;
 let updateUser: UpdateUserAvatarService;
-let createUser: CreateUserService;
 let user: IUser;
 
 describe('ShowProfile', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
     updateUser = new UpdateUserAvatarService(fakeUsersRepository);
-    createUser = new CreateUserService(fakeUsersRepository);
 
-    user = await createUser.execute({
+    user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -26,7 +23,7 @@ describe('ShowProfile', () => {
     });
   });
 
-  it('Deveria ser capaz de atualizar o avatar de um usuário pelo seu id', async () => {
+  it('Deve ser capaz de atualizar o avatar de um usuário pelo seu id', async () => {
     const updateAvatar = await updateUser.execute({
       user_id: user.id,
       avatarFilename: 'avatar.png',
@@ -43,7 +40,7 @@ describe('ShowProfile', () => {
     );
   });
 
-  it('Não deveria ser capaz de atualizar o avatar de um usuário com um id inválido', async () => {
+  it('Não deve ser capaz de atualizar o avatar de um usuário com um id inválido', async () => {
     expect(
       updateUser.execute({ user_id: 'abcd', avatarFilename: 'avatar2.png' }),
     ).rejects.toBeInstanceOf(AppError);

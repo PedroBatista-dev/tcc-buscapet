@@ -1,92 +1,54 @@
 import 'reflect-metadata';
 import AppError from '../../../../shared/errors/AppError';
 import { FakeUsersRepository } from '../../../users/domain/repositories/fakes/FakeUsersRepository';
-import CreateUserService from '../../../users/services/CreateUserService';
 import { IUser } from '../../../users/domain/models/IUser';
 import { FakeAnimalsRepository } from '../../domain/repositories/fakes/FakeAnimalsRepository';
-import CreateAnimalService from '../CreateAnimalService';
 import { IAnimal } from '../../domain/models/IAnimal';
 import UpdateAnimalAvatarService from '../UpdateAnimalAvatarService';
 import { FakeVaccinesRepository } from '../../../vaccines/domain/repositories/fakes/FakeVaccinesRepository';
-import CreateVaccineService from '../../../vaccines/services/CreateVaccineService';
 import { IVaccine } from '../../../vaccines/domain/models/IVaccine';
 import { FakeSpeciesRepository } from '../../../species/domain/repositories/fakes/FakeSpeciesRepository';
-import CreateSpecieService from '../../../species/services/CreateSpecieService';
 import { ISpecie } from '../../../species/domain/models/ISpecie';
 import { FakeBreedsRepository } from '../../../breeds/domain/repositories/fakes/FakeBreedsRepository';
-import CreateBreedService from '../../../breeds/services/CreateBreedService';
 import { IBreed } from '../../../breeds/domain/models/IBreed';
 import { FakeColorsRepository } from '../../../colors/domain/repositories/fakes/FakeColorsRepository';
-import CreateColorService from '../../../colors/services/CreateColorService';
 import { IColor } from '../../../colors/domain/models/IColor';
 
 let fakeUsersRepository: FakeUsersRepository;
-let createUser: CreateUserService;
 let user: IUser;
 
 let fakeColorsRepository: FakeColorsRepository;
-let createColor: CreateColorService;
 let color: IColor;
 
 let fakeSpeciesRepository: FakeSpeciesRepository;
-let createSpecie: CreateSpecieService;
 let specie: ISpecie;
 
 let fakeBreedsRepository: FakeBreedsRepository;
-let createBreed: CreateBreedService;
 let breed: IBreed;
 
 let fakeVaccinesRepository: FakeVaccinesRepository;
-let createVaccine: CreateVaccineService;
 let vaccine: IVaccine;
 
 let fakeAnimalsRepository: FakeAnimalsRepository;
-let createAnimal: CreateAnimalService;
 let updateAvatarAnimal: UpdateAnimalAvatarService;
 let animal: IAnimal;
 
 describe('UpdateAnimalAvatar', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
 
     fakeColorsRepository = new FakeColorsRepository();
-    createColor = new CreateColorService(
-      fakeUsersRepository,
-      fakeColorsRepository,
-    );
 
     fakeSpeciesRepository = new FakeSpeciesRepository();
-    createSpecie = new CreateSpecieService(
-      fakeUsersRepository,
-      fakeSpeciesRepository,
-    );
 
     fakeBreedsRepository = new FakeBreedsRepository();
-    createBreed = new CreateBreedService(
-      fakeUsersRepository,
-      fakeBreedsRepository,
-      fakeSpeciesRepository,
-    );
 
     fakeVaccinesRepository = new FakeVaccinesRepository();
-    createVaccine = new CreateVaccineService(
-      fakeUsersRepository,
-      fakeVaccinesRepository,
-    );
 
     fakeAnimalsRepository = new FakeAnimalsRepository();
-    createAnimal = new CreateAnimalService(
-      fakeUsersRepository,
-      fakeColorsRepository,
-      fakeBreedsRepository,
-      fakeSpeciesRepository,
-      fakeVaccinesRepository,
-      fakeAnimalsRepository,
-    );
     updateAvatarAnimal = new UpdateAnimalAvatarService(fakeAnimalsRepository);
 
-    user = await createUser.execute({
+    user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -95,43 +57,43 @@ describe('UpdateAnimalAvatar', () => {
       cnpj: '65.658.849/0001-00',
     });
 
-    color = await createColor.execute({
+    color = await fakeColorsRepository.create({
       name: 'preto',
       user_id: user.id,
     });
 
-    specie = await createSpecie.execute({
+    specie = await fakeSpeciesRepository.create({
       name: 'canina',
       user_id: user.id,
     });
 
-    breed = await createBreed.execute({
+    breed = await fakeBreedsRepository.create({
       name: 'lulu',
-      specie_id: specie.id,
+      specie: specie,
       user_id: user.id,
     });
 
-    vaccine = await createVaccine.execute({
+    vaccine = await fakeVaccinesRepository.create({
       name: 'v8',
       user_id: user.id,
     });
 
-    animal = await createAnimal.execute({
+    animal = await fakeAnimalsRepository.create({
       name: 'Pingo',
       age: 12,
       sex: 'M',
       size: 'M',
       other_animals: 'Não',
-      color_id: color.id,
-      breed_id: breed.id,
-      specie_id: specie.id,
-      vaccines: [vaccine],
+      color: color,
+      breed: breed,
+      specie: specie,
       user_id: user.id,
-      isOng: user.isOng,
+      status: 'Criado',
+      animals_vaccine: [{ vaccine_id: vaccine.id }],
     });
   });
 
-  it('Deveria ser capaz de atualizar o avatar de um animal pelo id', async () => {
+  it('Deve ser capaz de atualizar o avatar de um animal pelo id', async () => {
     const animalUp = await updateAvatarAnimal.execute({
       animal_id: animal.id,
       avatarFilename: '/avatar/foto/png',
@@ -146,7 +108,7 @@ describe('UpdateAnimalAvatar', () => {
     );
   });
 
-  it('Não deveria ser capaz de atualizar o avatar de um animal com id inválido', async () => {
+  it('Não deve ser capaz de atualizar o avatar de um animal com id inválido', async () => {
     expect(
       updateAvatarAnimal.execute({
         animal_id: 'abc',

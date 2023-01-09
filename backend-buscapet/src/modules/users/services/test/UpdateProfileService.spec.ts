@@ -2,12 +2,10 @@ import 'reflect-metadata';
 import AppError from '../../../../shared/errors/AppError';
 import { FakeUsersRepository } from '../../domain/repositories/fakes/FakeUsersRepository';
 import UpdateProfileService from '../UpdateProfileService';
-import CreateUserService from '../CreateUserService';
 import { IUser } from '../../domain/models/IUser';
 
 let fakeUsersRepository: FakeUsersRepository;
 let updateProfile: UpdateProfileService;
-let createUser: CreateUserService;
 let userJuridico: IUser;
 let userFisico: IUser;
 
@@ -15,9 +13,8 @@ describe('UpdateProfile', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
     updateProfile = new UpdateProfileService(fakeUsersRepository);
-    createUser = new CreateUserService(fakeUsersRepository);
 
-    userJuridico = await createUser.execute({
+    userJuridico = await fakeUsersRepository.create({
       name: 'user juridico',
       email: 'userjuridico@email.com',
       password: 'userj123',
@@ -26,7 +23,7 @@ describe('UpdateProfile', () => {
       cnpj: '65.658.849/0001-00',
     });
 
-    userFisico = await createUser.execute({
+    userFisico = await fakeUsersRepository.create({
       name: 'user fisico',
       email: 'userfisico@email.com',
       password: 'userf123',
@@ -36,7 +33,7 @@ describe('UpdateProfile', () => {
     });
   });
 
-  it('Deveria ser capaz de atualizar o perfil de um usuário(pessoa jurídica)', async () => {
+  it('Deve ser capaz de atualizar o perfil de um usuário(pessoa jurídica)', async () => {
     const profile = await updateProfile.execute({
       user_id: userJuridico.id,
       name: 'user juridico updated',
@@ -55,7 +52,7 @@ describe('UpdateProfile', () => {
     );
   });
 
-  it('Deveria ser capaz de atualizar o perfil de um usuário(pessoa física)', async () => {
+  it('Deve ser capaz de atualizar o perfil de um usuário(pessoa física)', async () => {
     const profile = await updateProfile.execute({
       user_id: userFisico.id,
       name: 'user fisico updated',
@@ -74,7 +71,7 @@ describe('UpdateProfile', () => {
     );
   });
 
-  it('Não deveria ser capaz de atualizar o perfil de um usuário com id inválido', async () => {
+  it('Não deve ser capaz de atualizar o perfil de um usuário com id inválido', async () => {
     expect(
       updateProfile.execute({
         user_id: 'abc',
@@ -86,7 +83,7 @@ describe('UpdateProfile', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de atualizar o perfil de um usuário com um email já cadastrado', async () => {
+  it('Não deve ser capaz de atualizar o perfil de um usuário com um email já cadastrado', async () => {
     expect(
       updateProfile.execute({
         user_id: userJuridico.id,
@@ -98,7 +95,7 @@ describe('UpdateProfile', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de atualizar o perfil de um usuário com um cnpj inválido', async () => {
+  it('Não deve ser capaz de atualizar o perfil de um usuário com um cnpj inválido', async () => {
     expect(
       updateProfile.execute({
         user_id: userJuridico.id,
@@ -110,8 +107,8 @@ describe('UpdateProfile', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de atualizar o perfil de um usuário com um cnpj já cadastrado', async () => {
-    await createUser.execute({
+  it('Não deve ser capaz de atualizar o perfil de um usuário com um cnpj já cadastrado', async () => {
+    await fakeUsersRepository.create({
       name: 'user 2',
       email: 'user2@email.com',
       password: 'user12',
@@ -131,7 +128,7 @@ describe('UpdateProfile', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de atualizar o perfil de um usuário com um cpf inválido', async () => {
+  it('Não deve ser capaz de atualizar o perfil de um usuário com um cpf inválido', async () => {
     expect(
       updateProfile.execute({
         user_id: userFisico.id,
@@ -143,8 +140,8 @@ describe('UpdateProfile', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de atualizar o perfil de um usuário com um cpf já cadastrado', async () => {
-    await createUser.execute({
+  it('Não deve ser capaz de atualizar o perfil de um usuário com um cpf já cadastrado', async () => {
+    await fakeUsersRepository.create({
       name: 'user 2',
       email: 'user2@email.com',
       password: 'user12',

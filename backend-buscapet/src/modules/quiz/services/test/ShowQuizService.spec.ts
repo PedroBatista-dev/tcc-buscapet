@@ -1,29 +1,23 @@
 import 'reflect-metadata';
 import AppError from '../../../../shared/errors/AppError';
 import { FakeUsersRepository } from '../../../users/domain/repositories/fakes/FakeUsersRepository';
-import CreateUserService from '../../../users/services/CreateUserService';
 import { IUser } from '../../../users/domain/models/IUser';
 import { FakeQuizRepository } from '../../domain/repositories/fakes/FakeQuizRepository';
-import CreateQuizService from '../CreateQuizService';
 import ShowQuizService from '../ShowQuizService';
 
 let fakeUsersRepository: FakeUsersRepository;
-let createUser: CreateUserService;
 let user: IUser;
 let fakeQuizRepository: FakeQuizRepository;
-let createQuiz: CreateQuizService;
 let showQuiz: ShowQuizService;
 
 describe('ShowQuiz', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
 
     fakeQuizRepository = new FakeQuizRepository();
-    createQuiz = new CreateQuizService(fakeUsersRepository, fakeQuizRepository);
     showQuiz = new ShowQuizService(fakeQuizRepository);
 
-    user = await createUser.execute({
+    user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -32,7 +26,7 @@ describe('ShowQuiz', () => {
       cnpj: '65.658.849/0001-00',
     });
 
-    await createQuiz.execute({
+    await fakeQuizRepository.create({
       birth_date: new Date('1995-03-17'),
       marital_status: 'Casado',
       professional_activity: 'Engenheiro',
@@ -51,7 +45,7 @@ describe('ShowQuiz', () => {
     });
   });
 
-  it('Deveria ser capaz de mostrar um questionário pelo id do usuário', async () => {
+  it('Deve ser capaz de mostrar um questionário pelo id do usuário', async () => {
     const idQuiz = await showQuiz.execute({
       user_id: user.id,
     });
@@ -76,7 +70,7 @@ describe('ShowQuiz', () => {
     );
   });
 
-  it('Não deveria ser capaz de mostrar um questionário com id de usuário inválido', async () => {
+  it('Não deve ser capaz de mostrar um questionário com id de usuário inválido', async () => {
     expect(showQuiz.execute({ user_id: 'abc' })).rejects.toBeInstanceOf(
       AppError,
     );

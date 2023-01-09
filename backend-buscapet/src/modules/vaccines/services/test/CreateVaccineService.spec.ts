@@ -1,14 +1,12 @@
 import 'reflect-metadata';
 import AppError from '../../../../shared/errors/AppError';
 import { FakeUsersRepository } from '../../../users/domain/repositories/fakes/FakeUsersRepository';
-import CreateUserService from '../../../users/services/CreateUserService';
 import { IUser } from '../../../users/domain/models/IUser';
 import { FakeVaccinesRepository } from '../../domain/repositories/fakes/FakeVaccinesRepository';
 import CreateVaccineService from '../CreateVaccineService';
 import { IVaccine } from '../../domain/models/IVaccine';
 
 let fakeUsersRepository: FakeUsersRepository;
-let createUser: CreateUserService;
 let user: IUser;
 let fakeVaccinesRepository: FakeVaccinesRepository;
 let createVaccine: CreateVaccineService;
@@ -17,14 +15,13 @@ let vaccine: IVaccine;
 describe('CreateVaccine', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
     fakeVaccinesRepository = new FakeVaccinesRepository();
     createVaccine = new CreateVaccineService(
       fakeUsersRepository,
       fakeVaccinesRepository,
     );
 
-    user = await createUser.execute({
+    user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -39,11 +36,11 @@ describe('CreateVaccine', () => {
     });
   });
 
-  it('Deveria ser capaz de criar uma nova vacina', async () => {
+  it('Deve ser capaz de criar uma nova vacina', async () => {
     expect(vaccine).toHaveProperty('id');
   });
 
-  it('Não deveria ser capaz de criar uma vacina com id de usuário inválido', async () => {
+  it('Não deve ser capaz de criar uma vacina com id de usuário inválido', async () => {
     expect(
       createVaccine.execute({
         name: 'v10',
@@ -52,7 +49,7 @@ describe('CreateVaccine', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar uma vacina com o nome ja cadastrado', async () => {
+  it('Não deve ser capaz de criar uma vacina com o nome ja cadastrado', async () => {
     expect(
       createVaccine.execute({
         name: 'v8',

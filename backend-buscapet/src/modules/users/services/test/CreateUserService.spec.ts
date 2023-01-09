@@ -3,15 +3,18 @@ import AppError from '../../../../shared/errors/AppError';
 import { FakeUsersRepository } from '../../domain/repositories/fakes/FakeUsersRepository';
 import CreateUserService from '../CreateUserService';
 import { IUser } from '../../domain/models/IUser';
+import FakeHashProvider from '../../providers/HashProvider/fakes/FakeHashProvider';
 
 let fakeUsersRepository: FakeUsersRepository;
 let createUser: CreateUserService;
+let fakeHashProvider: FakeHashProvider;
 let user: IUser;
 
 describe('CreateUser', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
+    fakeHashProvider = new FakeHashProvider();
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
 
     user = await createUser.execute({
       name: 'user',
@@ -32,11 +35,11 @@ describe('CreateUser', () => {
     });
   });
 
-  it('Deveria ser capaz de criar um novo usuário', async () => {
+  it('Deve ser capaz de criar um novo usuário', async () => {
     expect(user).toHaveProperty('id');
   });
 
-  it('Não deveria ser capaz de criar dois usuários com o mesmo email', async () => {
+  it('Não deve ser capaz de criar dois usuários com o mesmo email', async () => {
     expect(
       createUser.execute({
         name: 'user',
@@ -49,7 +52,7 @@ describe('CreateUser', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um usuário com o cnpj inválido', () => {
+  it('Não deve ser capaz de criar um usuário com o cnpj inválido', () => {
     expect(
       createUser.execute({
         name: 'user 3',
@@ -62,7 +65,7 @@ describe('CreateUser', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um usuário com o cnpj já cadastrado', async () => {
+  it('Não deve ser capaz de criar um usuário com o cnpj já cadastrado', async () => {
     expect(
       createUser.execute({
         name: 'user 4',
@@ -75,7 +78,7 @@ describe('CreateUser', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um usuário com o cpf inválido', () => {
+  it('Não deve ser capaz de criar um usuário com o cpf inválido', () => {
     expect(
       createUser.execute({
         name: 'user 5',
@@ -88,7 +91,7 @@ describe('CreateUser', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um usuário com o cpf já cadastrado', async () => {
+  it('Não deve ser capaz de criar um usuário com o cpf já cadastrado', async () => {
     expect(
       createUser.execute({
         name: 'user 6',

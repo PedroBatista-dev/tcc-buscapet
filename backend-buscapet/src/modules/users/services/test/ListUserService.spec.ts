@@ -1,19 +1,16 @@
 import 'reflect-metadata';
 import { FakeUsersRepository } from '../../domain/repositories/fakes/FakeUsersRepository';
 import ListUserService from '../ListUserService';
-import CreateUserService from '../CreateUserService';
 
 let fakeUsersRepository: FakeUsersRepository;
 let listUser: ListUserService;
-let createUser: CreateUserService;
 
 describe('ListUser', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
     listUser = new ListUserService(fakeUsersRepository);
-    createUser = new CreateUserService(fakeUsersRepository);
 
-    await createUser.execute({
+    await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -23,7 +20,7 @@ describe('ListUser', () => {
     });
   });
 
-  it('Deveria ser capaz de listar os usuários', async () => {
+  it('Deve ser capaz de listar os usuários', async () => {
     const users = await listUser.execute();
 
     expect(users).toEqual(

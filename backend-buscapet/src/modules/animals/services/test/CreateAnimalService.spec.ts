@@ -1,44 +1,34 @@
 import 'reflect-metadata';
 import AppError from '../../../../shared/errors/AppError';
 import { FakeUsersRepository } from '../../../users/domain/repositories/fakes/FakeUsersRepository';
-import CreateUserService from '../../../users/services/CreateUserService';
 import { IUser } from '../../../users/domain/models/IUser';
 import { FakeAnimalsRepository } from '../../domain/repositories/fakes/FakeAnimalsRepository';
 import CreateAnimalService from '../CreateAnimalService';
 import { IAnimal } from '../../domain/models/IAnimal';
 import { FakeVaccinesRepository } from '../../../vaccines/domain/repositories/fakes/FakeVaccinesRepository';
-import CreateVaccineService from '../../../vaccines/services/CreateVaccineService';
 import { IVaccine } from '../../../vaccines/domain/models/IVaccine';
 import { FakeSpeciesRepository } from '../../../species/domain/repositories/fakes/FakeSpeciesRepository';
-import CreateSpecieService from '../../../species/services/CreateSpecieService';
 import { ISpecie } from '../../../species/domain/models/ISpecie';
 import { FakeBreedsRepository } from '../../../breeds/domain/repositories/fakes/FakeBreedsRepository';
-import CreateBreedService from '../../../breeds/services/CreateBreedService';
 import { IBreed } from '../../../breeds/domain/models/IBreed';
 import { FakeColorsRepository } from '../../../colors/domain/repositories/fakes/FakeColorsRepository';
-import CreateColorService from '../../../colors/services/CreateColorService';
 import { IColor } from '../../../colors/domain/models/IColor';
 
 let fakeUsersRepository: FakeUsersRepository;
-let createUser: CreateUserService;
 let user: IUser;
 
 let fakeColorsRepository: FakeColorsRepository;
-let createColor: CreateColorService;
 let color: IColor;
 
 let fakeSpeciesRepository: FakeSpeciesRepository;
-let createSpecie: CreateSpecieService;
 let specie: ISpecie;
 let specieF: ISpecie;
 
 let fakeBreedsRepository: FakeBreedsRepository;
-let createBreed: CreateBreedService;
 let breed: IBreed;
 let breedV: IBreed;
 
 let fakeVaccinesRepository: FakeVaccinesRepository;
-let createVaccine: CreateVaccineService;
 let vaccine: IVaccine;
 
 let fakeAnimalsRepository: FakeAnimalsRepository;
@@ -48,32 +38,14 @@ let animal: IAnimal;
 describe('CreateAnimal', () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
 
     fakeColorsRepository = new FakeColorsRepository();
-    createColor = new CreateColorService(
-      fakeUsersRepository,
-      fakeColorsRepository,
-    );
 
     fakeSpeciesRepository = new FakeSpeciesRepository();
-    createSpecie = new CreateSpecieService(
-      fakeUsersRepository,
-      fakeSpeciesRepository,
-    );
 
     fakeBreedsRepository = new FakeBreedsRepository();
-    createBreed = new CreateBreedService(
-      fakeUsersRepository,
-      fakeBreedsRepository,
-      fakeSpeciesRepository,
-    );
 
     fakeVaccinesRepository = new FakeVaccinesRepository();
-    createVaccine = new CreateVaccineService(
-      fakeUsersRepository,
-      fakeVaccinesRepository,
-    );
 
     fakeAnimalsRepository = new FakeAnimalsRepository();
     createAnimal = new CreateAnimalService(
@@ -85,7 +57,7 @@ describe('CreateAnimal', () => {
       fakeAnimalsRepository,
     );
 
-    user = await createUser.execute({
+    user = await fakeUsersRepository.create({
       name: 'user',
       email: 'user@email.com',
       password: 'user123',
@@ -94,34 +66,34 @@ describe('CreateAnimal', () => {
       cnpj: '65.658.849/0001-00',
     });
 
-    color = await createColor.execute({
+    color = await fakeColorsRepository.create({
       name: 'preto',
       user_id: user.id,
     });
 
-    specie = await createSpecie.execute({
+    specie = await fakeSpeciesRepository.create({
       name: 'canina',
       user_id: user.id,
     });
 
-    breed = await createBreed.execute({
+    breed = await fakeBreedsRepository.create({
       name: 'lulu',
-      specie_id: specie.id,
+      specie: specie,
       user_id: user.id,
     });
 
-    specieF = await createSpecie.execute({
+    specieF = await fakeSpeciesRepository.create({
       name: 'felina',
       user_id: user.id,
     });
 
-    breedV = await createBreed.execute({
+    breedV = await fakeBreedsRepository.create({
       name: 'vira-lata',
-      specie_id: specieF.id,
+      specie: specieF,
       user_id: user.id,
     });
 
-    vaccine = await createVaccine.execute({
+    vaccine = await fakeVaccinesRepository.create({
       name: 'v8',
       user_id: user.id,
     });
@@ -141,11 +113,11 @@ describe('CreateAnimal', () => {
     });
   });
 
-  it('Deveria ser capaz de criar um novo animal', async () => {
+  it('Deve ser capaz de criar um novo animal', async () => {
     expect(animal).toHaveProperty('id');
   });
 
-  it('Não deveria ser capaz de criar um animal com id de usuário inválido', async () => {
+  it('Não deve ser capaz de criar um animal com id de usuário inválido', async () => {
     expect(
       createAnimal.execute({
         name: 'Pingo',
@@ -163,7 +135,7 @@ describe('CreateAnimal', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um animal com id de cor inválido', async () => {
+  it('Não deve ser capaz de criar um animal com id de cor inválido', async () => {
     expect(
       createAnimal.execute({
         name: 'Pingo',
@@ -181,7 +153,7 @@ describe('CreateAnimal', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um animal com id de espécie inválido', async () => {
+  it('Não deve ser capaz de criar um animal com id de espécie inválido', async () => {
     expect(
       createAnimal.execute({
         name: 'Pingo',
@@ -199,7 +171,7 @@ describe('CreateAnimal', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um animal com id de raça inválido', async () => {
+  it('Não deve ser capaz de criar um animal com id de raça inválido', async () => {
     expect(
       createAnimal.execute({
         name: 'Pingo',
@@ -217,7 +189,7 @@ describe('CreateAnimal', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um animal com o nome ja cadastrado', async () => {
+  it('Não deve ser capaz de criar um animal com o nome ja cadastrado', async () => {
     expect(
       createAnimal.execute({
         name: 'Pingo',
@@ -235,7 +207,7 @@ describe('CreateAnimal', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um animal com o usuário que não é ONG', async () => {
+  it('Não deve ser capaz de criar um animal com o usuário que não é ONG', async () => {
     expect(
       createAnimal.execute({
         name: 'Bolinha',
@@ -253,7 +225,7 @@ describe('CreateAnimal', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um animal com uma raça que não pertence a espécie', async () => {
+  it('Não deve ser capaz de criar um animal com uma raça que não pertence a espécie', async () => {
     expect(
       createAnimal.execute({
         name: 'Bolinha',
@@ -271,7 +243,7 @@ describe('CreateAnimal', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deveria ser capaz de criar um animal com vacina inválida', async () => {
+  it('Não deve ser capaz de criar um animal com vacina inválida', async () => {
     expect(
       createAnimal.execute({
         name: 'Bolinha',

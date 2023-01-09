@@ -20,7 +20,10 @@ export class FakeVaccinesRepository implements IVaccinesRepository {
   }
 
   public async save(vaccine: Vaccine): Promise<Vaccine> {
-    Object.assign(this.vaccines, vaccine);
+    const findIndex = this.vaccines.findIndex(
+      findVaccine => findVaccine.id === vaccine.id,
+    );
+    this.vaccines[findIndex] = vaccine;
 
     return vaccine;
   }
