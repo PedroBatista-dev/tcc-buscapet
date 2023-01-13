@@ -4,27 +4,30 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDatabase } from '../in-memory-database';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 
 @NgModule({
   declarations: [
-    NavbarComponent
+    NavbarComponent,
+    FooterComponent,
+    NotFoundComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     HttpClientModule,
-    RouterModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDatabase)
+    RouterModule
   ],
   exports: [
     BrowserModule,
     HttpClientModule,
-    NavbarComponent
+    NavbarComponent,
+    FooterComponent,
+    NotFoundComponent
   ]
 })
 export class CoreModule { }

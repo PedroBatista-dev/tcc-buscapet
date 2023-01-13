@@ -24,13 +24,13 @@ export class FormFieldErrorComponent implements OnInit {
 
   private getErrorMessage(): string | null {
     if(this.formControl.errors?.['required'])
-      return "Dado obrigatório";
+      return "* Dado obrigatório";
     else if(this.formControl.errors?.['email'])
-      return `Formato de e-mail inválido`;
+      return `* Formato de e-mail inválido`;
     else if(this.formControl.errors?.['minlength'])
-      return `Deve ter no mínimo ${this.formControl.errors['minlength'].requiredLength} caracteres`;
+      return `* Deve ter no mínimo ${this.formControl.errors['minlength'].requiredLength} caracteres`;
     else if(this.formControl.errors?.['maxlength'])
-      return `Deve ter no máximo ${this.formControl.errors['maxlength'].requiredLength} caracteres`;
+      return `* Deve ter no máximo ${this.formControl.errors['maxlength'].requiredLength} caracteres`;
     else
     return null;
   }

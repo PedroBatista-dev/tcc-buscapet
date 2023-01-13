@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { switchMap } from 'rxjs';
 
-import * as toastr from 'toastr';
 
 import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../services/base-resource.service';
@@ -111,7 +110,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected actionsForSuccess(resource: T): void {
-    toastr.success("Solicitação processada com sucesso!");
+    alert("Solicitação processada com sucesso!");
 
     const baseComponentParent: string = this.route.snapshot.parent!.url[0].path;
 
@@ -121,7 +120,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected actionsForError(): void {
-    toastr.error("Ocorreu um erro ao processar sua solicitação!");
+    alert("Ocorreu um erro ao processar sua solicitação!");
 
     this.submittingForm = false;
 

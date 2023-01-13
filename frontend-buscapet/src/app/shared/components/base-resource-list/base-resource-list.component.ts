@@ -11,10 +11,11 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
   constructor(protected resourceService: BaseResourceService<T>) { }
 
   ngOnInit(): void {
-    this.resourceService.getAll().subscribe({
-      next: (resources) => this.resources = resources,
-      error: () => alert('Erro ao carregar a lista')
-    })
+    this.resources = [];
+    // this.resourceService.getAll().subscribe({
+    //   next: (resources) => this.resources = resources,
+    //   error: () => alert('Erro ao carregar a lista')
+    // });
   }
 
   deleteResource(resource: T) {
