@@ -31,6 +31,8 @@ export class FormFieldErrorComponent implements OnInit {
       return `* Deve ter no mínimo ${this.formControl.errors['minlength'].requiredLength} caracteres`;
     else if(this.formControl.errors?.['maxlength'])
       return `* Deve ter no máximo ${this.formControl.errors['maxlength'].requiredLength} caracteres`;
+    else if(this.formControl.errors?.['equalTo'])
+      return `* As senhas não conferem`;
     else
     return null;
   }

@@ -8,6 +8,7 @@ import { PageHeaderComponent } from './components/page-header/page-header.compon
 import { FormFieldErrorComponent } from './components/form-field-error/form-field-error.component';
 import { ServerErrorMessagesComponent } from './components/server-error-messages/server-error-messages.component';
 
+import { CustomFormsModule } from 'ng2-validation';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ServerErrorMessagesComponent } from './components/server-error-messages
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    CustomFormsModule,
   ],
   exports: [
     CommonModule,

@@ -12,10 +12,10 @@ import { VaccineService } from '../shared/vaccine.service';
 })
 export class VaccineFormComponent extends BaseResourceFormComponent<Vaccine> {
 
-  vaccine: Vaccine = new Vaccine(0, '');
+  vaccine: Vaccine = new Vaccine();
 
   constructor(protected vaccineService: VaccineService, protected override injector: Injector) {
-    super(injector, new Vaccine(0, ''), vaccineService, Vaccine.fromJson);
+    super(injector, new Vaccine(), vaccineService, Vaccine.fromJson);
   }
 
   protected buildResourceForm(): void {

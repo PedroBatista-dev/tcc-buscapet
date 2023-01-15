@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -20,7 +22,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     CommonModule,
     BrowserModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    NgbCollapseModule
   ],
   exports: [
     BrowserModule,
