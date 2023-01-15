@@ -58,7 +58,7 @@
         </div>
         <div class="form-group col-md-12" *ngIf="resourceForm.get('isOng')?.value === true">
           <label for="cnpj">CNPJ</label>
-          <input type="text" class="form-control" id="cnpj" formControlName="cnpj" >
+          <input type="text" mask="000" class="form-control" id="cnpj" formControlName="cnpj" >
           <app-form-field-error [form-control]="$any(resourceForm).get('cnpj')"></app-form-field-error>
         </div>
       </div>
