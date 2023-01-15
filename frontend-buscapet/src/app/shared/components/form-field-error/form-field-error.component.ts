@@ -33,6 +33,10 @@ export class FormFieldErrorComponent implements OnInit {
       return `* Deve ter no máximo ${this.formControl.errors['maxlength'].requiredLength} caracteres`;
     else if(this.formControl.errors?.['equalTo'])
       return `* As senhas não conferem`;
+    else if(this.formControl.errors?.['cpf'])
+      return `* CPF inválido`;
+    else if(this.formControl.errors?.['cnpj'])
+      return `* CNPJ inválido`;
     else
     return null;
   }

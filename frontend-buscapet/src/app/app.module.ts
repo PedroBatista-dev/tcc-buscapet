@@ -5,13 +5,6 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { NgxMaskModule, IConfig } from 'ngx-mask';
-
-const maskConfigFunction: () => Partial<IConfig> = () => {
-  return {
-    validation: false,
-  };
-};
 
 @NgModule({
   declarations: [
@@ -20,8 +13,7 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
   imports: [
     CoreModule,
     AppRoutingModule,
-    NgbModule,
-    NgxMaskModule.forRoot(maskConfigFunction)
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

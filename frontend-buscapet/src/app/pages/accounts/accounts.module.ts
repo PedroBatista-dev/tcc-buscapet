@@ -6,6 +6,8 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ContaAppComponent } from './accounts.app.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { TextMaskModule } from 'angular2-text-mask';
+
 @NgModule({
   declarations: [
     LoginComponent,
@@ -14,7 +16,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   ],
   imports: [
     SharedModule,
-    AccountsRoutingModule
+    AccountsRoutingModule,
+    TextMaskModule
   ]
 })
 export class AccountsModule { }

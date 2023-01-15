@@ -53,12 +53,12 @@
       <div class="form-row">
         <div class="form-group col-md-12" *ngIf="resourceForm.get('isOng')?.value === false">
           <label for="cpf">CPF</label>
-          <input type="text" class="form-control" id="cpf" formControlName="cpf">
+          <input type="text" class="form-control" id="cpf" formControlName="cpf" cpf [textMask]="{mask: MASKS['cpf'].textMask}">
           <app-form-field-error [form-control]="$any(resourceForm).get('cpf')"></app-form-field-error>
         </div>
         <div class="form-group col-md-12" *ngIf="resourceForm.get('isOng')?.value === true">
           <label for="cnpj">CNPJ</label>
-          <input type="text" mask="000" class="form-control" id="cnpj" formControlName="cnpj" >
+          <input type="text" class="form-control" id="cnpj" formControlName="cnpj" cnpj [textMask]="{mask: MASKS['cnpj'].textMask}" >
           <app-form-field-error [form-control]="$any(resourceForm).get('cnpj')"></app-form-field-error>
         </div>
       </div>

@@ -9,6 +9,7 @@ import { FormFieldErrorComponent } from './components/form-field-error/form-fiel
 import { ServerErrorMessagesComponent } from './components/server-error-messages/server-error-messages.component';
 
 import { CustomFormsModule } from 'ng2-validation';
+import { NgBrazil } from 'ng-brazil';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { CustomFormsModule } from 'ng2-validation';
     ReactiveFormsModule,
     RouterModule,
     CustomFormsModule,
+    NgBrazil
   ],
   exports: [
     CommonModule,
