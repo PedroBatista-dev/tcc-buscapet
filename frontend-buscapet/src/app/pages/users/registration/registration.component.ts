@@ -3,8 +3,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { NgBrazilValidators, MASKS } from 'ng-brazil';
 import { CustomValidators } from 'ng2-validation';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
-import { User } from '../shared/user.model';
-import { UserService } from '../shared/user.service';
+import { User } from '../../users/shared/user.model';
+import { UserService } from '../../users/shared/user.service';
 
 @Component({
   selector: 'app-registration',
@@ -15,22 +15,19 @@ export class RegistrationComponent extends BaseResourceFormComponent<User> {
 
   public MASKS = MASKS;
 
-  user: User = new User();
-
   constructor(protected userService: UserService, protected override injector: Injector) {
     super(injector, new User(), userService, User.fromJson);
   }
 
   protected buildResourceForm(): void {
-    let senha = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(15)]);
-    let senhaConfirm = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(15), CustomValidators.equalTo(senha)]);
+    let senha = new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(15)]);
+    let senhaConfirm = new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(15), CustomValidators.equalTo(senha)]);
 
     this.resourceForm = this.formBuilder.group({
-      id: [null],
-      name: [null, [Validators.required, Validators.minLength(2)]],
+      name: [null, [Validators.required, Validators.minLength(3)]],
       email: [null, [Validators.required, Validators.email]],
       password: senha,
-      password_confirmation: senhaConfirm,
+      passwordConfirmation: senhaConfirm,
       isOng: [true, [Validators.required]],
       cpf: [null],
       cnpj: [null, [Validators.required, NgBrazilValidators.cnpj]],

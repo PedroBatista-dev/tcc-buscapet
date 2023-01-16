@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ContaAppComponent } from './accounts.app.component';
+import { UserAppComponent } from './users.app.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 
 const routes: Routes = [
   {
-    path: '', component: ContaAppComponent,
+    path: '', component: UserAppComponent,
     children: [
             { path: 'novo', component: RegistrationComponent },
             { path: 'login', component: LoginComponent }
-        ]
+    ]
   }
 ];
 
@@ -18,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AccountsRoutingModule { }
+export class UsersRoutingModule { }

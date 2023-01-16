@@ -1,0 +1,33 @@
+<div class="row mb-4">
+  <div class="col-md-9">
+    <h1 class="h2 border-start ps-2">
+      {{pageTitle}}
+    </h1>
+  </div>
+</div>
+
+<form [formGroup]="resourceForm" (submit)="submitForm()">
+  <div class="card">
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="email">Email</label>
+          <input type="text" class="form-control" id="email" formControlName="email">
+          <app-form-field-error [form-control]="$any(resourceForm).get('email')"></app-form-field-error>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="password">Senha</label>
+          <input type="text" class="form-control" id="password" formControlName="password">
+          <app-form-field-error [form-control]="$any(resourceForm).get('password')"></app-form-field-error>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-server-error-messages [server-error-messages]="serverErrorMessages"></app-server-error-messages>
+
+  <button [disabled]="submittingForm || resourceForm.invalid" type="submit"
+    class="btn btn-primary btn-lg float-end mt-3">Salvar</button>
+</form>

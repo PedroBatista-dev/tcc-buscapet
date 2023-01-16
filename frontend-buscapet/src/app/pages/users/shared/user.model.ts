@@ -6,6 +6,7 @@ export class User extends BaseResourceModel{
     public name?: string,
     public email?: string,
     public password?: string,
+    public avatar?: string,
     public isOng?: boolean,
     public cpf?: string,
     public cnpj?: string,

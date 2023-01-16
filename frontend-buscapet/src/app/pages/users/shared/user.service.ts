@@ -1,6 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 
 import { BaseResourceService } from 'src/app/shared/services/base-resource.service';
+import { environment } from 'src/environments/environment';
 
 import { User } from './user.model';
 
@@ -10,6 +11,6 @@ import { User } from './user.model';
 export class UserService extends BaseResourceService<User> {
 
   constructor(protected override injector: Injector) {
-    super("http://localhost:3333/users", injector, User.fromJson);
+    super(`${environment.apiUrl}user`, injector, User.fromJson);
   }
 }

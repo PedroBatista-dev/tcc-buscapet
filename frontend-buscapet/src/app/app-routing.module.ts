@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/conta', pathMatch: 'full'},
-  { path: 'vacinas', loadChildren: () => import('./pages/vaccines/vaccines.module').then(m => m.VaccinesModule) },
+  { path: '', redirectTo: '/users', pathMatch: 'full'},
   {
-    path: 'conta', loadChildren: () => import('./pages/accounts/accounts.module').then(m => m.AccountsModule)
+    path: 'users', loadChildren: () => import('./pages/users/users.module').then(m => m.UsersModule)
   },
+  { path: 'vacinas', loadChildren: () => import('./pages/vaccines/vaccines.module').then(m => m.VaccinesModule) },
   { path: 'nao-encontrado', component: NotFoundComponent },
   { path: '**', component: NotFoundComponent }
 ];

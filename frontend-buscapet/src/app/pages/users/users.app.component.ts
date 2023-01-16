@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'conta-app-root',
+  selector: 'user-app-root',
   template: '<router-outlet></router-outlet>'
 })
-export class ContaAppComponent { }
+export class UserAppComponent { }

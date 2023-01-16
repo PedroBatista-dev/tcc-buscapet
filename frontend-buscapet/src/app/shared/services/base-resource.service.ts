@@ -1,6 +1,6 @@
 import { BaseResourceModel } from "../models/base-resource.model";
 
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injector } from "@angular/core";
 
 import { Observable, throwError } from 'rxjs';
@@ -67,7 +67,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     return this.jsonDataToResourceFn(jsonData);
   }
 
-  protected handleError(error: any): Observable<any> {
+  protected handleError(error: HttpErrorResponse): Observable<any> {
     console.log("ERRO NA REQUISIÇÃO => ", error);
     return throwError(() => error);
   }

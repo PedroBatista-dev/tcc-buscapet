@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 
-import { AccountsRoutingModule } from './accounts-routing.module';
+import { UsersRoutingModule } from './users-routing.module';
 import { LoginComponent } from './login/login.component';
-import { RegistrationComponent } from './registration/registration.component';
-import { ContaAppComponent } from './accounts.app.component';
+import { UserAppComponent } from './users.app.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { RegistrationComponent } from './registration/registration.component';
 
 import { TextMaskModule } from 'angular2-text-mask';
 
@@ -12,12 +12,12 @@ import { TextMaskModule } from 'angular2-text-mask';
   declarations: [
     LoginComponent,
     RegistrationComponent,
-    ContaAppComponent
+    UserAppComponent
   ],
   imports: [
     SharedModule,
-    AccountsRoutingModule,
+    UsersRoutingModule,
     TextMaskModule
   ]
 })
-export class AccountsModule { }
+export class UsersModule { }
