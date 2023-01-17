@@ -19,10 +19,7 @@ export class LoginComponent extends BaseResourceFormComponent<Session> {
     this.resourceForm = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(15)]],
+      remember: [false]
     });
-  }
-
-  protected override creationPageTitle(): string {
-    return "Login";
   }
 }

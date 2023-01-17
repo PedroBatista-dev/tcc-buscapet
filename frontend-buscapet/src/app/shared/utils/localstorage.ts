@@ -6,18 +6,24 @@ export class LocalStorageUtils {
         return JSON.parse(localStorage.getItem('buscapet.user')!);
     }
 
-    public salvarDadosLocaisUsuario(response: any) {
+    public salvarDadosLocaisUsuario(response: any, remember: string) {
         this.salvarTokenUsuario(response.token);
         this.salvarUsuario(response.user);
+        this.salvarRemember(remember);
     }
 
     public limparDadosLocaisUsuario() {
         localStorage.removeItem('buscapet.token');
         localStorage.removeItem('buscapet.user');
+        localStorage.removeItem('buscapet.remember');
     }
 
     public obterTokenUsuario(): string {
         return localStorage.getItem('buscapet.token')!;
+    }
+
+    public obterRemember(): string {
+        return localStorage.getItem('buscapet.remember')!;
     }
 
     public salvarTokenUsuario(token: string) {
@@ -26,6 +32,10 @@ export class LocalStorageUtils {
 
     public salvarUsuario(user: User) {
         localStorage.setItem('buscapet.user', JSON.stringify(user));
+    }
+
+    public salvarRemember(remember: string) {
+        localStorage.setItem('buscapet.remember', remember);
     }
 
 }

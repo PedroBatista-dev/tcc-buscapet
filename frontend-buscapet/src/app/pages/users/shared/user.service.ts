@@ -11,6 +11,6 @@ import { User } from './user.model';
 export class UserService extends BaseResourceService<User> {
 
   constructor(protected override injector: Injector) {
-    super(`${environment.apiUrl}user`, injector, User.fromJson);
+    super(`${environment.apiUrl}users`, injector, User.fromJson);
   }
 }

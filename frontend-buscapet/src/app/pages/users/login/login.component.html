@@ -1,33 +1,65 @@
-<div class="row mb-4">
-  <div class="col-md-9">
-    <h1 class="h2 border-start ps-2">
-      {{pageTitle}}
-    </h1>
+<div class="row d-flex justify-content-center align-items-center container-login h-100">
+  <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 col-xxl-5">
+    <img src="../../../../assets/image_login.png" alt="imagem login" class="img-fluid">
   </div>
-</div>
 
-<form [formGroup]="resourceForm" (submit)="submitForm()">
-  <div class="card">
-    <div class="card-body">
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3">
+    <div class="mb-3">
+      <img src="../../../../assets/logo_3.png" alt="logo" class="img-fluid">
+    </div>
+
+    <form [formGroup]="resourceForm" (submit)="submitForm()">
+
+      <app-server-error-messages [server-error-messages]="serverErrorMessages"></app-server-error-messages>
+
       <div class="form-row">
         <div class="form-group col-md-12">
-          <label for="email">Email</label>
-          <input type="text" class="form-control" id="email" formControlName="email">
+          <input type="text" class="form-control" id="email" formControlName="email" placeholder="E-mail">
           <app-form-field-error [form-control]="$any(resourceForm).get('email')"></app-form-field-error>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-12">
-          <label for="password">Senha</label>
-          <input type="text" class="form-control" id="password" formControlName="password">
+          <input type="password" class="form-control" id="password" formControlName="password" placeholder="Senha">
           <app-form-field-error [form-control]="$any(resourceForm).get('password')"></app-form-field-error>
         </div>
       </div>
-    </div>
+
+      <div class="d-flex align-items-center">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" formControlName="remember" id="remember" />
+          <label class="form-check-label" for="remember">
+            Lembrar credenciais
+          </label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <button [disabled]="submittingForm || resourceForm.invalid" type="submit"
+            class="btn w-100 rounded-pill entrar"><i class="fas fa-sign-in-alt mr-3"></i>Entrar</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <a class="btn w-100 rounded-pill conta-google"><i class="fab fa-google mr-3"></i>Conta Google</a>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <a class="btn w-100 rounded-pill criar-conta" [routerLink]="['/users/novo']"><i class="fas fa-user-plus mr-3"></i>Criar conta</a>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center">
+        <a href="#!" class="text-body">Esqueci minha senha</a>
+      </div>
+    </form>
   </div>
+</div>
 
-  <app-server-error-messages [server-error-messages]="serverErrorMessages"></app-server-error-messages>
 
-  <button [disabled]="submittingForm || resourceForm.invalid" type="submit"
-    class="btn btn-primary btn-lg float-end mt-3">Salvar</button>
-</form>
+
+

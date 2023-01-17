@@ -1,5 +1,5 @@
-import { Component, Injector } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, Injector, ViewChildren } from '@angular/core';
+import { FormControl, FormControlName, Validators } from '@angular/forms';
 import { NgBrazilValidators, MASKS } from 'ng-brazil';
 import { CustomValidators } from 'ng2-validation';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
@@ -11,12 +11,18 @@ import { UserService } from '../../users/shared/user.service';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
 })
-export class RegistrationComponent extends BaseResourceFormComponent<User> {
+export class RegistrationComponent extends BaseResourceFormComponent<User> implements AfterViewInit {
+
+  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements!: ElementRef[];
 
   public MASKS = MASKS;
 
   constructor(protected userService: UserService, protected override injector: Injector) {
     super(injector, new User(), userService, User.fromJson);
+  }
+
+  ngAfterViewInit(): void {
+    super.validarFormulario(this.formInputElements);
   }
 
   protected buildResourceForm(): void {
@@ -32,10 +38,6 @@ export class RegistrationComponent extends BaseResourceFormComponent<User> {
       cpf: [null],
       cnpj: [null, [Validators.required, NgBrazilValidators.cnpj]],
     });
-  }
-
-  protected override creationPageTitle(): string {
-    return "Cadastro de Usuário";
   }
 
   validateDocument() {

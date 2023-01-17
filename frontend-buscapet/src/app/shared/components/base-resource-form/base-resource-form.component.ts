@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterContentChecked, OnInit, Injector, Inject, Directive } from '@angular/core';
+import { AfterContentChecked, OnInit, Injector, Inject, Directive, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { switchMap } from 'rxjs';
+import { fromEvent, merge, Observable, switchMap } from 'rxjs';
 
 import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../services/base-resource.service';
@@ -19,6 +19,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   pageTitle!: string;
   serverErrorMessages!: string[];
   submittingForm: boolean = false;
+  mudancasNaoSalvas!: boolean;
   localStorage = new LocalStorageUtils();
 
   protected route!: ActivatedRoute;
@@ -107,6 +108,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       next: (resource) => this.actionsForSuccess(resource),
       error: (error) => this.actionsForError(error)
     });
+    this.mudancasNaoSalvas = false;
   }
 
   protected updateResource():void {
@@ -115,6 +117,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       next: (resource) => this.actionsForSuccess(resource),
       error: (error) => this.actionsForError(error)
     });
+    this.mudancasNaoSalvas = false;
   }
 
   protected actionsForSuccess(resource: T): void {
@@ -127,8 +130,13 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
         () => this.router.navigate([baseComponentParent, resource.id, "editar"])
       );
     } else {
-      this.localStorage.salvarDadosLocaisUsuario(resource);
-      this.route.pathFromRoot[1].url.subscribe(caminho => this.router.navigate([caminho[0].path, this.currentAction]));
+      if (this.currentAction === "login") {
+        const remember = this.resourceForm.get('remember')!.value ? 'sim' : 'nao';
+        this.localStorage.salvarDadosLocaisUsuario(resource, remember);
+        this.router.navigate(['vacinas']);
+      } else {
+        this.route.pathFromRoot[1].url.subscribe(caminho => this.router.navigate([caminho[0].path, 'login']));
+      }
     }
 
   }
@@ -145,6 +153,17 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     } else {
       this.serverErrorMessages = ['Ocorreu um erro desconhecido'];
     }
+  }
+
+  protected validarFormulario(
+    formInputElements: ElementRef[]) {
+
+    let controlBlurs: Observable<any>[] = formInputElements
+      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
+
+    merge(...controlBlurs).subscribe(() => {
+      this.mudancasNaoSalvas = true;
+    });
   }
 
 }
