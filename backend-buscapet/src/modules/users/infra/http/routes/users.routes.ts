@@ -20,7 +20,12 @@ usersRouter.post(
     [Segments.BODY]: {
       name: Joi.string().min(3).required(),
       email: Joi.string().email().required(),
-      password: Joi.string().min(6).required(),
+      password: Joi.string().min(6).max(15).required(),
+      passwordConfirmation: Joi.string()
+        .min(6)
+        .max(15)
+        .required()
+        .valid(Joi.ref('password')),
       isOng: Joi.boolean().required(),
       cpf: Joi.when('isOng', {
         is: false,
