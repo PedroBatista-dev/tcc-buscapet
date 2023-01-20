@@ -1,6 +1,5 @@
 import { IVaccinesRepository } from '../../../domain/repositories/IVaccinesRepository';
 import { ICreateVaccine } from '../../../domain/models/ICreateVaccine';
-import { IPaginateVaccine } from '../../../domain/models/IPaginateVaccine';
 import { v4 as uuidv4 } from 'uuid';
 import Vaccine from '../../../infra/typeorm/entities/Vaccine';
 
@@ -37,23 +36,12 @@ export class FakeVaccinesRepository implements IVaccinesRepository {
     );
   }
 
-  public async findAll(user_id: string): Promise<IPaginateVaccine> {
+  public async findAll(user_id: string): Promise<Vaccine[]> {
     const vaccines = this.vaccines.filter(
       vaccine => vaccine.user_id === user_id,
     );
 
-    const vaccinesPaginate = {
-      from: 1,
-      to: 1,
-      per_page: 1,
-      total: 1,
-      current_page: 1,
-      prev_page: 1,
-      next_page: 1,
-      data: vaccines,
-    };
-
-    return vaccinesPaginate;
+    return vaccines;
   }
 
   public async findByName(

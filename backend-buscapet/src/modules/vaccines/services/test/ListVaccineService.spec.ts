@@ -31,9 +31,9 @@ describe('ListVaccine', () => {
   });
 
   it('Deve ser capaz de listar as vacinas', async () => {
-    const vaccines = await listVaccine.execute({ user_id: user.id });
+    const vaccines = await listVaccine.execute({ user_id: user.id, name: '' });
 
-    expect(vaccines.data).toEqual(
+    expect(vaccines).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           name: 'v8',

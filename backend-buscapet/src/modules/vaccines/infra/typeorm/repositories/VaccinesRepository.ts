@@ -1,8 +1,7 @@
 import Vaccine from '../entities/Vaccine';
-import { getRepository, In, Repository } from 'typeorm';
+import { getRepository, In, Like, Repository } from 'typeorm';
 import { IVaccinesRepository } from '@modules/vaccines/domain/repositories/IVaccinesRepository';
 import { ICreateVaccine } from '@modules/vaccines/domain/models/ICreateVaccine';
-import { IPaginateVaccine } from '@modules/vaccines/domain/models/IPaginateVaccine';
 
 export class VaccinesRepository implements IVaccinesRepository {
   private ormRepository: Repository<Vaccine>;
@@ -29,25 +28,27 @@ export class VaccinesRepository implements IVaccinesRepository {
     await this.ormRepository.remove(vaccine);
   }
 
-  public async findAll(
-    user_id: string,
-    name: string,
-  ): Promise<IPaginateVaccine> {
+  public async findAll(user_id: string, name: string): Promise<Vaccine[]> {
     if (name) {
-      const vaccine = await this.ormRepository
-        .createQueryBuilder('vaccine')
-        .where('vaccine.user_id = :user_id', { user_id })
-        .andWhere('vaccine.name like :name', { name: `%${name}%` })
-        .paginate();
+      const vaccines = await this.ormRepository.find({
+        where: {
+          name: Like('%name%'),
+          user_id,
+        },
+      });
+      // .createQueryBuilder('vaccine')
+      // .where('vaccine.user_id = :user_id', { user_id })
+      // .andWhere('vaccine.name like :name', { name: `%${name}%` })
 
-      return vaccine as IPaginateVaccine;
+      return vaccines;
     } else {
-      const vaccine = await this.ormRepository
-        .createQueryBuilder('vaccine')
-        .where('vaccine.user_id = :user_id', { user_id })
-        .paginate();
+      const vaccines = await this.ormRepository.find({
+        where: {
+          user_id,
+        },
+      });
 
-      return vaccine as IPaginateVaccine;
+      return vaccines;
     }
   }
 

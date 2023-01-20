@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { IPaginateVaccine } from '../domain/models/IPaginateVaccine';
+import { IVaccine } from '../domain/models/IVaccine';
 import { IVaccinesRepository } from '../domain/repositories/IVaccinesRepository';
 
 interface IRequest {
@@ -14,7 +14,7 @@ class ListVaccineService {
     private vaccinesRepository: IVaccinesRepository,
   ) {}
 
-  public async execute({ user_id, name }: IRequest): Promise<IPaginateVaccine> {
+  public async execute({ user_id, name }: IRequest): Promise<IVaccine[]> {
     const vaccines = await this.vaccinesRepository.findAll(user_id, name);
 
     return vaccines;
