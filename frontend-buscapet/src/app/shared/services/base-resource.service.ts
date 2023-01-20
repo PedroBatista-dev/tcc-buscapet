@@ -6,7 +6,6 @@ import { Injector } from "@angular/core";
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { LocalStorageUtils } from "../utils/localstorage";
-import { Paginate } from "../models/paginate.model";
 
 export abstract class BaseResourceService<T extends BaseResourceModel> {
 
@@ -19,11 +18,12 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
 
   getAll(name: string): Observable<T[]> {
     let url = this.apiPath;
+
     if (name) {
       url = `${this.apiPath}/?name=${name}`;
     }
 
-    return this.http.get<Paginate<T>>(url, this.obterAuthHeaderJson()).pipe(
+    return this.http.get<T[]>(url, this.obterAuthHeaderJson()).pipe(
       map(this.jsonDataToResources.bind(this)),
       catchError(this.handleError)
     );
@@ -63,9 +63,9 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     );
   }
 
-  protected jsonDataToResources(jsonData: Paginate<T>): T[] {
+  protected jsonDataToResources(jsonData: T[]): T[] {
     const resources: T[] = [];
-    jsonData.data!.forEach(
+    jsonData.forEach(
       element => resources.push(this.jsonDataToResourceFn(element))
     );
     return resources;

@@ -1,5 +1,5 @@
-import { Component, Injector } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { Component, ElementRef, Injector, ViewChildren } from '@angular/core';
+import { FormControlName, Validators } from '@angular/forms';
 
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { Vaccine } from '../shared/vaccine.model';
@@ -12,10 +12,16 @@ import { VaccineService } from '../shared/vaccine.service';
 })
 export class VaccineFormComponent extends BaseResourceFormComponent<Vaccine> {
 
+  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements!: ElementRef[];
+
   vaccine: Vaccine = new Vaccine();
 
   constructor(protected vaccineService: VaccineService, protected override injector: Injector) {
     super(injector, new Vaccine(), vaccineService, Vaccine.fromJson);
+  }
+
+  ngAfterViewInit(): void {
+    super.validarFormulario(this.formInputElements);
   }
 
   protected buildResourceForm(): void {

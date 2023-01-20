@@ -3,9 +3,9 @@ import { Directive, Injector, OnInit } from '@angular/core';
 import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../services/base-resource.service';
 
-import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
-import { map, startWith } from 'rxjs';
+
+import Swal from 'sweetalert2';
 
 @Directive()
 export abstract class BaseResourceListComponent<T extends BaseResourceModel> implements OnInit {
@@ -13,37 +13,62 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
   resources: T[] = [];
   filter = new FormControl('');
   page = 1;
-	pageSize = new FormControl(4);;
-	collectionSize = 0;
+	pageSize = new FormControl(5);
+	collectionSize = this.resources.length;
 
-  protected toastr!: ToastrService;
 
-  constructor(protected resourceService: BaseResourceService<T>, protected injector: Injector) {
-    this.toastr = this.injector.get(ToastrService);
-   }
+  constructor(protected resourceService: BaseResourceService<T>, protected injector: Injector) {}
 
   ngOnInit(): void {
     this.resources = [];
     this.getAllResource();
-    this.collectionSize = this.resources.length;
   }
 
   deleteResource(resource: T) {
-    const mustDelete = confirm('Deseja realmente excluir este item?');
-
-    if(mustDelete) {
-      this.resourceService.delete(resource.id!).subscribe({
-        next: () => this.resources = this.resources.filter(element => element.id !== resource.id),
-        error: () => this.toastr.error("Erro ao tentar excluir")
-      })
-    }
+    Swal.fire({
+      title: 'Deseja realmente excluir este item?',
+      text: "Você não será capaz de reverter isso!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#44C5CD',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, delete!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.resourceService.delete(resource.id!).subscribe({
+          next: () => {
+            Swal.fire(
+              'Deletado!',
+              'Seu arquivo foi deletado.',
+              'success'
+            )
+            this.resources = this.resources.filter(element => element.id !== resource.id);
+          },
+          error: () => Swal.fire({
+              title: 'Erro!',
+              text: 'Erro ao tentar excluir.',
+              icon: 'error',
+              confirmButtonColor: '#44C5CD',
+        })
+        });
+      }
+    })
   }
 
   getAllResource() {
-    console.log(this.pageSize.value)
     this.resourceService.getAll(this.filter.value).subscribe({
-      next: (resources) => this.resources = resources,
-      error: () => this.toastr.error('Erro ao carregar a lista')
+      next: (resources) => {
+        this.resources = resources.slice((this.page - 1) * Number(this.pageSize.value),
+			    (this.page - 1) * Number(this.pageSize.value) + Number(this.pageSize.value));
+        this.collectionSize = resources.length;
+      },
+      error: () => Swal.fire({
+              title: 'Erro!',
+              text: 'Erro ao tentar excluir.',
+              icon: 'error',
+              confirmButtonColor: '#44C5CD',
+        })
     });
   }
 

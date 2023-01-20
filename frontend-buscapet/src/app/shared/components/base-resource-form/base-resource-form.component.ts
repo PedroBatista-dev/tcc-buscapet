@@ -9,7 +9,7 @@ import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../services/base-resource.service';
 import { LocalStorageUtils } from '../../utils/localstorage';
 
-import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Directive()
 export abstract class BaseResourceFormComponent<T extends BaseResourceModel> implements OnInit, AfterContentChecked {
@@ -25,7 +25,6 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   protected route!: ActivatedRoute;
   protected router!: Router;
   protected formBuilder!: FormBuilder;
-  protected toastr!: ToastrService;
 
   constructor(
     protected injector: Injector,
@@ -36,7 +35,6 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     this.route = this.injector.get(ActivatedRoute);
     this.router = this.injector.get(Router);
     this.formBuilder = this.injector.get(FormBuilder);
-    this.toastr = this.injector.get(ToastrService);
    }
 
   ngOnInit(): void {
@@ -97,7 +95,12 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
           this.resource = resource;
           this.resourceForm?.patchValue(resource);
         },
-        error: () => this.toastr.error('Ocorreu um erro no servidor, tente mais tarde!')
+        error: () => Swal.fire({
+              title: 'Erro!',
+              text: 'Ocorreu um erro no servidor, tente mais tarde.',
+              icon: 'error',
+              confirmButtonColor: '#44C5CD',
+        })
       })
     }
   }
@@ -126,7 +129,13 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected actionsForSuccess(resource: T): void {
-    this.toastr.success("Solicitação processada com sucesso!");
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Solicitação processada com sucesso!',
+      showConfirmButton: false,
+      timer: 1500
+    });
 
     const baseComponentParent = this.route.snapshot.parent?.url[0]?.path;
 
@@ -151,7 +160,13 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected actionsForError(error: HttpErrorResponse): void {
-    this.toastr.error("Ocorreu um erro ao processar sua solicitação!");
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'Ocorreu um erro ao processar sua solicitação!',
+      showConfirmButton: false,
+      timer: 1500
+    });
 
     this.submittingForm = false;
 
