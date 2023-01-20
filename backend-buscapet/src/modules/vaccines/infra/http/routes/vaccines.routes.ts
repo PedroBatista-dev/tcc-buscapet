@@ -8,7 +8,11 @@ const vaccinesController = new VaccinesController();
 
 vaccinesRouter.use(isAuthenticated);
 
-vaccinesRouter.get('/', vaccinesController.index);
+vaccinesRouter.get(
+  '/',
+  celebrate({ [Segments.QUERY]: { name: Joi.string() } }),
+  vaccinesController.index,
+);
 
 vaccinesRouter.get(
   '/:id',

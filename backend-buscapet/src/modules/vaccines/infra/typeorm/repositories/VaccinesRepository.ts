@@ -29,13 +29,26 @@ export class VaccinesRepository implements IVaccinesRepository {
     await this.ormRepository.remove(vaccine);
   }
 
-  public async findAll(user_id: string): Promise<IPaginateVaccine> {
-    const vaccine = await this.ormRepository
-      .createQueryBuilder('vaccine')
-      .where('vaccine.user_id = :user_id', { user_id })
-      .paginate();
+  public async findAll(
+    user_id: string,
+    name: string,
+  ): Promise<IPaginateVaccine> {
+    if (name) {
+      const vaccine = await this.ormRepository
+        .createQueryBuilder('vaccine')
+        .where('vaccine.user_id = :user_id', { user_id })
+        .andWhere('vaccine.name like :name', { name: `%${name}%` })
+        .paginate();
 
-    return vaccine as IPaginateVaccine;
+      return vaccine as IPaginateVaccine;
+    } else {
+      const vaccine = await this.ormRepository
+        .createQueryBuilder('vaccine')
+        .where('vaccine.user_id = :user_id', { user_id })
+        .paginate();
+
+      return vaccine as IPaginateVaccine;
+    }
   }
 
   public async findByName(

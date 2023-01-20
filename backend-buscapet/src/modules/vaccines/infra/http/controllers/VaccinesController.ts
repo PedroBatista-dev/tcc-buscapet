@@ -9,10 +9,11 @@ import UpdateVaccineService from '../../../services/UpdateVaccineService';
 export default class VaccinesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const name = request.query.name as string;
 
     const listVaccines = container.resolve(ListVaccineService);
 
-    const vaccines = await listVaccines.execute({ user_id });
+    const vaccines = await listVaccines.execute({ user_id, name });
 
     return response.json(vaccines);
   }
