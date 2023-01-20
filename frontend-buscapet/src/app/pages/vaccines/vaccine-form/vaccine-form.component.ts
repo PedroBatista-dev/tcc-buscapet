@@ -20,7 +20,6 @@ export class VaccineFormComponent extends BaseResourceFormComponent<Vaccine> {
 
   protected buildResourceForm(): void {
     this.resourceForm = this.formBuilder.group({
-      id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]]
     });
   }

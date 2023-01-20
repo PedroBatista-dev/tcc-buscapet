@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
+<!-- <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">Navbar</a>
     <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -16,7 +16,57 @@
       </ul>
     </div>
   </div>
-</nav>
+</nav> -->
 
-
+<header>
+  <nav id="sidebarMenu" class="collapse navbar-collapse d-lg-block sidebar" [ngbCollapse]="isCollapsed">
+    <div class="position-sticky">
+      <div class="list-group list-group-flush mx-3 mt-4">
+        <a routerLink="dashboard" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
+          <i class="fas fa-tachometer-alt fa-fw mr-3"></i><span>Dashboard</span>
+        </a>
+        <a routerLink="perfil" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
+          <i class="fas fa-user-circle fa-fw mr-3"></i><span>Perfil</span>
+        </a>
+        <a routerLink="especies" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
+            class="fas fa-cat fa-fw mr-3"></i><span>Espécies</span></a>
+        <a routerLink="racas" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
+            class="fas fa-dog fa-fw mr-3"></i><span>Raças</span></a>
+        <a routerLink="cores" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
+          <i class="fas fa-palette fa-fw mr-3"></i><span>Cores</span>
+        </a>
+        <a routerLink="vacinas" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
+            class="fas fa-syringe fa-fw mr-3"></i><span>Vacinas</span></a>
+        <a routerLink="animais" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
+            class="fas fa-paw fa-fw mr-3"></i><span>Animais</span></a>
+        <a routerLink="adocoes" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
+            class="fas fa-paste fa-fw mr-3"></i><span>Adoções</span></a>
+        <a routerLink="adocoes" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
+          <i class="fas fa-sign-out-alt fa-fw mr-3"></i><span>Sair</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+  <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" data-mdb-toggle="collapse" data-mdb-target="#sidebarMenu"
+        aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a class="navbar-brand" routerLink="dashboard">
+        <img src="../../../../assets/logo_2.png" height="50" alt="BuscaPet Logo"
+          loading="lazy" />
+      </a>
+      <ul class="navbar-nav ms-auto d-flex flex-row">
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" routerLink="perfil"
+            id="navbarPerfilLink">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp" class="rounded-circle" height="45"
+              alt="Avatar" loading="lazy" />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
 

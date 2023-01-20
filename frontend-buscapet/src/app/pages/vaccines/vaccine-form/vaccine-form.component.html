@@ -1,29 +1,29 @@
-<app-bread-crumb [items]="[{text: 'Vacinas', link: '/vacinas'}, {text: pageTitle}]"></app-bread-crumb>
+<div class="form-vaccines">
+  <app-bread-crumb [items]="[{text: 'Vacinas', link: '/vacinas'}, {text: pageTitle}]"></app-bread-crumb>
 
-<app-page-header
-    [page-title]="pageTitle"
-    button-text="<< Voltar"
-    button-link="/vacinas"
-    button-class="btn-light">
-</app-page-header>
-
-<form [formGroup]="resourceForm" (submit)="submitForm()">
-  <div class="card">
-    <div class="card-header">
-      Informações sobre a vacina
-    </div>
-    <div class="card-body">
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label for="name">Nome</label>
-          <input type="text" class="form-control" id="name" formControlName="name">
-          <app-form-field-error [form-control]="$any(resourceForm).get('name')"></app-form-field-error>
-        </div>
-      </div>
+  <div class="row mb-4">
+    <div class="col-md-9">
+      <h1 class="h2 border-start ps-2">
+        {{pageTitle}}
+      </h1>
     </div>
   </div>
 
   <app-server-error-messages [server-error-messages]="serverErrorMessages"></app-server-error-messages>
 
-  <button [disabled]="submittingForm || resourceForm.invalid" type="submit" class="btn btn-primary btn-lg float-end mt-3">Salvar</button>
-</form>
+  <form [formGroup]="resourceForm" (submit)="submitForm()">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+            <app-form-field-error [form-control]="$any(resourceForm).get('name')"></app-form-field-error>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button [disabled]="submittingForm || resourceForm.invalid" type="submit" class="btn btn-md mt-2">Salvar</button>
+  </form>
+</div>

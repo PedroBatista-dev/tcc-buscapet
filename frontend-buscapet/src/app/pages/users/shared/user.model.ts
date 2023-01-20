@@ -2,7 +2,7 @@ import { BaseResourceModel } from '../../../shared/models/base-resource.model';
 
 export class User extends BaseResourceModel{
   constructor(
-    public override id?: number,
+    public override id?: string,
     public name?: string,
     public email?: string,
     public password?: string,

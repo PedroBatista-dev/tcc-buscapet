@@ -11,6 +11,8 @@ import { ServerErrorMessagesComponent } from './components/server-error-messages
 import { CustomFormsModule } from 'ng2-validation';
 import { NgBrazil } from 'ng-brazil';
 
+import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { NgBrazil } from 'ng-brazil';
     ReactiveFormsModule,
     RouterModule,
     CustomFormsModule,
-    NgBrazil
+    NgBrazil,
+    NgbPaginationModule,
+    NgbTypeaheadModule
   ],
   exports: [
     CommonModule,
@@ -33,7 +37,9 @@ import { NgBrazil } from 'ng-brazil';
     BreadCrumbComponent,
     PageHeaderComponent,
     FormFieldErrorComponent,
-    ServerErrorMessagesComponent
+    ServerErrorMessagesComponent,
+    NgbPaginationModule,
+    NgbTypeaheadModule
   ]
 })
 export class SharedModule { }

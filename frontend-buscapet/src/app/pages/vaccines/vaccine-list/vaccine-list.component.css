@@ -1,0 +1,16 @@
+.list-vaccines {
+  padding: 100px 0 0 200px;
+}
+
+@media (max-width: 991.98px) {
+  .list-vaccines {
+      padding-left: 0;
+    }
+}
+
+.btn-novo {
+  background-color: #F77E06;
+  color: white;
+}
+
+

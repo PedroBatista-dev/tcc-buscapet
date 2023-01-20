@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LocalStorageUtils } from './shared/utils/localstorage';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-
+  localStorage = new LocalStorageUtils();
 }

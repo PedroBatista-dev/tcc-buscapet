@@ -1,21 +1,31 @@
-import { Directive, OnInit } from '@angular/core';
+import { Directive, Injector, OnInit } from '@angular/core';
 
 import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../services/base-resource.service';
+
+import { ToastrService } from 'ngx-toastr';
+import { FormControl } from '@angular/forms';
+import { map, startWith } from 'rxjs';
 
 @Directive()
 export abstract class BaseResourceListComponent<T extends BaseResourceModel> implements OnInit {
 
   resources: T[] = [];
+  filter = new FormControl('');
+  page = 1;
+	pageSize = new FormControl(4);;
+	collectionSize = 0;
 
-  constructor(protected resourceService: BaseResourceService<T>) { }
+  protected toastr!: ToastrService;
+
+  constructor(protected resourceService: BaseResourceService<T>, protected injector: Injector) {
+    this.toastr = this.injector.get(ToastrService);
+   }
 
   ngOnInit(): void {
     this.resources = [];
-    // this.resourceService.getAll().subscribe({
-    //   next: (resources) => this.resources = resources,
-    //   error: () => alert('Erro ao carregar a lista')
-    // });
+    this.getAllResource();
+    this.collectionSize = this.resources.length;
   }
 
   deleteResource(resource: T) {
@@ -24,9 +34,17 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
     if(mustDelete) {
       this.resourceService.delete(resource.id!).subscribe({
         next: () => this.resources = this.resources.filter(element => element.id !== resource.id),
-        error: () => alert("Erro ao tentar excluir")
+        error: () => this.toastr.error("Erro ao tentar excluir")
       })
     }
+  }
+
+  getAllResource() {
+    console.log(this.pageSize.value)
+    this.resourceService.getAll(this.filter.value).subscribe({
+      next: (resources) => this.resources = resources,
+      error: () => this.toastr.error('Erro ao carregar a lista')
+    });
   }
 
 }

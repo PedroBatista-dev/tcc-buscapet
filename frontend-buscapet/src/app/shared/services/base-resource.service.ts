@@ -1,63 +1,71 @@
 import { BaseResourceModel } from "../models/base-resource.model";
 
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injector } from "@angular/core";
 
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { LocalStorageUtils } from "../utils/localstorage";
+import { Paginate } from "../models/paginate.model";
 
 export abstract class BaseResourceService<T extends BaseResourceModel> {
 
   protected http!: HttpClient;
+  localStorage = new LocalStorageUtils();
 
   constructor(protected apiPath: string, protected injector: Injector, protected jsonDataToResourceFn: (jsonData: any) => T) {
     this.http = injector.get(HttpClient);
    }
 
-  getAll(): Observable<T[]> {
-    return this.http.get<T[]>(this.apiPath).pipe(
+  getAll(name: string): Observable<T[]> {
+    let url = this.apiPath;
+    if (name) {
+      url = `${this.apiPath}/?name=${name}`;
+    }
+
+    return this.http.get<Paginate<T>>(url, this.obterAuthHeaderJson()).pipe(
       map(this.jsonDataToResources.bind(this)),
       catchError(this.handleError)
     );
   }
 
-  getById(id: number): Observable<T> {
+  getById(id: string): Observable<T> {
     const url = `${this.apiPath}/${id}`;
 
-    return this.http.get<T>(url).pipe(
+    return this.http.get<T>(url, this.obterAuthHeaderJson()).pipe(
       map(this.jsonDataToResource.bind(this)),
       catchError(this.handleError)
     );
   }
 
   create(resource: T): Observable<T> {
-    return this.http.post<T>(this.apiPath, resource).pipe(
+    return this.http.post<T>(this.apiPath, resource, this.obterAuthHeaderJson()).pipe(
       map(this.jsonDataToResource.bind(this)),
       catchError(this.handleError)
     );
   }
 
-  update(resource: T): Observable<T> {
-    const url = `${this.apiPath}/${resource.id}`;
+  update(resource: T, id: string): Observable<T> {
+    const url = `${this.apiPath}/${id}`;
 
-    return this.http.put<T>(url, resource).pipe(
+    return this.http.put<T>(url, resource, this.obterAuthHeaderJson()).pipe(
       map(() => resource),
       catchError(this.handleError)
     );
   }
 
-  delete(id: number): Observable<any> {
+  delete(id: string): Observable<any> {
     const url = `${this.apiPath}/${id}`;
 
-    return this.http.delete(url).pipe(
+    return this.http.delete(url, this.obterAuthHeaderJson()).pipe(
       map(() => null),
       catchError(this.handleError)
     );
   }
 
-  protected jsonDataToResources(jsonData: any[]): T[] {
+  protected jsonDataToResources(jsonData: Paginate<T>): T[] {
     const resources: T[] = [];
-    jsonData.forEach(
+    jsonData.data!.forEach(
       element => resources.push(this.jsonDataToResourceFn(element))
     );
     return resources;
@@ -71,4 +79,13 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     console.log("ERRO NA REQUISIÇÃO => ", error);
     return throwError(() => error);
   }
+
+  protected obterAuthHeaderJson() {
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.localStorage.obterTokenUsuario()}`
+            })
+        };
+    }
 }

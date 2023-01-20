@@ -13,7 +13,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
   ],
   imports: [
     SharedModule,
-    VaccinesRoutingModule,
+    VaccinesRoutingModule
   ]
 })
 export class VaccinesModule { }

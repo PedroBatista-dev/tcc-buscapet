@@ -87,9 +87,9 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
   protected loadResource(): void {
     if (this.currentAction === 'editar') {
-      this.route.paramMap.pipe(
+      this.route.params.pipe(
         switchMap(params =>
-          this.resourceService.getById(Number(params.get("id")))
+          this.resourceService.getById(params['id'])
         )
       )
       .subscribe({
@@ -97,7 +97,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
           this.resource = resource;
           this.resourceForm?.patchValue(resource);
         },
-        error: () => alert('Ocorreu um erro no servidor, tente mais tarde!')
+        error: () => this.toastr.error('Ocorreu um erro no servidor, tente mais tarde!')
       })
     }
   }
@@ -113,10 +113,15 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
   protected updateResource():void {
     const resource: T = this.jsonDataToResourceFn(this.resourceForm.value);
-    this.resourceService.update(resource).subscribe({
+    this.route.params.pipe(
+      switchMap(params =>
+        this.resourceService.update(resource, params['id'])
+      )
+    ).subscribe({
       next: (resource) => this.actionsForSuccess(resource),
       error: (error) => this.actionsForError(error)
     });
+
     this.mudancasNaoSalvas = false;
   }
 
@@ -126,9 +131,13 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     const baseComponentParent = this.route.snapshot.parent?.url[0]?.path;
 
     if(baseComponentParent) {
-      this.router.navigateByUrl(baseComponentParent, { skipLocationChange: true }).then(
-        () => this.router.navigate([baseComponentParent, resource.id, "editar"])
-      );
+      if (this.currentAction === "novo") {
+        this.router.navigateByUrl(baseComponentParent, { skipLocationChange: true }).then(
+          () => this.router.navigate([baseComponentParent, resource.id, "editar"])
+        );
+      } else {
+        this.router.navigate([baseComponentParent]);
+      }
     } else {
       if (this.currentAction === "login") {
         const remember = this.resourceForm.get('remember')!.value ? 'sim' : 'nao';
