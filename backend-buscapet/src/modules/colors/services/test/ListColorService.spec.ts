@@ -31,9 +31,9 @@ describe('ListColor', () => {
   });
 
   it('Deve ser capaz de listar as cores', async () => {
-    const colors = await listColor.execute({ user_id: user.id });
+    const colors = await listColor.execute({ user_id: user.id, name: '' });
 
-    expect(colors.data).toEqual(
+    expect(colors).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           name: 'preto',

@@ -8,7 +8,11 @@ const breedsController = new BreedsController();
 
 breedsRouter.use(isAuthenticated);
 
-breedsRouter.get('/', breedsController.index);
+breedsRouter.get(
+  '/',
+  celebrate({ [Segments.QUERY]: { name: Joi.string() } }),
+  breedsController.index,
+);
 
 breedsRouter.get(
   '/:id',

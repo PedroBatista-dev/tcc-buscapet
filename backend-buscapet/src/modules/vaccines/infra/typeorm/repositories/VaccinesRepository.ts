@@ -32,13 +32,10 @@ export class VaccinesRepository implements IVaccinesRepository {
     if (name) {
       const vaccines = await this.ormRepository.find({
         where: {
-          name: Like('%name%'),
+          name: Like(`%${name}%`),
           user_id,
         },
       });
-      // .createQueryBuilder('vaccine')
-      // .where('vaccine.user_id = :user_id', { user_id })
-      // .andWhere('vaccine.name like :name', { name: `%${name}%` })
 
       return vaccines;
     } else {

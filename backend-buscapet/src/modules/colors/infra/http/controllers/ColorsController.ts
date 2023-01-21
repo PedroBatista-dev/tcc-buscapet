@@ -9,10 +9,11 @@ import UpdateColorService from '../../../services/UpdateColorService';
 export default class ColorsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const name = request.query.name as string;
 
     const listColors = container.resolve(ListColorService);
 
-    const colors = await listColors.execute({ user_id });
+    const colors = await listColors.execute({ user_id, name });
 
     return response.json(colors);
   }

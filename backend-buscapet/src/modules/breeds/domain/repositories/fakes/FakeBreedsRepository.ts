@@ -1,6 +1,5 @@
 import { IBreedsRepository } from '../../../domain/repositories/IBreedsRepository';
 import { ICreateBreed } from '../../../domain/models/ICreateBreed';
-import { IPaginateBreed } from '../../../domain/models/IPaginateBreed';
 import { v4 as uuidv4 } from 'uuid';
 import Breed from '../../../infra/typeorm/entities/Breed';
 
@@ -38,21 +37,10 @@ export class FakeBreedsRepository implements IBreedsRepository {
     );
   }
 
-  public async findAll(user_id: string): Promise<IPaginateBreed> {
+  public async findAll(user_id: string): Promise<Breed[]> {
     const breeds = this.breeds.filter(breed => breed.user_id === user_id);
 
-    const breedsPaginate = {
-      from: 1,
-      to: 1,
-      per_page: 1,
-      total: 1,
-      current_page: 1,
-      prev_page: 1,
-      next_page: 1,
-      data: breeds,
-    };
-
-    return breedsPaginate;
+    return breeds;
   }
 
   public async findByName(

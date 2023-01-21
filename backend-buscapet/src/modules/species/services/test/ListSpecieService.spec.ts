@@ -31,9 +31,9 @@ describe('ListSpecie', () => {
   });
 
   it('Deve ser capaz de listar as espécies', async () => {
-    const species = await listSpecie.execute({ user_id: user.id });
+    const species = await listSpecie.execute({ user_id: user.id, name: '' });
 
-    expect(species.data).toEqual(
+    expect(species).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           name: 'canina',

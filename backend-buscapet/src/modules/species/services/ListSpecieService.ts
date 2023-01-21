@@ -1,9 +1,10 @@
 import { inject, injectable } from 'tsyringe';
-import { IPaginateSpecie } from '../domain/models/IPaginateSpecie';
+import { ISpecie } from '../domain/models/ISpecie';
 import { ISpeciesRepository } from '../domain/repositories/ISpeciesRepository';
 
 interface IRequest {
   user_id: string;
+  name: string;
 }
 
 @injectable()
@@ -13,8 +14,8 @@ class ListSpecieService {
     private speciesRepository: ISpeciesRepository,
   ) {}
 
-  public async execute({ user_id }: IRequest): Promise<IPaginateSpecie> {
-    const species = await this.speciesRepository.findAll(user_id);
+  public async execute({ user_id, name }: IRequest): Promise<ISpecie[]> {
+    const species = await this.speciesRepository.findAll(user_id, name);
 
     return species;
   }

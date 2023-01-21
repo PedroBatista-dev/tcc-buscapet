@@ -46,9 +46,9 @@ describe('ListBreed', () => {
   });
 
   it('Deve ser capaz de listar as raças', async () => {
-    const breeds = await listBreed.execute({ user_id: user.id });
+    const breeds = await listBreed.execute({ user_id: user.id, name: '' });
 
-    expect(breeds.data).toEqual(
+    expect(breeds).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           name: 'lulu',

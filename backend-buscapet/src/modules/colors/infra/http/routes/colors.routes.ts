@@ -8,7 +8,11 @@ const colorsController = new ColorsController();
 
 colorsRouter.use(isAuthenticated);
 
-colorsRouter.get('/', colorsController.index);
+colorsRouter.get(
+  '/',
+  celebrate({ [Segments.QUERY]: { name: Joi.string() } }),
+  colorsController.index,
+);
 
 colorsRouter.get(
   '/:id',

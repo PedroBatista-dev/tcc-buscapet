@@ -1,6 +1,5 @@
 import { IColorsRepository } from '../../../domain/repositories/IColorsRepository';
 import { ICreateColor } from '../../../domain/models/ICreateColor';
-import { IPaginateColor } from '../../../domain/models/IPaginateColor';
 import { v4 as uuidv4 } from 'uuid';
 import Color from '../../../infra/typeorm/entities/Color';
 
@@ -37,21 +36,10 @@ export class FakeColorsRepository implements IColorsRepository {
     );
   }
 
-  public async findAll(user_id: string): Promise<IPaginateColor> {
+  public async findAll(user_id: string): Promise<Color[]> {
     const colors = this.colors.filter(color => color.user_id === user_id);
 
-    const colorsPaginate = {
-      from: 1,
-      to: 1,
-      per_page: 1,
-      total: 1,
-      current_page: 1,
-      prev_page: 1,
-      next_page: 1,
-      data: colors,
-    };
-
-    return colorsPaginate;
+    return colors;
   }
 
   public async findByName(

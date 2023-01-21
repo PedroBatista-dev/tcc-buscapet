@@ -8,7 +8,11 @@ const speciesController = new SpeciesController();
 
 speciesRouter.use(isAuthenticated);
 
-speciesRouter.get('/', speciesController.index);
+speciesRouter.get(
+  '/',
+  celebrate({ [Segments.QUERY]: { name: Joi.string() } }),
+  speciesController.index,
+);
 
 speciesRouter.get(
   '/:id',

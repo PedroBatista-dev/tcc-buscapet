@@ -9,10 +9,11 @@ import UpdateBreedService from '../../../services/UpdateBreedService';
 export default class BreedsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const name = request.query.name as string;
 
     const listBreeds = container.resolve(ListBreedService);
 
-    const breeds = await listBreeds.execute({ user_id });
+    const breeds = await listBreeds.execute({ user_id, name });
 
     return response.json(breeds);
   }

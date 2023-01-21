@@ -1,8 +1,7 @@
 import Specie from '../entities/Specie';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Like, Repository } from 'typeorm';
 import { ISpeciesRepository } from '@modules/species/domain/repositories/ISpeciesRepository';
 import { ICreateSpecie } from '@modules/species/domain/models/ICreateSpecie';
-import { IPaginateSpecie } from '@modules/species/domain/models/IPaginateSpecie';
 
 export class SpeciesRepository implements ISpeciesRepository {
   private ormRepository: Repository<Specie>;
@@ -29,14 +28,27 @@ export class SpeciesRepository implements ISpeciesRepository {
     await this.ormRepository.remove(specie);
   }
 
-  public async findAll(user_id: string): Promise<IPaginateSpecie> {
-    const specie = await this.ormRepository
-      .createQueryBuilder('specie')
-      .leftJoinAndSelect('specie.breeds', 'breed')
-      .where('specie.user_id = :user_id', { user_id })
-      .paginate();
+  public async findAll(user_id: string, name: string): Promise<Specie[]> {
+    if (name) {
+      const species = await this.ormRepository.find({
+        where: {
+          name: Like(`%${name}%`),
+          user_id,
+        },
+        relations: ['breeds'],
+      });
 
-    return specie as IPaginateSpecie;
+      return species;
+    } else {
+      const species = await this.ormRepository.find({
+        where: {
+          user_id,
+        },
+        relations: ['breeds'],
+      });
+
+      return species;
+    }
   }
 
   public async findByName(

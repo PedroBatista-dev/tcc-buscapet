@@ -1,16 +1,17 @@
 import Color from '../entities/Color';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Like, Repository } from 'typeorm';
 import { IColorsRepository } from '@modules/colors/domain/repositories/IColorsRepository';
 import { ICreateColor } from '@modules/colors/domain/models/ICreateColor';
-import { IPaginateColor } from '@modules/colors/domain/models/IPaginateColor';
 
 export class ColorsRepository implements IColorsRepository {
-  constructor(private ormRepository: Repository<Color>) {
+  private ormRepository: Repository<Color>;
+
+  constructor() {
     this.ormRepository = getRepository(Color);
   }
 
   public async create({ name, user_id }: ICreateColor): Promise<Color> {
-    const color = this.ormRepository.create({ name, user_id });
+    const color = await this.ormRepository.create({ name, user_id });
 
     await this.ormRepository.save(color);
 
@@ -27,13 +28,25 @@ export class ColorsRepository implements IColorsRepository {
     await this.ormRepository.remove(color);
   }
 
-  public async findAll(user_id: string): Promise<IPaginateColor> {
-    const color = await this.ormRepository
-      .createQueryBuilder('color')
-      .where('color.user_id = :user_id', { user_id })
-      .paginate();
+  public async findAll(user_id: string, name: string): Promise<Color[]> {
+    if (name) {
+      const colors = await this.ormRepository.find({
+        where: {
+          name: Like(`%${name}%`),
+          user_id,
+        },
+      });
 
-    return color as IPaginateColor;
+      return colors;
+    } else {
+      const colors = await this.ormRepository.find({
+        where: {
+          user_id,
+        },
+      });
+
+      return colors;
+    }
   }
 
   public async findByName(

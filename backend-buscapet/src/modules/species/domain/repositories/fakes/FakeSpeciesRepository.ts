@@ -1,6 +1,5 @@
 import { ISpeciesRepository } from '../../../domain/repositories/ISpeciesRepository';
 import { ICreateSpecie } from '../../../domain/models/ICreateSpecie';
-import { IPaginateSpecie } from '../../../domain/models/IPaginateSpecie';
 import { v4 as uuidv4 } from 'uuid';
 import Specie from '../../../infra/typeorm/entities/Specie';
 
@@ -37,21 +36,10 @@ export class FakeSpeciesRepository implements ISpeciesRepository {
     );
   }
 
-  public async findAll(user_id: string): Promise<IPaginateSpecie> {
+  public async findAll(user_id: string): Promise<Specie[]> {
     const species = this.species.filter(specie => specie.user_id === user_id);
 
-    const speciesPaginate = {
-      from: 1,
-      to: 1,
-      per_page: 1,
-      total: 1,
-      current_page: 1,
-      prev_page: 1,
-      next_page: 1,
-      data: species,
-    };
-
-    return speciesPaginate;
+    return species;
   }
 
   public async findByName(

@@ -9,10 +9,11 @@ import UpdateSpecieService from '../../../services/UpdateSpecieService';
 export default class SpeciesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const name = request.query.name as string;
 
     const listSpecies = container.resolve(ListSpecieService);
 
-    const species = await listSpecies.execute({ user_id });
+    const species = await listSpecies.execute({ user_id, name });
 
     return response.json(species);
   }
