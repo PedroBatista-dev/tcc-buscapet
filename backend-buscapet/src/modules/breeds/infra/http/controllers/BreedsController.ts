@@ -31,7 +31,8 @@ export default class BreedsController {
 
   public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { name, specie_id } = request.body;
+    const { name, specie } = request.body;
+    const specie_id = specie.id;
 
     const createBreed = container.resolve(CreateBreedService);
 
