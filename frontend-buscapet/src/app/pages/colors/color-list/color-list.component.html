@@ -1,8 +1,8 @@
-<div class="list-vaccines">
+<div class="list-colors">
   <div class="row mb-4">
     <div class="col-md-9">
       <h1 class="h2 border-start ps-2">
-        Vacinas
+        Cores
       </h1>
     </div>
   </div>
@@ -27,18 +27,18 @@
       <table class="table table-hover">
         <thead>
           <tr class="bg-info text-light">
-            <th>Vacina</th>
+            <th>Cor</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let vaccine of resources">
+          <tr *ngFor="let color of resources">
             <td>
-              <strong>{{vaccine.name}}</strong>
+              <strong>{{color.name}}</strong>
             </td>
             <td>
-              <a [routerLink]="[vaccine.id, 'editar']" class="btn btn-sm mr-2"><i class="fas fa-pencil-alt"></i></a>
-              <button (click)="deleteResource(vaccine)" class="btn btn-sm"><i class="fas fa-trash-alt"></i></button>
+              <a [routerLink]="[color.id, 'editar']" class="btn btn-sm mr-2"><i class="fas fa-pencil-alt"></i></a>
+              <button (click)="deleteResource(color)" class="btn btn-sm"><i class="fas fa-trash-alt"></i></button>
             </td>
           </tr>
         </tbody>

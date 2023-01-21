@@ -1,0 +1,32 @@
+.list-colors {
+  padding: 100px 0 50px 200px;
+}
+
+@media (max-width: 991.98px) {
+  .list-colors {
+      padding-left: 0;
+    }
+}
+
+.btn-novo {
+  background-color: #F77E06;
+  color: white;
+}
+
+ngb-pagination {
+  height: 40px;
+}
+
+ngb-pagination ::ng-deep ul>li:not(.active)>a {
+  background-color: white !important;
+  color: black !important;
+}
+
+ngb-pagination ::ng-deep ul>li.active>a {
+  background-color: #44C5CD !important;
+  border-color: #44C5CD !important;
+}
+
+ngb-pagination ::ng-deep ul>li.active>a>span {
+  display: none;
+}

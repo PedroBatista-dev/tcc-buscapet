@@ -38,12 +38,16 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
       if (result.isConfirmed) {
         this.resourceService.delete(resource.id!).subscribe({
           next: () => {
-            Swal.fire(
-              'Deletado!',
-              'Seu arquivo foi deletado.',
-              'success'
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Deletado!',
+              text: 'Seu arquivo foi deletado.',
+              showConfirmButton: false,
+              timer: 1500
+            }
             )
-            this.resources = this.resources.filter(element => element.id !== resource.id);
+            this.getAllResource();
           },
           error: () => Swal.fire({
               title: 'Erro!',
@@ -65,7 +69,7 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
       },
       error: () => Swal.fire({
               title: 'Erro!',
-              text: 'Erro ao tentar excluir.',
+              text: 'Erro ao tentar listar.',
               icon: 'error',
               confirmButtonColor: '#44C5CD',
         })

@@ -7,6 +7,7 @@ import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.compon
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { FormFieldErrorComponent } from './components/form-field-error/form-field-error.component';
 import { ServerErrorMessagesComponent } from './components/server-error-messages/server-error-messages.component';
+import { PrimeiraLetraMaiusculaDirective } from "./directives/primeira-letra-maiuscula.directive";
 
 import { CustomFormsModule } from 'ng2-validation';
 import { NgBrazil } from 'ng-brazil';
@@ -19,7 +20,8 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
     BreadCrumbComponent,
     PageHeaderComponent,
     FormFieldErrorComponent,
-    ServerErrorMessagesComponent
+    ServerErrorMessagesComponent,
+    PrimeiraLetraMaiusculaDirective
   ],
   imports: [
     CommonModule,
@@ -39,7 +41,8 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
     FormFieldErrorComponent,
     ServerErrorMessagesComponent,
     NgbPaginationModule,
-    NgbTypeaheadModule
+    NgbTypeaheadModule,
+    PrimeiraLetraMaiusculaDirective
   ]
 })
 export class SharedModule { }
