@@ -1,14 +1,9 @@
 .footer {
   height: 40px;
-  position: fixed;
+  position: absolute;
   right: 0;
   left: 0;
   background-color: white;
   z-index: 600;
 }
 
-@media (max-width: 575px) {
-  .footer {
-    display: none !important;
-  }
-}

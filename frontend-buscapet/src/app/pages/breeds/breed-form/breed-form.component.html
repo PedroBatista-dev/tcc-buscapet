@@ -17,13 +17,14 @@
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="name">Nome</label>
-            <input type="text" class="form-control" id="name" formControlName="name" primeiraLetraMaiuscula>
+            <input type="text" class="form-control" id="name" formControlName="name" (keypress)="printForm()" primeiraLetraMaiuscula>
             <app-form-field-error [form-control]="$any(resourceForm).get('name')"></app-form-field-error>
           </div>
           <div class="form-group col-md-4">
             <label for="specie">Éspecie</label>
-            <input type="text" class="form-control" id="specie" formControlName="specie_id" primeiraLetraMaiuscula>
-            <app-form-field-error [form-control]="$any(resourceForm).get('specie_id')"></app-form-field-error>
+            <input id="specie" type="text" class="form-control" formControlName="specie" [ngbTypeahead]="search"
+              [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]="false" />
+            <app-form-field-error [form-control]="$any(resourceForm).get('specie')"></app-form-field-error>
           </div>
         </div>
       </div>
