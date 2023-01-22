@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterContentChecked, OnInit, Injector, Inject, Directive, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { fromEvent, merge, Observable, switchMap } from 'rxjs';
@@ -93,6 +93,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       .subscribe({
         next: (resource) => {
           this.resource = resource;
+          this.setFormArray(this.resourceForm, resource);
           this.resourceForm?.patchValue(resource);
         },
         error: () => Swal.fire({
@@ -103,6 +104,73 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
         })
       })
     }
+  }
+
+  protected setFormArray(form: FormGroup, resource: any) {
+    Object.keys(form.controls).forEach((key) => {
+      if (form.controls[key] instanceof FormArray) {
+        const formArray = form.controls[key] as FormArray;
+        for (let index = 0; index < resource[key].length; index++) {
+          formArray.push(
+            this.cloneAbstractControl(
+              formArray.controls[0],
+              resource[key][index]
+            )
+          );
+        }
+        formArray.controls.shift();
+      } else if (form.controls[key] instanceof FormGroup) {
+        this.setFormArray(form.controls[key] as FormGroup, resource[key]);
+      }
+    });
+  }
+
+  cloneAbstractControl<T extends AbstractControl>(control: T, value = null): T {
+    let newControl: T;
+
+    if (control instanceof FormGroup) {
+      const formGroup = new FormGroup(
+        {},
+        control.validator,
+        control.asyncValidator
+      );
+      const controls = control.controls;
+
+      Object.keys(controls).forEach((key) => {
+        formGroup.addControl(
+          key,
+          this.cloneAbstractControl(controls[key], value![key])
+        );
+      });
+
+      newControl = formGroup as any;
+    } else if (control instanceof FormArray) {
+      const formArray = new FormArray(
+        [],
+        control.validator,
+        control.asyncValidator
+      );
+
+      control.controls.forEach((formControl) => {
+        Object.keys(value!).forEach((key) =>
+          formArray.push(this.cloneAbstractControl(formControl, value![key]))
+        );
+      });
+
+      newControl = formArray as any;
+    } else if (control instanceof FormControl) {
+      newControl = new FormControl(
+        value,
+        control.validator,
+        control.asyncValidator
+      ) as any;
+    } else {
+      throw new Error("Error: unexpected control value");
+    }
+
+    if (control.disabled) newControl.disable({ emitEvent: false });
+
+    return newControl;
   }
 
   protected createResource():void {
