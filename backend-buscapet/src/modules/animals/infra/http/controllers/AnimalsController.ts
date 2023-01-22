@@ -10,10 +10,11 @@ export default class AnimalsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
     const isOng = request.user.isOng;
+    const name = request.query.name as string;
 
     const listAnimals = container.resolve(ListAnimalService);
 
-    const animals = await listAnimals.execute({ user_id, isOng });
+    const animals = await listAnimals.execute({ user_id, isOng, name });
 
     return response.json(animals);
   }
@@ -39,11 +40,14 @@ export default class AnimalsController {
       sex,
       size,
       other_animals,
-      color_id,
-      breed_id,
-      specie_id,
+      color,
+      breed,
+      specie,
       vaccines,
     } = request.body;
+    const color_id = color.id;
+    const breed_id = breed.id;
+    const specie_id = specie.id;
 
     const createAnimal = container.resolve(CreateAnimalService);
 
@@ -73,11 +77,14 @@ export default class AnimalsController {
       sex,
       size,
       other_animals,
-      color_id,
-      breed_id,
-      specie_id,
+      color,
+      breed,
+      specie,
       vaccines,
     } = request.body;
+    const color_id = color.id;
+    const breed_id = breed.id;
+    const specie_id = specie.id;
     const { id } = request.params;
 
     const updateAnimal = container.resolve(UpdateAnimalService);

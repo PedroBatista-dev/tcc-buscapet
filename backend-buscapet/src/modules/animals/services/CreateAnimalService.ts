@@ -90,24 +90,26 @@ class CreateAnimalService {
       throw new AppError('Já existe um animal com esse nome!');
     }
 
-    const existsVaccines = await this.vaccinesRepository.findAllByIds(
-      vaccines,
-      user_id,
-    );
-    if (!existsVaccines.length) {
-      throw new AppError(
-        'Não foram encontradas as vacinas com os ids informados!',
+    if (vaccines.length) {
+      const existsVaccines = await this.vaccinesRepository.findAllByIds(
+        vaccines,
+        user_id,
       );
-    }
+      if (!existsVaccines.length) {
+        throw new AppError(
+          'Não foram encontradas as vacinas com os ids informados!',
+        );
+      }
 
-    const existsVaccinesIds = existsVaccines.map(vaccine => vaccine.id);
-    const checkInexistentVaccines = vaccines.filter(
-      vaccine => !existsVaccinesIds.includes(vaccine.id),
-    );
-    if (checkInexistentVaccines.length) {
-      throw new AppError(
-        `Não foi encontrada a vacina ${checkInexistentVaccines[0].name}`,
+      const existsVaccinesIds = existsVaccines.map(vaccine => vaccine.id);
+      const checkInexistentVaccines = vaccines.filter(
+        vaccine => !existsVaccinesIds.includes(vaccine.id),
       );
+      if (checkInexistentVaccines.length) {
+        throw new AppError(
+          `Não foi encontrada a vacina ${checkInexistentVaccines[0].name}`,
+        );
+      }
     }
 
     const idVaccines: ICreateAnimalsVaccines[] = [];

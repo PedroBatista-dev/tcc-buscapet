@@ -1,10 +1,11 @@
 import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
 import { inject, injectable } from 'tsyringe';
-import { IPaginateAnimal } from '../domain/models/IPaginateAnimal';
+import { IAnimal } from '../domain/models/IAnimal';
 
 interface IRequest {
   user_id: string;
   isOng: boolean;
+  name: string;
 }
 
 @injectable()
@@ -14,8 +15,8 @@ class ListAnimalService {
     private animalsRepository: IAnimalsRepository,
   ) {}
 
-  public async execute({ user_id, isOng }: IRequest): Promise<IPaginateAnimal> {
-    const animals = await this.animalsRepository.findAll(user_id, isOng);
+  public async execute({ user_id, isOng, name }: IRequest): Promise<IAnimal[]> {
+    const animals = await this.animalsRepository.findAll(user_id, isOng, name);
 
     return animals;
   }

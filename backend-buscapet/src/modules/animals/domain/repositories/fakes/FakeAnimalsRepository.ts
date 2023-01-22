@@ -1,6 +1,5 @@
 import { IAnimalsRepository } from '../../../domain/repositories/IAnimalsRepository';
 import { ICreateAnimal } from '../../../domain/models/ICreateAnimal';
-import { IPaginateAnimal } from '../../../domain/models/IPaginateAnimal';
 import { v4 as uuidv4 } from 'uuid';
 import Animal from '../../../infra/typeorm/entities/Animal';
 
@@ -57,38 +56,13 @@ export class FakeAnimalsRepository implements IAnimalsRepository {
     );
   }
 
-  public async findAll(
-    user_id: string,
-    isOng: boolean,
-  ): Promise<IPaginateAnimal> {
+  public async findAll(user_id: string, isOng: boolean): Promise<Animal[]> {
     if (isOng) {
       const animals = this.animals.filter(animal => animal.user_id === user_id);
 
-      const animalsPaginate = {
-        from: 1,
-        to: 1,
-        per_page: 1,
-        total: 1,
-        current_page: 1,
-        prev_page: 1,
-        next_page: 1,
-        data: animals,
-      };
-
-      return animalsPaginate;
+      return animals;
     } else {
-      const animalsPaginate = {
-        from: 1,
-        to: 1,
-        per_page: 1,
-        total: 1,
-        current_page: 1,
-        prev_page: 1,
-        next_page: 1,
-        data: this.animals,
-      };
-
-      return animalsPaginate;
+      return this.animals;
     }
   }
 

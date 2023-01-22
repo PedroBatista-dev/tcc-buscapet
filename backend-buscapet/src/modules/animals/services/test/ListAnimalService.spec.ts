@@ -94,9 +94,10 @@ describe('ListAnimal', () => {
     const animals = await listAnimal.execute({
       user_id: user.id,
       isOng: user.isOng,
+      name: '',
     });
 
-    expect(animals.data).toEqual(
+    expect(animals).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           name: 'Pingo',

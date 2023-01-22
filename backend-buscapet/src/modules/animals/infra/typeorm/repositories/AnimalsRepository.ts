@@ -1,8 +1,7 @@
 import Animal from '../entities/Animal';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Like, Repository } from 'typeorm';
 import { IAnimalsRepository } from '@modules/animals/domain/repositories/IAnimalsRepository';
 import { ICreateAnimal } from '@modules/animals/domain/models/ICreateAnimal';
-import { IPaginateAnimal } from '@modules/animals/domain/models/IPaginateAnimal';
 
 export class AnimalsRepository implements IAnimalsRepository {
   private ormRepository: Repository<Animal>;
@@ -56,28 +55,42 @@ export class AnimalsRepository implements IAnimalsRepository {
   public async findAll(
     user_id: string,
     isOng: boolean,
-  ): Promise<IPaginateAnimal> {
-    if (isOng) {
-      const animal = await this.ormRepository
-        .createQueryBuilder('animal')
-        .innerJoinAndSelect('animal.color', 'color')
-        .innerJoinAndSelect('animal.specie', 'specie')
-        .innerJoinAndSelect('animal.breed', 'breed')
-        .innerJoinAndSelect('animal.animals_vaccine', 'animals_vaccine')
-        .where('animal.user_id = :user_id', { user_id })
-        .paginate();
-
-      return animal as IPaginateAnimal;
+    name: string,
+  ): Promise<Animal[]> {
+    if (name) {
+      if (isOng) {
+        const animals = await this.ormRepository.find({
+          where: {
+            name: Like(`%${name}%`),
+            user_id,
+          },
+          relations: ['color', 'specie', 'breed', 'animals_vaccine'],
+        });
+        return animals;
+      } else {
+        const animals = await this.ormRepository.find({
+          where: {
+            name: Like(`%${name}%`),
+          },
+          relations: ['color', 'specie', 'breed', 'animals_vaccine'],
+        });
+        return animals;
+      }
     } else {
-      const animal = await this.ormRepository
-        .createQueryBuilder('animal')
-        .innerJoinAndSelect('animal.color', 'color')
-        .innerJoinAndSelect('animal.specie', 'specie')
-        .innerJoinAndSelect('animal.breed', 'breed')
-        .innerJoinAndSelect('animal.animals_vaccine', 'animals_vaccine')
-        .paginate();
-
-      return animal as IPaginateAnimal;
+      if (isOng) {
+        const animals = await this.ormRepository.find({
+          where: {
+            user_id,
+          },
+          relations: ['color', 'specie', 'breed', 'animals_vaccine'],
+        });
+        return animals;
+      } else {
+        const animals = await this.ormRepository.find({
+          relations: ['color', 'specie', 'breed', 'animals_vaccine'],
+        });
+        return animals;
+      }
     }
   }
 

@@ -16,7 +16,11 @@ animalsRouter.use(isAuthenticated);
 
 const upload = multer(uploadConfig);
 
-animalsRouter.get('/', animalsController.index);
+animalsRouter.get(
+  '/',
+  celebrate({ [Segments.QUERY]: { name: Joi.string() } }),
+  animalsController.index,
+);
 
 animalsRouter.get(
   '/:id',
@@ -33,9 +37,35 @@ animalsRouter.post(
       sex: Joi.string().valid('M', 'F').required(),
       size: Joi.string().valid('P', 'M', 'G').required(),
       other_animals: Joi.string().required(),
-      color_id: Joi.string().uuid().required(),
-      breed_id: Joi.string().uuid().required(),
-      specie_id: Joi.string().uuid().required(),
+      color: Joi.object()
+        .required()
+        .keys({
+          id: Joi.string().uuid(),
+          name: Joi.string().min(2),
+          created_at: Joi.string(),
+          updated_at: Joi.string(),
+          user_id: Joi.string().uuid(),
+        }),
+      breed: Joi.object()
+        .required()
+        .keys({
+          id: Joi.string().uuid(),
+          name: Joi.string().min(2),
+          specie_id: Joi.string().uuid(),
+          created_at: Joi.string(),
+          updated_at: Joi.string(),
+          user_id: Joi.string().uuid(),
+        }),
+      specie: Joi.object()
+        .required()
+        .keys({
+          id: Joi.string().uuid(),
+          name: Joi.string().min(2),
+          breeds: Joi.array(),
+          created_at: Joi.string(),
+          updated_at: Joi.string(),
+          user_id: Joi.string().uuid(),
+        }),
       vaccines: Joi.array().items(
         Joi.object().keys({
           id: Joi.string().uuid(),
@@ -56,9 +86,35 @@ animalsRouter.put(
       sex: Joi.string().valid('M', 'F').required(),
       size: Joi.string().valid('P', 'M', 'G').required(),
       other_animals: Joi.string().required(),
-      color_id: Joi.string().uuid().required(),
-      breed_id: Joi.string().uuid().required(),
-      specie_id: Joi.string().uuid().required(),
+      color: Joi.object()
+        .required()
+        .keys({
+          id: Joi.string().uuid(),
+          name: Joi.string().min(2),
+          created_at: Joi.string(),
+          updated_at: Joi.string(),
+          user_id: Joi.string().uuid(),
+        }),
+      breed: Joi.object()
+        .required()
+        .keys({
+          id: Joi.string().uuid(),
+          name: Joi.string().min(2),
+          specie_id: Joi.string().uuid(),
+          created_at: Joi.string(),
+          updated_at: Joi.string(),
+          user_id: Joi.string().uuid(),
+        }),
+      specie: Joi.object()
+        .required()
+        .keys({
+          id: Joi.string().uuid(),
+          name: Joi.string().min(2),
+          breeds: Joi.array(),
+          created_at: Joi.string(),
+          updated_at: Joi.string(),
+          user_id: Joi.string().uuid(),
+        }),
       vaccines: Joi.array().items(
         Joi.object().keys({
           id: Joi.string().uuid(),
