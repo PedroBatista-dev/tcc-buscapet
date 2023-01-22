@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'cores', loadChildren: () => import('./pages/colors/colors.module').then(m => m.ColorsModule) },
   { path: 'especies', loadChildren: () => import('./pages/species/species.module').then(m => m.SpeciesModule) },
   { path: 'racas', loadChildren: () => import('./pages/breeds/breeds.module').then(m => m.BreedsModule) },
+  { path: 'animais', loadChildren: () => import('./pages/animals/animals.module').then(m => m.AnimalsModule) },
   { path: 'nao-encontrado', component: NotFoundComponent },
   { path: '**', component: NotFoundComponent }
 ];

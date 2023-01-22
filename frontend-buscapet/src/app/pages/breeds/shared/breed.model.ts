@@ -5,7 +5,6 @@ export class Breed extends BaseResourceModel{
   constructor(
     public override id?: string,
     public name?: string,
-    public specie_id?: string,
     public specie?: Specie
   ){
     super();

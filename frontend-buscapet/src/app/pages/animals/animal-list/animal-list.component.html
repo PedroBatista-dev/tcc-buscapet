@@ -1,8 +1,8 @@
-<div class="list-breeds">
+<div class="list-animals">
   <div class="row mb-4">
     <div class="col-md-9">
       <h1 class="h2 border-start ps-2">
-        Raças
+        Animais
       </h1>
     </div>
   </div>
@@ -27,22 +27,34 @@
       <table class="table table-hover">
         <thead>
           <tr class="bg-info text-light">
-            <th>Raça</th>
+            <th>Animal</th>
             <th>Espécie</th>
+            <th>Raça</th>
+            <th>Cor</th>
+            <th>Sexo</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let breed of resources">
+          <tr *ngFor="let animal of resources">
             <td>
-              <strong>{{breed.name}}</strong>
+              <strong>{{animal.name}}</strong>
             </td>
             <td>
-              <strong>{{breed.specie?.name}}</strong>
+              <strong>{{animal.specie?.name}}</strong>
             </td>
             <td>
-              <a [routerLink]="[breed.id, 'editar']" class="btn btn-sm mr-2"><i class="fas fa-pencil-alt"></i></a>
-              <button (click)="deleteResource(breed)" class="btn btn-sm"><i class="fas fa-trash-alt"></i></button>
+              <strong>{{animal.breed?.name}}</strong>
+            </td>
+            <td>
+              <strong>{{animal.color?.name}}</strong>
+            </td>
+            <td>
+              <strong>{{animal.sex}}</strong>
+            </td>
+            <td>
+              <a [routerLink]="[animal.id, 'editar']" class="btn btn-sm mr-2"><i class="fas fa-pencil-alt"></i></a>
+              <button (click)="deleteResource(animal)" class="btn btn-sm"><i class="fas fa-trash-alt"></i></button>
             </td>
           </tr>
         </tbody>

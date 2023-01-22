@@ -46,10 +46,6 @@ export class BreedFormComponent extends BaseResourceFormComponent<Breed> {
     });
   }
 
-  printForm() {
-    console.log(this.resourceForm.value)
-  }
-
   protected override creationPageTitle(): string {
     return "Cadastro de Raça";
   }

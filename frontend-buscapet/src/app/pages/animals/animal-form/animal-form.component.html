@@ -1,0 +1,84 @@
+<div class="form-animals">
+  <app-bread-crumb [items]="[{text: 'Animais', link: '/animais'}, {text: pageTitle}]"></app-bread-crumb>
+
+  <div class="row mb-4">
+    <div class="col-md-9">
+      <h1 class="h2 border-start ps-2">
+        {{pageTitle}}
+      </h1>
+    </div>
+  </div>
+
+  <app-server-error-messages [server-error-messages]="serverErrorMessages"></app-server-error-messages>
+
+  <form [formGroup]="resourceForm" (submit)="submitForm()">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" id="name" formControlName="name" (keypress)="printForm()" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('name')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="age">Idade</label>
+            <input type="number" class="form-control" id="age" formControlName="age">
+            <app-form-field-error [form-control]="$any(resourceForm).get('age')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="sex">Sexo</label>
+            <select class="form-control" formControlName="sex">
+              <option value="F">Fêmea</option>
+              <option value="M">Macho</option>
+            </select>
+            <app-form-field-error [form-control]="$any(resourceForm).get('sex')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="size">Porte</label>
+            <select class="form-control" formControlName="size">
+              <option value="P">Pequeno</option>
+              <option value="M">Médio</option>
+              <option value="G">Grande</option>
+            </select>
+            <app-form-field-error [form-control]="$any(resourceForm).get('size')"></app-form-field-error>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="specie">Éspecie</label>
+            <input id="specie" type="text" class="form-control" formControlName="specie" [ngbTypeahead]="searchS"
+              [inputFormatter]="formatterS" [resultFormatter]="formatterS" [editable]="false" (ngModelChange)="disableControl()"/>
+            <app-form-field-error [form-control]="$any(resourceForm).get('specie')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="breed">Raça</label>
+            <input id="breed" type="text" class="form-control" formControlName="breed" [ngbTypeahead]="searchB"
+              [inputFormatter]="formatterB" [resultFormatter]="formatterB" [editable]="false" />
+            <app-form-field-error [form-control]="$any(resourceForm).get('breed')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="color">Cor</label>
+            <input id="color" type="text" class="form-control" formControlName="color" [ngbTypeahead]="searchC"
+              [inputFormatter]="formatterC" [resultFormatter]="formatterC" [editable]="false" />
+            <app-form-field-error [form-control]="$any(resourceForm).get('color')"></app-form-field-error>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="other_animals">Se dá bem com outros animais?</label>
+            <select class="form-control" formControlName="other_animals">
+              <option value="Sim">Sim</option>
+              <option value="Sim, com os da mesma espécie">Sim, com os da mesma espécie</option>
+              <option value="Sim, com os do mesmo sexo">Sim, com os do mesmo sexo</option>
+              <option value="Sim, com os do mesmo porte">Sim, com os do mesmo porte</option>
+              <option value="Não">Não</option>
+            </select>
+            <app-form-field-error [form-control]="$any(resourceForm).get('other_animals')"></app-form-field-error>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button [disabled]="submittingForm || resourceForm.invalid" type="submit" class="btn btn-md mt-2">Salvar</button>
+  </form>
+</div>
