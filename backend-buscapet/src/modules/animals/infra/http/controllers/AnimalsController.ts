@@ -43,7 +43,7 @@ export default class AnimalsController {
       color,
       breed,
       specie,
-      vaccines,
+      animals_vaccine,
     } = request.body;
     const color_id = color.id;
     const breed_id = breed.id;
@@ -60,7 +60,7 @@ export default class AnimalsController {
       color_id,
       breed_id,
       specie_id,
-      vaccines,
+      animals_vaccine,
       user_id,
       isOng,
     });
@@ -80,7 +80,7 @@ export default class AnimalsController {
       color,
       breed,
       specie,
-      vaccines,
+      animals_vaccine,
     } = request.body;
     const color_id = color.id;
     const breed_id = breed.id;
@@ -99,7 +99,7 @@ export default class AnimalsController {
       color_id,
       breed_id,
       specie_id,
-      vaccines,
+      animals_vaccine,
       user_id,
       isOng,
     });

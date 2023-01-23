@@ -117,6 +117,7 @@ export class AnimalsRepository implements IAnimalsRepository {
         id,
         user_id,
       },
+      relations: ['color', 'specie', 'breed', 'animals_vaccine'],
     });
 
     return animal;

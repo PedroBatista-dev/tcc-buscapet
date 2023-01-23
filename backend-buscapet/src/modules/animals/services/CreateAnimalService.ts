@@ -8,7 +8,10 @@ import { IColorsRepository } from '@modules/colors/domain/repositories/IColorsRe
 import { ISpeciesRepository } from '@modules/species/domain/repositories/ISpeciesRepository';
 import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
 import { IAnimal } from '../domain/models/IAnimal';
-import { IVaccine } from '@modules/vaccines/domain/models/IVaccine';
+
+interface IRequestVaccine {
+  vaccine_id: string;
+}
 
 interface IRequest {
   name: string;
@@ -19,7 +22,7 @@ interface IRequest {
   color_id: string;
   breed_id: string;
   specie_id: string;
-  vaccines: IVaccine[];
+  animals_vaccine: IRequestVaccine[];
   user_id: string;
   isOng: boolean;
 }
@@ -50,7 +53,7 @@ class CreateAnimalService {
     color_id,
     breed_id,
     specie_id,
-    vaccines,
+    animals_vaccine,
     user_id,
     isOng,
   }: IRequest): Promise<IAnimal> {
@@ -90,9 +93,9 @@ class CreateAnimalService {
       throw new AppError('Já existe um animal com esse nome!');
     }
 
-    if (vaccines.length) {
+    if (animals_vaccine.length) {
       const existsVaccines = await this.vaccinesRepository.findAllByIds(
-        vaccines,
+        animals_vaccine,
         user_id,
       );
       if (!existsVaccines.length) {
@@ -102,20 +105,20 @@ class CreateAnimalService {
       }
 
       const existsVaccinesIds = existsVaccines.map(vaccine => vaccine.id);
-      const checkInexistentVaccines = vaccines.filter(
-        vaccine => !existsVaccinesIds.includes(vaccine.id),
+      const checkInexistentVaccines = animals_vaccine.filter(
+        vaccine => !existsVaccinesIds.includes(vaccine.vaccine_id),
       );
       if (checkInexistentVaccines.length) {
         throw new AppError(
-          `Não foi encontrada a vacina ${checkInexistentVaccines[0].name}`,
+          `Não foi encontrada a vacina ${checkInexistentVaccines[0].vaccine_id}`,
         );
       }
     }
 
     const idVaccines: ICreateAnimalsVaccines[] = [];
 
-    vaccines.forEach(vaccine => {
-      idVaccines.push({ vaccine_id: vaccine.id });
+    animals_vaccine.forEach(vaccine => {
+      idVaccines.push({ vaccine_id: vaccine.vaccine_id });
     });
 
     const animal = await this.animalsRepository.create({

@@ -3,6 +3,10 @@ import { getRepository, In, Like, Repository } from 'typeorm';
 import { IVaccinesRepository } from '@modules/vaccines/domain/repositories/IVaccinesRepository';
 import { ICreateVaccine } from '@modules/vaccines/domain/models/ICreateVaccine';
 
+interface IRequestVaccine {
+  vaccine_id: string;
+}
+
 export class VaccinesRepository implements IVaccinesRepository {
   private ormRepository: Repository<Vaccine>;
 
@@ -78,10 +82,10 @@ export class VaccinesRepository implements IVaccinesRepository {
   }
 
   public async findAllByIds(
-    vaccines: Vaccine[],
+    vaccines: IRequestVaccine[],
     user_id: string,
   ): Promise<Vaccine[]> {
-    const vaccineIds = vaccines.map(vaccine => vaccine.id);
+    const vaccineIds = vaccines.map(vaccine => vaccine.vaccine_id);
 
     const existsVaccines = await this.ormRepository.find({
       where: {

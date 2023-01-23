@@ -66,10 +66,9 @@ animalsRouter.post(
           updated_at: Joi.string(),
           user_id: Joi.string().uuid(),
         }),
-      vaccines: Joi.array().items(
+      animals_vaccine: Joi.array().items(
         Joi.object().keys({
-          id: Joi.string().uuid(),
-          name: Joi.string().min(2),
+          vaccine_id: Joi.string().uuid(),
         }),
       ),
     },
@@ -115,10 +114,9 @@ animalsRouter.put(
           updated_at: Joi.string(),
           user_id: Joi.string().uuid(),
         }),
-      vaccines: Joi.array().items(
+      animals_vaccine: Joi.array().items(
         Joi.object().keys({
-          id: Joi.string().uuid(),
-          name: Joi.string().min(2),
+          vaccine_id: Joi.string().uuid(),
         }),
       ),
     },

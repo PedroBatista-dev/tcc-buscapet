@@ -2,7 +2,7 @@ import { ICreateVaccine } from '../models/ICreateVaccine';
 import { IVaccine } from '../models/IVaccine';
 
 interface IFindVaccines {
-  id: string;
+  vaccine_id: string;
 }
 
 export interface IVaccinesRepository {

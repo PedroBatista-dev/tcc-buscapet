@@ -9,9 +9,8 @@ import { IAnimal } from '../domain/models/IAnimal';
 import { IAnimalsVaccinesRepository } from '../domain/repositories/IAnimalsvaccinesRepository';
 import { ICreateAnimalsVaccines } from '../domain/models/ICreateAnimalsVaccines';
 
-interface IVaccine {
-  id: string;
-  name: string;
+interface IRequestVaccine {
+  vaccine_id: string;
 }
 
 interface IRequest {
@@ -24,7 +23,7 @@ interface IRequest {
   color_id: string;
   breed_id: string;
   specie_id: string;
-  vaccines: IVaccine[];
+  animals_vaccine: IRequestVaccine[];
   user_id: string;
   isOng: boolean;
 }
@@ -56,7 +55,7 @@ class UpdateAnimalService {
     color_id,
     breed_id,
     specie_id,
-    vaccines,
+    animals_vaccine,
     user_id,
     isOng,
   }: IRequest): Promise<IAnimal> {
@@ -96,30 +95,32 @@ class UpdateAnimalService {
       throw new AppError('Raça não pertence a espécie informada!');
     }
 
-    const existsVaccines = await this.vaccinesRepository.findAllByIds(
-      vaccines,
-      user_id,
-    );
-    if (!existsVaccines.length) {
-      throw new AppError(
-        'Não foram encontradas as vacinas com os ids informados!',
+    if (animals_vaccine.length) {
+      const existsVaccines = await this.vaccinesRepository.findAllByIds(
+        animals_vaccine,
+        user_id,
       );
-    }
+      if (!existsVaccines.length) {
+        throw new AppError(
+          'Não foram encontradas as vacinas com os ids informados!',
+        );
+      }
 
-    const existsVaccinesIds = existsVaccines.map(vaccine => vaccine.id);
-    const checkInexistentVaccines = vaccines.filter(
-      vaccine => !existsVaccinesIds.includes(vaccine.id),
-    );
-    if (checkInexistentVaccines.length) {
-      throw new AppError(
-        `Não foi encontrada a vacina ${checkInexistentVaccines[0].name}`,
+      const existsVaccinesIds = existsVaccines.map(vaccine => vaccine.id);
+      const checkInexistentVaccines = animals_vaccine.filter(
+        vaccine => !existsVaccinesIds.includes(vaccine.vaccine_id),
       );
+      if (checkInexistentVaccines.length) {
+        throw new AppError(
+          `Não foi encontrada a vacina ${checkInexistentVaccines[0].vaccine_id}`,
+        );
+      }
     }
 
     const idVaccines: ICreateAnimalsVaccines[] = [];
 
-    vaccines.forEach(vaccine => {
-      idVaccines.push({ vaccine_id: vaccine.id });
+    animals_vaccine.forEach(vaccine => {
+      idVaccines.push({ vaccine_id: vaccine.vaccine_id });
     });
 
     const animalsVaccinesExists =
