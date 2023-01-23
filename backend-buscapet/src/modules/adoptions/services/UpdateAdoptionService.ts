@@ -31,6 +31,10 @@ class UpdateAdoptionService {
       throw new AppError('Adoção não encontrada!');
     }
 
+    if (adoption.status !== 'Solicitada') {
+      throw new AppError('Adoção aprovada ou reprovada não pode ser alterada!');
+    }
+
     adoption.status = status;
 
     await this.adoptionsRepository.save(adoption);

@@ -130,7 +130,7 @@ describe('ListAdoption', () => {
       status: 'Solicitada',
     });
 
-    expect(adoptions.data).toEqual(
+    expect(adoptions).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           animal_id: animal.id,

@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { IPaginateAdoption } from '../domain/models/IPaginateAdoption';
+import { IAdoption } from '../domain/models/IAdoption';
 import { IAdoptionsRepository } from '../domain/repositories/IAdoptionsRepository';
 
 interface IRequest {
@@ -19,7 +19,7 @@ class ListAdoptionService {
     user_id,
     status,
     isOng,
-  }: IRequest): Promise<IPaginateAdoption> {
+  }: IRequest): Promise<IAdoption[]> {
     const adoptions = await this.adoptionsRepository.findAll(
       user_id,
       status,

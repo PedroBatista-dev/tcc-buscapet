@@ -2,7 +2,6 @@ import Adoption from '../entities/Adoption';
 import { getRepository, Repository } from 'typeorm';
 import { IAdoptionsRepository } from '@modules/adoptions/domain/repositories/IAdoptionsRepository';
 import { ICreateAdoption } from '@modules/adoptions/domain/models/ICreateAdoption';
-import { IPaginateAdoption } from '@modules/adoptions/domain/models/IPaginateAdoption';
 
 export class AdoptionsRepository implements IAdoptionsRepository {
   private ormRepository: Repository<Adoption>;
@@ -43,29 +42,27 @@ export class AdoptionsRepository implements IAdoptionsRepository {
     user_id: string,
     status: string,
     isOng: boolean,
-  ): Promise<IPaginateAdoption> {
+  ): Promise<Adoption[]> {
     if (isOng) {
-      const adoption = await this.ormRepository
-        .createQueryBuilder('adoption')
-        .innerJoinAndSelect('adoption.ong', 'ong')
-        .innerJoinAndSelect('adoption.adopter', 'adopter')
-        .innerJoinAndSelect('adoption.animal', 'animal')
-        .where('adoption.ong_id = :user_id', { user_id })
-        .andWhere('adoption.status = :status', { status })
-        .paginate();
+      const adoptions = await this.ormRepository.find({
+        where: {
+          ong_id: user_id,
+          status,
+        },
+        relations: ['ong', 'adopter', 'animal'],
+      });
 
-      return adoption as IPaginateAdoption;
+      return adoptions;
     } else {
-      const adoption = await this.ormRepository
-        .createQueryBuilder('adoption')
-        .innerJoinAndSelect('adoption.ong', 'ong')
-        .innerJoinAndSelect('adoption.adopter', 'adopter')
-        .innerJoinAndSelect('adoption.animal', 'animal')
-        .where('adoption.adopter_id = :user_id', { user_id })
-        .andWhere('adoption.status = :status', { status })
-        .paginate();
+      const adoptions = await this.ormRepository.find({
+        where: {
+          adopter_id: user_id,
+          status,
+        },
+        relations: ['ong', 'adopter', 'animal'],
+      });
 
-      return adoption as IPaginateAdoption;
+      return adoptions;
     }
   }
 
@@ -80,6 +77,7 @@ export class AdoptionsRepository implements IAdoptionsRepository {
           id,
           ong_id: user_id,
         },
+        relations: ['ong', 'adopter', 'animal'],
       });
 
       return adoption;
@@ -89,6 +87,7 @@ export class AdoptionsRepository implements IAdoptionsRepository {
           id,
           adopter_id: user_id,
         },
+        relations: ['ong', 'adopter', 'animal'],
       });
 
       return adoption;

@@ -1,6 +1,5 @@
 import { IAdoption } from '../models/IAdoption';
 import { ICreateAdoption } from '../models/ICreateAdoption';
-import { IPaginateAdoption } from '../models/IPaginateAdoption';
 
 export interface IAdoptionsRepository {
   findById(
@@ -23,7 +22,7 @@ export interface IAdoptionsRepository {
     user_id: string,
     status: string,
     isOng: boolean,
-  ): Promise<IPaginateAdoption>;
+  ): Promise<IAdoption[]>;
   create(data: ICreateAdoption): Promise<IAdoption>;
   save(customer: IAdoption): Promise<IAdoption>;
   remove(customer: IAdoption): Promise<void>;

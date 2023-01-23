@@ -1,6 +1,5 @@
 import { IAdoptionsRepository } from '../../../domain/repositories/IAdoptionsRepository';
 import { ICreateAdoption } from '../../../domain/models/ICreateAdoption';
-import { IPaginateAdoption } from '../../models/IPaginateAdoption';
 import { v4 as uuidv4 } from 'uuid';
 import Adoption from '../../../infra/typeorm/entities/Adoption';
 
@@ -48,42 +47,20 @@ export class FakeAdoptionsRepository implements IAdoptionsRepository {
     user_id: string,
     status: string,
     isOng: boolean,
-  ): Promise<IPaginateAdoption> {
+  ): Promise<Adoption[]> {
     if (isOng) {
       const adoptions = this.adoptions.filter(
         adoption => adoption.ong_id === user_id && adoption.status === status,
       );
 
-      const adoptionsPaginate = {
-        from: 1,
-        to: 1,
-        per_page: 1,
-        total: 1,
-        current_page: 1,
-        prev_page: 1,
-        next_page: 1,
-        data: adoptions,
-      };
-
-      return adoptionsPaginate;
+      return adoptions;
     } else {
       const adoptions = this.adoptions.filter(
         adoption =>
           adoption.adopter_id === user_id && adoption.status === status,
       );
 
-      const adoptionsPaginate = {
-        from: 1,
-        to: 1,
-        per_page: 1,
-        total: 1,
-        current_page: 1,
-        prev_page: 1,
-        next_page: 1,
-        data: adoptions,
-      };
-
-      return adoptionsPaginate;
+      return adoptions;
     }
   }
 

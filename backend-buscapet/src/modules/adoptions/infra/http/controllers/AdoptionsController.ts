@@ -14,7 +14,11 @@ export default class AdoptionsController {
 
     const listAdoptions = container.resolve(ListAdoptionService);
 
-    const adoptions = await listAdoptions.execute({ user_id, status, isOng });
+    const adoptions = await listAdoptions.execute({
+      user_id,
+      status,
+      isOng,
+    });
 
     return response.json(adoptions);
   }
