@@ -78,11 +78,16 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="col-md-12">
+          <div class="col-md-10">
             <h1 class="h3 border-start ps-2">
               Vacinas
             </h1>
           </div>
+          <div class="col-md-2">
+            <button class="btn" type="button" (click)="open(content)" >Novo</button>
+          </div>
+        </div>
+        <div class="form-row">
           <div class="form-group col-md-4" *ngFor="let vaccine of vaccines">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" [checked]="vaccineChecked(vaccine)" [value]="vaccine.id" (change)="addVaccine($event, vaccine)" [id]="vaccine.name">
@@ -98,3 +103,26 @@
     <button [disabled]="submittingForm || resourceForm.invalid" type="submit" class="btn btn-md mt-2">Salvar</button>
   </form>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Adicionar Vacina</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="vaccineForm">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="name">Nome</label>
+          <input type="text" class="form-control" id="name" formControlName="name" primeiraLetraMaiuscula>
+          <app-form-field-error [form-control]="$any(vaccineForm).get('name')"></app-form-field-error>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" [disabled]="vaccineForm.invalid"
+      (click)="modal.close('Save click')">Salvar</button>
+  </div>
+</ng-template>
+

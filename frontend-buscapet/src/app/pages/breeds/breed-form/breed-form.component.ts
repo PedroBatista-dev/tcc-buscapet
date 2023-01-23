@@ -27,7 +27,7 @@ export class BreedFormComponent extends BaseResourceFormComponent<Breed> {
   }
 
   ngAfterViewInit(): void {
-    this.specieService.getAll('').subscribe({
+    this.specieService.getAll('', '').subscribe({
       next: (resources) => this.species = resources,
       error: () => Swal.fire({
               title: 'Erro!',

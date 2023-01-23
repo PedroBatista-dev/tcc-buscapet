@@ -1,0 +1,69 @@
+<div class="list-adoptions">
+  <div class="row mb-4">
+    <div class="col-md-9">
+      <h1 class="h2 border-start ps-2">
+        Adoções
+      </h1>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <div class="mb-4">
+          <select class="form-control" [formControl]="status" (change)="getAllResource()">
+            <option value="Solicitada">Solicitada</option>
+            <option value="Aprovada">Aprovada</option>
+            <option value="Reprovada">Reprovada</option>
+          </select>
+        </div>
+      </div>
+
+      <table class="table table-hover">
+        <thead>
+          <tr class="bg-info text-light">
+            <th>Animal Solicitado</th>
+            <th>Solicitado por</th>
+            <th>Data da Solicitação</th>
+            <th *ngIf="status.value === 'Aprovada'">Data da Aprovação</th>
+            <th *ngIf="status.value === 'Reprovada'">Data da Reprovação</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let adoption of resources">
+            <td>
+              <strong>{{adoption.animal!.name}}</strong>
+            </td>
+            <td>
+              <strong>{{adoption.adopter!.name}}</strong>
+            </td>
+            <td>
+              <strong>{{adoption.created_at | date:'dd/MM/yyyy'}}</strong>
+            </td>
+            <td *ngIf="status.value !== 'Solicitada'">
+              <strong>{{adoption.updated_at | date:'dd/MM/yyyy'}}</strong>
+            </td>
+            <td>
+              <!-- <a [routerLink]="[adoption.id, 'editar']" class="btn btn-sm mr-2"><i class="fas fa-pencil-alt"></i></a> -->
+              <button (click)="deleteResource(adoption)" class="btn btn-sm"><i class="fas fa-eye"></i></button>
+              <button *ngIf="status.value === 'Solicitada'" (click)="alterStatus(adoption.id!, 'Aprovada')" class="btn btn-sm"><i class="fas fa-check"></i></button>
+              <button *ngIf="status.value === 'Solicitada'" (click)="alterStatus(adoption.id!, 'Reprovada')" class="btn btn-sm"><i class="fas fa-ban"></i></button>
+              <button *ngIf="status.value === 'Aprovada'" (click)="createPDF(adoption)" class="btn btn-sm"><i class="fas fa-medal"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize.value"
+          (pageChange)="getAllResource()" >
+        </ngb-pagination>
+        <select class="form-select form-select-sm rounded col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2" [formControl]="pageSize" (ngModelChange)="getAllResource()">
+          <option value="5">5 itens</option>
+          <option value="10">10 itens</option>
+          <option value="15">15 itens</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

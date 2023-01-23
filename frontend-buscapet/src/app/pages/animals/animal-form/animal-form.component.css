@@ -1,5 +1,5 @@
 .form-animals {
-  padding: 100px 0 0 200px;
+  padding: 100px 0 50px 200px;
 }
 
 @media (max-width: 991.98px) {
@@ -11,4 +11,8 @@
 .btn {
   background-color: #44C5CD;
   color: white
+}
+
+.app-session-modal-backdrop {
+  display: none !important;
 }

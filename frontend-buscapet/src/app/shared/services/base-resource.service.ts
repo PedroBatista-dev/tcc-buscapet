@@ -16,11 +16,15 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     this.http = injector.get(HttpClient);
    }
 
-  getAll(name: string): Observable<T[]> {
+  getAll(name: string, status: string): Observable<T[]> {
     let url = this.apiPath;
 
-    if (name) {
+     if (name) {
       url = `${this.apiPath}/?name=${name}`;
+    }
+
+    if (status) {
+      url = `${this.apiPath}/?status=${status}`;
     }
 
     return this.http.get<T[]>(url, this.obterAuthHeaderJson()).pipe(

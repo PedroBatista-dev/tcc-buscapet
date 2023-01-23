@@ -12,6 +12,7 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
 
   resources: T[] = [];
   filter = new FormControl('');
+  status = new FormControl('');
   page = 1;
 	pageSize = new FormControl(5);
 	collectionSize = this.resources.length;
@@ -61,7 +62,7 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
   }
 
   getAllResource() {
-    this.resourceService.getAll(this.filter.value).subscribe({
+    this.resourceService.getAll(this.filter.value, this.status.value).subscribe({
       next: (resources) => {
         this.resources = resources.slice((this.page - 1) * Number(this.pageSize.value),
 			    (this.page - 1) * Number(this.pageSize.value) + Number(this.pageSize.value));

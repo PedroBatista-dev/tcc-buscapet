@@ -30,7 +30,7 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
     CustomFormsModule,
     NgBrazil,
     NgbPaginationModule,
-    NgbTypeaheadModule
+    NgbTypeaheadModule,
   ],
   exports: [
     CommonModule,
@@ -42,7 +42,7 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
     ServerErrorMessagesComponent,
     NgbPaginationModule,
     NgbTypeaheadModule,
-    PrimeiraLetraMaiusculaDirective
+    PrimeiraLetraMaiusculaDirective,
   ]
 })
 export class SharedModule { }

@@ -4,3 +4,7 @@ body {
   height: auto;
   margin: 0;
 }
+
+ngb-modal-backdrop {
+  z-index: 1040 !important;
+}

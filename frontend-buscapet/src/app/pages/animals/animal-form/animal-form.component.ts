@@ -1,5 +1,5 @@
 import { Component, ElementRef, Injector, ViewChildren } from '@angular/core';
-import { FormArray, FormControlName, Validators } from '@angular/forms';
+import { FormArray, FormControlName, FormGroup, Validators } from '@angular/forms';
 
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { Specie } from '../../species/shared/specie.model';
@@ -15,6 +15,7 @@ import { ColorService } from '../../colors/shared/color.service';
 import { Breed } from '../../breeds/shared/breed.model';
 import { Vaccine } from '../../vaccines/shared/vaccine.model';
 import { VaccineService } from '../../vaccines/shared/vaccine.service';
+import { ModalDismissReasons, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-animal-form',
@@ -29,15 +30,17 @@ export class AnimalFormComponent extends BaseResourceFormComponent<Animal> {
   species: Specie[] = [];
   colors: Color[] = [];
   vaccines: Vaccine[] = [];
+  vaccineForm!: FormGroup;
+
 
   constructor(protected animalService: AnimalService, protected override injector: Injector,
     protected specieService: SpecieService, protected breedService: BreedService, protected colorService: ColorService,
-      protected vaccineService: VaccineService) {
+      protected vaccineService: VaccineService, private modalService: NgbModal) {
     super(injector, new Animal(), animalService, Animal.fromJson);
   }
 
   ngAfterViewInit(): void {
-    this.specieService.getAll('').subscribe({
+    this.specieService.getAll('', '').subscribe({
       next: (resources) => this.species = resources,
       error: () => Swal.fire({
               title: 'Erro!',
@@ -46,24 +49,16 @@ export class AnimalFormComponent extends BaseResourceFormComponent<Animal> {
               confirmButtonColor: '#44C5CD',
         })
     });
-    this.colorService.getAll('').subscribe({
+    this.colorService.getAll('', '').subscribe({
       next: (resources) => this.colors = resources,
       error: () => Swal.fire({
               title: 'Erro!',
-              text: 'Erro ao buscar as espécies.',
+              text: 'Erro ao buscar as cores.',
               icon: 'error',
               confirmButtonColor: '#44C5CD',
         })
     });
-    this.vaccineService.getAll('').subscribe({
-      next: (resources) => this.vaccines = resources,
-      error: () => Swal.fire({
-              title: 'Erro!',
-              text: 'Erro ao buscar as espécies.',
-              icon: 'error',
-              confirmButtonColor: '#44C5CD',
-        })
-    });
+    this.getAllVaccines();
     super.validarFormulario(this.formInputElements);
   }
 
@@ -83,6 +78,10 @@ export class AnimalFormComponent extends BaseResourceFormComponent<Animal> {
       breed: [{ value: null, disabled: this.currentAction === 'editar' ? false : true }, [Validators.required]],
       specie: [null, [Validators.required]],
       animals_vaccine: this.formBuilder.array([]),
+    });
+
+    this.vaccineForm = this.formBuilder.group({
+      name: [null, [Validators.required, Validators.minLength(2)]]
     });
 
     if (this.currentAction == "editar") {
@@ -122,14 +121,54 @@ export class AnimalFormComponent extends BaseResourceFormComponent<Animal> {
 
   }
 
+  getAllVaccines(): void {
+    this.vaccineService.getAll('', '').subscribe({
+      next: (resources) => this.vaccines = resources,
+      error: () => Swal.fire({
+              title: 'Erro!',
+              text: 'Erro ao buscar as vacinas.',
+              icon: 'error',
+              confirmButtonColor: '#44C5CD',
+        })
+    });
+  }
+
   protected override creationPageTitle(): string {
-    return "Cadastro de Raça";
+    return "Cadastro de Animal";
   }
 
   protected override editionPageTitle(): string {
-    const breedName = this.resource.name || "";
-    return `Editando Raça: ${breedName}`;
+    const animalName = this.resource.name || "";
+    return `Editando Animal: ${animalName}`;
   }
+
+  open(content: any): void {
+    const ngbModalOptions: NgbModalOptions = {
+      backdrop : 'static',
+      centered: true,
+      backdropClass: '.app-session-modal-backdrop',
+    };
+		this.modalService.open(content, ngbModalOptions).result.then(
+			() => {
+        const resource: Vaccine = this.jsonDataToResourceFn(this.vaccineForm.value);
+				this.vaccineService.create(resource).subscribe({
+          next: () => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Solicitação processada com sucesso!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.getAllVaccines();
+          },
+          error: (error) => this.actionsForError(error)
+        });
+			},
+			() => {},
+		);
+    this.vaccineForm.get('name')?.setValue(null);
+	}
 
   searchS: OperatorFunction<string, Specie[]> = (text$: Observable<string>) =>
 		text$.pipe(
