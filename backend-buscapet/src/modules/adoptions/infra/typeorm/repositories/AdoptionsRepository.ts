@@ -109,33 +109,4 @@ export class AdoptionsRepository implements IAdoptionsRepository {
 
     return adoption;
   }
-
-  public async findByIdUserStatus(
-    id: string,
-    user_id: string,
-    status: string,
-    isOng: boolean,
-  ): Promise<Adoption | undefined> {
-    if (isOng) {
-      const adoption = await this.ormRepository.findOne({
-        where: {
-          id,
-          ong_id: user_id,
-          status,
-        },
-        relations: ['ong', 'adopter', 'animal'],
-      });
-      return adoption;
-    } else {
-      const adoption = await this.ormRepository.findOne({
-        where: {
-          id,
-          adopter_id: user_id,
-          status,
-        },
-        relations: ['ong', 'adopter', 'animal'],
-      });
-      return adoption;
-    }
-  }
 }

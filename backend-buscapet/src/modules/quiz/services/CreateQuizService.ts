@@ -3,7 +3,25 @@ import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepos
 import { inject, injectable } from 'tsyringe';
 import { IQuizRepository } from '../domain/repositories/IQuizRepository';
 import { IQuiz } from '../domain/models/IQuiz';
-import { ICreateQuiz } from '../domain/models/ICreateQuiz';
+
+interface IRequest {
+  birth_date: Date;
+  marital_status: string;
+  professional_activity: string;
+  address: string;
+  complement: string;
+  district: string;
+  city: string;
+  state: string;
+  cep: string;
+  profile_instragam: string;
+  for_who: string;
+  why_adopt: string;
+  average_life: boolean;
+  financial_conditions: boolean;
+  user_id: string;
+  isOng: boolean;
+}
 
 @injectable()
 class CreateQuizService {
@@ -30,7 +48,12 @@ class CreateQuizService {
     average_life,
     financial_conditions,
     user_id,
-  }: ICreateQuiz): Promise<IQuiz> {
+    isOng,
+  }: IRequest): Promise<IQuiz> {
+    if (isOng) {
+      throw new AppError('JWT Token inválido');
+    }
+
     const userExists = await this.usersRepository.findById(user_id);
     if (!userExists) {
       throw new AppError('Usuário não encontrado!');

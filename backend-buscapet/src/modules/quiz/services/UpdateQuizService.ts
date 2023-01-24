@@ -1,8 +1,26 @@
 import AppError from '../../../shared/errors/AppError';
 import { inject } from 'tsyringe';
-import { ICreateQuiz } from '../domain/models/ICreateQuiz';
 import { IQuiz } from '../domain/models/IQuiz';
 import { IQuizRepository } from '../domain/repositories/IQuizRepository';
+
+interface IRequest {
+  birth_date: Date;
+  marital_status: string;
+  professional_activity: string;
+  address: string;
+  complement: string;
+  district: string;
+  city: string;
+  state: string;
+  cep: string;
+  profile_instragam: string;
+  for_who: string;
+  why_adopt: string;
+  average_life: boolean;
+  financial_conditions: boolean;
+  user_id: string;
+  isOng: boolean;
+}
 
 class UpdateQuizService {
   constructor(
@@ -26,7 +44,12 @@ class UpdateQuizService {
     average_life,
     financial_conditions,
     user_id,
-  }: ICreateQuiz): Promise<IQuiz> {
+    isOng,
+  }: IRequest): Promise<IQuiz> {
+    if (isOng) {
+      throw new AppError('JWT Token inválido');
+    }
+
     const quiz = await this.quizRepository.findByUserId(user_id);
     if (!quiz) {
       throw new AppError('Questionário não encontrado!');

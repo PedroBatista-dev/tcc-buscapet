@@ -6,7 +6,6 @@ import { IAdoption } from '../domain/models/IAdoption';
 interface IRequest {
   id: string;
   user_id: string;
-  status: string;
   isOng: boolean;
 }
 
@@ -17,16 +16,10 @@ class ShowAdoptionService {
     private adoptionsRepository: IAdoptionsRepository,
   ) {}
 
-  public async execute({
-    id,
-    user_id,
-    status,
-    isOng,
-  }: IRequest): Promise<IAdoption> {
-    const adoption = await this.adoptionsRepository.findByIdUserStatus(
+  public async execute({ id, user_id, isOng }: IRequest): Promise<IAdoption> {
+    const adoption = await this.adoptionsRepository.findById(
       id,
       user_id,
-      status,
       isOng,
     );
     if (!adoption) {

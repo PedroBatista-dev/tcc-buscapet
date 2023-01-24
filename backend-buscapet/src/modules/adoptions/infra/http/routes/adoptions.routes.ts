@@ -24,11 +24,6 @@ adoptionsRouter.get(
   '/:id',
   celebrate({
     [Segments.PARAMS]: { id: Joi.string().uuid().required() },
-    [Segments.QUERY]: {
-      status: Joi.string()
-        .required()
-        .valid('Solicitada', 'Aprovada', 'Reprovada'),
-    },
   }),
   adoptionsController.show,
 );

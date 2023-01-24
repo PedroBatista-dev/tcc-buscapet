@@ -8,7 +8,9 @@ const quizController = new QuizController();
 
 quizRouter.use(isAuthenticated);
 
-quizRouter.get('/', quizController.show);
+quizRouter.get('/', quizController.index);
+
+quizRouter.get('/:id', quizController.show);
 
 quizRouter.post(
   '/',

@@ -5,8 +5,18 @@ import ShowQuizService from '../../../services/ShowQuizService';
 import UpdateQuizService from '../../../services/UpdateQuizService';
 
 export default class QuizController {
-  public async show(request: Request, response: Response): Promise<Response> {
+  public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+
+    const listVaccines = container.resolve(ShowQuizService);
+
+    const vaccines = await listVaccines.execute({ user_id });
+
+    return response.json(vaccines);
+  }
+
+  public async show(request: Request, response: Response): Promise<Response> {
+    const user_id = request.params.id;
 
     const showQuiz = container.resolve(ShowQuizService);
 
@@ -33,6 +43,7 @@ export default class QuizController {
       financial_conditions,
     } = request.body;
     const user_id = request.user.id;
+    const isOng = request.user.isOng;
 
     const createQuiz = container.resolve(CreateQuizService);
 
@@ -52,6 +63,7 @@ export default class QuizController {
       average_life,
       financial_conditions,
       user_id,
+      isOng,
     });
 
     return response.json(quiz);
@@ -75,6 +87,7 @@ export default class QuizController {
       financial_conditions,
     } = request.body;
     const user_id = request.user.id;
+    const isOng = request.user.isOng;
 
     const updateQuiz = container.resolve(UpdateQuizService);
 
@@ -94,6 +107,7 @@ export default class QuizController {
       average_life,
       financial_conditions,
       user_id,
+      isOng,
     });
 
     return response.json(quiz);

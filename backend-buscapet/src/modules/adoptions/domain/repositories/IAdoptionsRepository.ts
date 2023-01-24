@@ -12,12 +12,6 @@ export interface IAdoptionsRepository {
     adopter_id: string,
     ong_id: string,
   ): Promise<IAdoption | undefined>;
-  findByIdUserStatus(
-    id: string,
-    user_id: string,
-    status: string,
-    isOng: boolean,
-  ): Promise<IAdoption | undefined>;
   findAll(
     user_id: string,
     status: string,

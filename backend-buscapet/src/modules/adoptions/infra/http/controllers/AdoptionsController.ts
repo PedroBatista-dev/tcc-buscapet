@@ -27,11 +27,10 @@ export default class AdoptionsController {
     const { id } = request.params;
     const user_id = request.user.id;
     const isOng = request.user.isOng;
-    const status = 'Solicitada';
 
     const showAdoption = container.resolve(ShowAdoptionService);
 
-    const adoption = await showAdoption.execute({ id, user_id, status, isOng });
+    const adoption = await showAdoption.execute({ id, user_id, isOng });
 
     return response.json(adoption);
   }
