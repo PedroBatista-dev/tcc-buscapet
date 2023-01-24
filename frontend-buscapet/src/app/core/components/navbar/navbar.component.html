@@ -1,23 +1,3 @@
-<!-- <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">Navbar</a>
-    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" aria-current="page" routerLink="/">Home</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="vacinas">Vacinas</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav> -->
-
 <header>
   <nav id="sidebarMenu" class="collapse navbar-collapse d-lg-block sidebar" [ngbCollapse]="isCollapsed">
     <div class="position-sticky">
@@ -28,14 +8,14 @@
         <a routerLink="perfil" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
           <i class="fas fa-user-circle fa-fw mr-3"></i><span>Perfil</span>
         </a>
-        <a routerLink="especies" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
+        <a *ngIf="localStorageUtils.obterIsOng() === 'true'" routerLink="especies" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
             class="fas fa-cat fa-fw mr-3"></i><span>Espécies</span></a>
-        <a routerLink="racas" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
+        <a *ngIf="localStorageUtils.obterIsOng() === 'true'" routerLink="racas" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
             class="fas fa-dog fa-fw mr-3"></i><span>Raças</span></a>
-        <a routerLink="cores" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
+        <a *ngIf="localStorageUtils.obterIsOng() === 'true'" routerLink="cores" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
           <i class="fas fa-palette fa-fw mr-3"></i><span>Cores</span>
         </a>
-        <a routerLink="vacinas" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
+        <a *ngIf="localStorageUtils.obterIsOng() === 'true'" routerLink="vacinas" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
             class="fas fa-syringe fa-fw mr-3"></i><span>Vacinas</span></a>
         <a routerLink="animais" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
             class="fas fa-paw fa-fw mr-3"></i><span>Animais</span></a>

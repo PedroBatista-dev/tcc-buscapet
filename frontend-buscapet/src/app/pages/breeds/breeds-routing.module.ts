@@ -5,9 +5,9 @@ import { BreedFormComponent } from './breed-form/breed-form.component';
 import { BreedListComponent } from './breed-list/breed-list.component';
 
 const routes: Routes = [
-  { path: '', component: BreedListComponent},
-  { path: 'novo', component: BreedFormComponent,  canDeactivate: [BreedGuard] },
-  { path: ':id/editar', component: BreedFormComponent,  canDeactivate: [BreedGuard] }
+  { path: '', component: BreedListComponent, canActivate: [BreedGuard]},
+  { path: 'novo', component: BreedFormComponent, canActivate: [BreedGuard],  canDeactivate: [BreedGuard] },
+  { path: ':id/editar', component: BreedFormComponent, canActivate: [BreedGuard],  canDeactivate: [BreedGuard] }
 ];
 
 @NgModule({

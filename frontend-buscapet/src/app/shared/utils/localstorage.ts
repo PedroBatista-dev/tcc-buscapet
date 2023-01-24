@@ -1,14 +1,9 @@
-import { User } from "src/app/pages/users/shared/user.model";
-
 export class LocalStorageUtils {
-
-    public obterUsuario() {
-        return JSON.parse(localStorage.getItem('buscapet.user')!);
-    }
 
     public salvarDadosLocaisUsuario(response: any, remember: string) {
         this.salvarTokenUsuario(response.token);
-        this.salvarUsuario(response.user);
+        this.salvarUsuario(response.user.name);
+        this.salvarIsOng(response.user.isOng);
         this.salvarRemember(remember);
     }
 
@@ -16,6 +11,15 @@ export class LocalStorageUtils {
         localStorage.removeItem('buscapet.token');
         localStorage.removeItem('buscapet.user');
         localStorage.removeItem('buscapet.remember');
+        localStorage.removeItem('buscapet.isOng');
+    }
+
+    public obterUsuario() {
+        return localStorage.getItem('buscapet.user');
+    }
+
+    public obterIsOng() {
+        return localStorage.getItem('buscapet.isOng');
     }
 
     public obterTokenUsuario(): string {
@@ -30,8 +34,12 @@ export class LocalStorageUtils {
         localStorage.setItem('buscapet.token', token);
     }
 
-    public salvarUsuario(user: User) {
-        localStorage.setItem('buscapet.user', JSON.stringify(user));
+    public salvarUsuario(name: string) {
+        localStorage.setItem('buscapet.user', name);
+    }
+
+    public salvarIsOng(isOng: string) {
+        localStorage.setItem('buscapet.isOng', isOng);
     }
 
     public salvarRemember(remember: string) {

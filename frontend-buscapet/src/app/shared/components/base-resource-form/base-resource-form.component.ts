@@ -19,7 +19,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   pageTitle!: string;
   serverErrorMessages!: string[];
   submittingForm: boolean = false;
-  mudancasNaoSalvas!: boolean;
+  changesNoSave!: boolean;
   localStorage = new LocalStorageUtils();
 
   protected route!: ActivatedRoute;
@@ -179,7 +179,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       next: (resource) => this.actionsForSuccess(resource),
       error: (error) => this.actionsForError(error)
     });
-    this.mudancasNaoSalvas = false;
+    this.changesNoSave = false;
   }
 
   protected updateResource():void {
@@ -193,7 +193,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       error: (error) => this.actionsForError(error)
     });
 
-    this.mudancasNaoSalvas = false;
+    this.changesNoSave = false;
   }
 
   protected actionsForSuccess(resource: T): void {
@@ -205,9 +205,9 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       timer: 1500
     });
 
-    const baseComponentParent = this.route.snapshot.parent?.url[0]?.path;
+    const baseComponentParent = this.route.snapshot.parent!.url[0]!.path;
 
-    if(baseComponentParent) {
+    if(baseComponentParent !== 'users') {
       if (this.currentAction === "novo") {
         this.router.navigateByUrl(baseComponentParent, { skipLocationChange: true }).then(
           () => this.router.navigate([baseComponentParent, resource.id, "editar"])
@@ -219,9 +219,9 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       if (this.currentAction === "login") {
         const remember = this.resourceForm.get('remember')!.value ? 'sim' : 'nao';
         this.localStorage.salvarDadosLocaisUsuario(resource, remember);
-        this.router.navigate(['vacinas']);
+        this.router.navigate(['dashboard']);
       } else {
-        this.route.pathFromRoot[1].url.subscribe(caminho => this.router.navigate([caminho[0].path, 'login']));
+        this.router.navigate([baseComponentParent, 'login']);
       }
     }
 
@@ -254,7 +254,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
     merge(...controlBlurs).subscribe(() => {
-      this.mudancasNaoSalvas = true;
+      this.changesNoSave = true;
     });
   }
 

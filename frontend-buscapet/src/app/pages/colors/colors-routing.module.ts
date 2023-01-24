@@ -5,9 +5,9 @@ import { ColorFormComponent } from './color-form/color-form.component';
 import { ColorListComponent } from './color-list/color-list.component';
 
 const routes: Routes = [
-  { path: '', component: ColorListComponent},
-  { path: 'novo', component: ColorFormComponent,  canDeactivate: [ColorGuard] },
-  { path: ':id/editar', component: ColorFormComponent,  canDeactivate: [ColorGuard] }
+  { path: '', component: ColorListComponent, canActivate: [ColorGuard]},
+  { path: 'novo', component: ColorFormComponent, canActivate: [ColorGuard],  canDeactivate: [ColorGuard] },
+  { path: ':id/editar', component: ColorFormComponent, canActivate: [ColorGuard],  canDeactivate: [ColorGuard] }
 ];
 
 @NgModule({

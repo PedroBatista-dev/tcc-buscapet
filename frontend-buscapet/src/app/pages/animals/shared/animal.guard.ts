@@ -14,7 +14,7 @@ export class AnimalGuard implements CanDeactivate<AnimalFormComponent> {
     constructor(private router: Router){}
 
     canDeactivate(component: AnimalFormComponent) {
-        if(component.mudancasNaoSalvas) {
+        if(component.changesNoSave) {
             return window.confirm('Tem certeza que deseja abandonar o preenchimento do formulário?');
         }
 

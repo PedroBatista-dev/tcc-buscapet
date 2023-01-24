@@ -14,7 +14,7 @@ export class UserGuard implements CanDeactivate<RegistrationComponent>, CanActiv
     constructor(private router: Router){}
 
     canDeactivate(component: RegistrationComponent) {
-        if(component.mudancasNaoSalvas) {
+        if(component.changesNoSave) {
             return window.confirm('Tem certeza que deseja abandonar o preenchimento do formulário?');
         }
 
@@ -28,7 +28,7 @@ export class UserGuard implements CanDeactivate<RegistrationComponent>, CanActiv
         }
 
         if(this.localStorageUtils.obterTokenUsuario()){
-            this.router.navigate(['/vacinas']); // mudar para dashboard
+            this.router.navigate(['/dashboard']);
         }
 
         return true;

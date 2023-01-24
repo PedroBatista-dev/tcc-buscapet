@@ -9,6 +9,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 
 
@@ -16,7 +17,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
   declarations: [
     NavbarComponent,
     FooterComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LogoutComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     HttpClientModule,
     NavbarComponent,
     FooterComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LogoutComponent
   ]
 })
 export class CoreModule { }
