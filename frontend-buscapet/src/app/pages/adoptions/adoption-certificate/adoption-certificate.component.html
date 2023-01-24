@@ -1,0 +1,18 @@
+<div class="list-adoptions">
+  <div #content id="content" style=" padding: 50px; background-color: snow; border-width: 10px;
+     border-style: outset;
+     border-color: #F77E06; width: 842px; height: 595px;">
+    <h1 style="text-align: center; color: #44C5CD; font-family: verdana, arial, helvetica, sans-serif;">Certificado de Adoção</h1>
+    <p style="font-family: verdana, arial, helvetica, sans-serif; text-align: center;
+      font-style: italic; font-size: 18px; color: #44C5CD; margin-top: 100px;">
+      Certificamos que {{adopter}} é, a partir de {{data | date:'dd/MM/yyyy'}}, o(a) tutor(a) legal de <br> {{animal}}!!!  </p>
+    <p style="font-family: verdana, arial, helvetica, sans-serif; text-align: center; font-style: italic;
+       font-size: 18px; color: #44C5CD; margin-top: 50px;">
+      O tutor prometeu amar e cuidar do seu novo mebro da família!!!
+    </p>
+    <div style="display: flex; justify-content: center; margin-top: 100px;">
+      <img src="../../../../assets/logo_1.png" alt="logo" style="width: 100px; height: 100px;">
+    </div>
+  </div>
+  <button type="button" class="btn btn-md btn-info mt-2" (click)="createPDF()"><i class="fas fa-download mr-2"></i>Download</button>
+</div>

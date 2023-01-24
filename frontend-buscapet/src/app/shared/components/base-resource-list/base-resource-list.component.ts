@@ -21,7 +21,6 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
   constructor(protected resourceService: BaseResourceService<T>, protected injector: Injector) {}
 
   ngOnInit(): void {
-    this.resources = [];
     this.getAllResource();
   }
 

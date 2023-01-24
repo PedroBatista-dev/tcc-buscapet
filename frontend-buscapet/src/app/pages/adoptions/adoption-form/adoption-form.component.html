@@ -1,0 +1,72 @@
+<div class="form-vaccines">
+  <app-bread-crumb [items]="[{text: 'Adoções', link: '/adocoes'}, {text: 'Questinário de Adoção'}]"></app-bread-crumb>
+
+  <div class="row mb-4">
+    <div class="col-md-9">
+      <h1 class="h2 border-start ps-2">
+        Questinário de Adoção
+      </h1>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-6">
+          <h3>{{ user.name }}</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <p><span class="font-weight-bold">E-mail:</span> {{ user.email }}</p>
+        </div>
+        <div class="col-4">
+          <p><span class="font-weight-bold">CPF:</span> {{ user.cpf }}</p>
+        </div>
+        <div class="col-4">
+          <p><span class="font-weight-bold">Data de Nascimento:</span> {{ resource.birth_date | date:'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <p><span class="font-weight-bold">Estado Civil:</span> {{ resource.marital_status }}</p>
+        </div>
+        <div class="col-4">
+          <p><span class="font-weight-bold">Profissão:</span> {{ resource.professional_activity }}</p>
+        </div>
+        <div class="col-4">
+          <p><span class="font-weight-bold">Instragam:</span> {{ resource.profile_instragam }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p><span class="font-weight-bold">Endereço:</span> {{ resource.address }} {{ resource.complement }} - {{ resource.district }} - {{ resource.city }}/{{ resource.state}} - {{ resource.cep }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p><span class="font-weight-bold">Você pretende adotar um animal para quem?</span> <br> {{ resource.for_who }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p><span class="font-weight-bold">Por que gostaria de adotar um animal?</span> <br> {{ resource.why_adopt }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p><span class="font-weight-bold">O tempo médio de vida de um animal é de 15 anos. Você está ciente e pronto para este compromisso?</span> <br> {{
+            resource.average_life ? 'Sim' : 'Não' }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p><span class="font-weight-bold">Você terá gastos com alimentação, higiene, abrigo adequado, vacinas anuais e consultas veterinárias. Está em condições
+          financeiras para isso?</span> <br> {{ resource.financial_conditions ? 'Sim' : 'Não' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

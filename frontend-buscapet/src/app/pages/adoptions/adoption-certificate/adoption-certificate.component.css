@@ -1,0 +1,11 @@
+.list-adoptions {
+  padding: 100px 0 50px 200px;
+}
+
+@media (max-width: 991.98px) {
+  .list-adoptions {
+      padding-left: 0;
+    }
+}
+
+

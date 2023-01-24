@@ -15,7 +15,7 @@ import { ColorService } from '../../colors/shared/color.service';
 import { Breed } from '../../breeds/shared/breed.model';
 import { Vaccine } from '../../vaccines/shared/vaccine.model';
 import { VaccineService } from '../../vaccines/shared/vaccine.service';
-import { ModalDismissReasons, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-animal-form',

@@ -1,10 +1,12 @@
-import { Component, Injector } from '@angular/core';
+import { Component, ElementRef, Injector, ViewChild } from '@angular/core';
 import { BaseResourceListComponent } from 'src/app/shared/components/base-resource-list/base-resource-list.component';
 
 import { Adoption } from '../shared/adoption.model';
 import { AdoptionService } from '../shared/adoption.service';
 
 import Swal from 'sweetalert2';
+import { jsPDF } from "jspdf";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-adoption-list',
@@ -13,7 +15,9 @@ import Swal from 'sweetalert2';
 })
 export class AdoptionListComponent extends BaseResourceListComponent<Adoption> {
 
-  constructor(private adoptionService: AdoptionService, protected override injector: Injector) {
+  @ViewChild('content', { static: false }) el!: ElementRef;
+
+  constructor(private adoptionService: AdoptionService, protected override injector: Injector, private router: Router) {
     super(adoptionService, injector);
     this.status.setValue('Solicitada');
   }
@@ -45,8 +49,9 @@ export class AdoptionListComponent extends BaseResourceListComponent<Adoption> {
     });
   }
 
-  createPDF(adoption: Adoption): void {
-    console.log(adoption);
+  gerarPDF(adoption: Adoption): void {
+    this.router.navigate(['/adocoes/certificado'],
+      { queryParams: { adopter: adoption.adopter?.name!, animal: adoption.animal?.name!, data: adoption.updated_at!  } });
   }
 
 }
