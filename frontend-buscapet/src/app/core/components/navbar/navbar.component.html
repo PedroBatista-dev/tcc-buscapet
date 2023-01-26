@@ -5,7 +5,7 @@
         <a routerLink="dashboard" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
           <i class="fas fa-tachometer-alt fa-fw mr-3"></i><span>Dashboard</span>
         </a>
-        <a routerLink="perfil" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
+        <a [routerLink]="['users', localStorageUtils.obterIdUsuario(), 'profile']" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
           <i class="fas fa-user-circle fa-fw mr-3"></i><span>Perfil</span>
         </a>
         <a *ngIf="localStorageUtils.obterIsOng() === 'true'" routerLink="especies" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
@@ -39,9 +39,9 @@
       </a>
       <ul class="navbar-nav ms-auto d-flex flex-row">
         <li class="nav-item">
-          <a class="nav-link d-flex align-items-center" routerLink="perfil"
+          <a class="nav-link d-flex align-items-center" [routerLink]="['users', localStorageUtils.obterIdUsuario(), 'avatar']"
             id="navbarPerfilLink">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp" class="rounded-circle" height="45"
+            <img [src]="this.localStorageUtils.obterUrlAvatar() ? this.localStorageUtils.obterUrlAvatar() : avatar" class="rounded-circle" height="45"
               alt="Avatar" loading="lazy" />
           </a>
         </li>

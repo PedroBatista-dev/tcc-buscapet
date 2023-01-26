@@ -53,7 +53,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     const url = `${this.apiPath}/${id}`;
 
     return this.http.put<T>(url, resource, this.obterAuthHeaderJson()).pipe(
-      map(() => resource),
+      map(this.jsonDataToResource.bind(this)),
       catchError(this.handleError)
     );
   }

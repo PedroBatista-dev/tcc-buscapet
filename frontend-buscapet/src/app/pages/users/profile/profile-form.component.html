@@ -1,0 +1,73 @@
+<div class="form-avatar">
+  <div class="row mb-4">
+    <div class="col-md-9">
+      <h1 class="h2 border-start ps-2">
+        {{ pageTitle }}
+      </h1>
+    </div>
+  </div>
+
+  <app-server-error-messages [server-error-messages]="serverErrorMessages"></app-server-error-messages>
+
+  <form [formGroup]="resourceForm" (submit)="submitForm()">
+    <div class="card">
+      <div class="card-body d-flex flex-column justify-content-center align-items-center">
+        <a class="nav-link d-flex align-items-center" [routerLink]="['/users', localStorage.obterIdUsuario(), 'avatar']"
+          id="navbarPerfilLink">
+          <img [src]="this.localStorage.obterUrlAvatar() ? this.localStorage.obterUrlAvatar() : avatar" class="rounded-circle"
+            height="200" alt="Avatar" loading="lazy" />
+        </a>
+        <div class="form-group">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="name">Nome</label>
+              <input type="text" class="form-control" id="name" formControlName="name" primeiraLetraMaiuscula>
+              <app-form-field-error [form-control]="$any(resourceForm).get('name')"></app-form-field-error>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="name">E-mail</label>
+              <input type="email" class="form-control" id="email" formControlName="email">
+              <app-form-field-error [form-control]="$any(resourceForm).get('email')"></app-form-field-error>
+            </div>
+          </div>
+          <div *ngIf="localStorage.obterIsOng() === 'false'" class="form-row">
+            <div class="form-group col-md-12">
+              <label for="name">CPF</label>
+              <input type="text" class="form-control" id="cpf" formControlName="cpf" cpf
+                [textMask]="{mask: MASKS['cpf'].textMask}">
+              <app-form-field-error [form-control]="$any(resourceForm).get('cpf')"></app-form-field-error>
+            </div>
+          </div>
+          <div *ngIf="localStorage.obterIsOng() === 'true'" class="form-row">
+            <div class="form-group col-md-12">
+              <label for="name">CNPJ</label>
+              <input type="text" class="form-control" id="cnpj" formControlName="cnpj" cnpj
+                [textMask]="{mask: MASKS['cnpj'].textMask}">
+              <app-form-field-error [form-control]="$any(resourceForm).get('cnpj')"></app-form-field-error>
+            </div>
+          </div>
+          <div class="form-row" *ngIf="!edit">
+            <div class="form-group col-md-4">
+              <button type="button" (click)="editProfile()" class="btn btn-md">Editar</button>
+            </div>
+            <div class="form-group col-md-8">
+              <button type="button" class="btn btn-md">Alterar Senha</button>
+            </div>
+          </div>
+          <div class="form-row" *ngIf="edit">
+            <div class="form-group col-md-4">
+              <button type="submit" [disabled]="submittingForm || resourceForm.invalid" class="btn btn-md">Salvar</button>
+            </div>
+            <div class="form-group col-md-4">
+              <button type="button" (click)="cancel()" class="btn btn-md">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <button [disabled]="submittingForm || resourceForm.invalid" type="submit"  class="btn btn-md mt-2">Salvar</button> -->
+  </form>
+</div>

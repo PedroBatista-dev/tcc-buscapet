@@ -11,6 +11,7 @@ export class NavbarComponent {
 
   isCollapsed: boolean = true;
   localStorageUtils = new LocalStorageUtils();
+  avatar: string = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp';
 
   constructor(private router: Router){}
 

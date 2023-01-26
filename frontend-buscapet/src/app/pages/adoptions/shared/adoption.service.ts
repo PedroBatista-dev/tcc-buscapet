@@ -1,6 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 
 import { BaseResourceService } from 'src/app/shared/services/base-resource.service';
+import { environment } from 'src/environments/environment';
 
 import { Adoption } from './adoption.model';
 
@@ -10,6 +11,6 @@ import { Adoption } from './adoption.model';
 export class AdoptionService extends BaseResourceService<Adoption> {
 
   constructor(protected override injector: Injector) {
-    super("http://localhost:3333/adoptions", injector, Adoption.fromJson);
+    super(`${environment.apiUrl}adoptions`, injector, Adoption.fromJson);
   }
 }

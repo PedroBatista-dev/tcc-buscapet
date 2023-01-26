@@ -1,21 +1,21 @@
 import { BaseResourceModel } from '../../../shared/models/base-resource.model';
 
-export class User extends BaseResourceModel{
+export class Profile extends BaseResourceModel{
   constructor(
     public override id?: string,
     public name?: string,
     public email?: string,
-    public password?: string,
-    public avatar?: string,
-    public avatar_url?: string,
     public isOng?: boolean,
     public cpf?: string,
     public cnpj?: string,
+    public password?: string,
+    public old_password?: string,
+    public password_confirmation?: string,
   ){
     super();
   }
 
-  static fromJson(jsonData: any): User {
-    return Object.assign(new User(), jsonData);
+  static fromJson(jsonData: any): Profile {
+    return Object.assign(new Profile(), jsonData);
   }
 }

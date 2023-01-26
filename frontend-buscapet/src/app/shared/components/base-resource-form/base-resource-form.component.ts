@@ -92,7 +92,6 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       )
       .subscribe({
         next: (resource) => {
-          console.log(resource)
           this.resource = resource;
           this.setFormArray(this.resourceForm, resource);
           this.resourceForm?.patchValue(resource);
