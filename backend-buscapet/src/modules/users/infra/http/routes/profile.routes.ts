@@ -8,10 +8,10 @@ const profileController = new ProfileController();
 
 profileRouter.use(isAuthenticated);
 
-profileRouter.get('/', profileController.show);
+profileRouter.get('/:id', profileController.show);
 
 profileRouter.put(
-  '/',
+  '/:id',
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
