@@ -15,6 +15,7 @@ import Breed from '../../../../breeds/infra/typeorm/entities/Breed';
 import Adoption from '../../../../adoptions/infra/typeorm/entities/Adoption';
 import AnimalsVaccines from './AnimalsVaccines';
 import { IAnimal } from '@modules/animals/domain/models/IAnimal';
+import { Expose } from 'class-transformer';
 
 @Entity('animals')
 class Animal implements IAnimal {
@@ -83,6 +84,15 @@ class Animal implements IAnimal {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Expose({ name: 'avatar_url' })
+  getAvatarUrl(): string | null {
+    if (!this.avatar) {
+      return null;
+    }
+
+    return `${process.env.APP_API_URL}/files/${this.avatar}`;
+  }
 }
 
 export default Animal;

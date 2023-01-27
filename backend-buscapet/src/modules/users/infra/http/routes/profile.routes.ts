@@ -11,6 +11,18 @@ profileRouter.use(isAuthenticated);
 profileRouter.get('/:id', profileController.show);
 
 profileRouter.put(
+  '/password',
+  celebrate({
+    [Segments.BODY]: {
+      old_password: Joi.string().required(),
+      password: Joi.string().required(),
+      password_confirmation: Joi.string().required().valid(Joi.ref('password')),
+    },
+  }),
+  profileController.updatePassword,
+);
+
+profileRouter.put(
   '/:id',
   celebrate({
     [Segments.BODY]: {
@@ -28,18 +40,6 @@ profileRouter.put(
     },
   }),
   profileController.update,
-);
-
-profileRouter.put(
-  '/password',
-  celebrate({
-    [Segments.BODY]: {
-      old_password: Joi.string().required(),
-      password: Joi.string().required(),
-      password_confirmation: Joi.string().required().valid(Joi.ref('password')),
-    },
-  }),
-  profileController.updatePassword,
 );
 
 export default profileRouter;

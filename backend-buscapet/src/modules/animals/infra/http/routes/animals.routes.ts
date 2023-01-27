@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import AnimalsController from '../controllers/AnimalsController';
 import { celebrate, Joi, Segments } from 'celebrate';
-import multer from 'multer';
-import uploadConfig from '@config/upload';
 import AnimalAvatarController from '../controllers/AnimalAvatarController';
 import isAuthenticated from '../../../../../shared/infra/http/middlewares/isAuthenticated';
 import AnimalStatusController from '../controllers/AnimalStatusController';
@@ -13,8 +11,6 @@ const animalStatusController = new AnimalStatusController();
 const animalsAvatarController = new AnimalAvatarController();
 
 animalsRouter.use(isAuthenticated);
-
-const upload = multer(uploadConfig);
 
 animalsRouter.get(
   '/',
@@ -142,10 +138,15 @@ animalsRouter.delete(
   animalsController.delete,
 );
 
-animalsRouter.patch(
+animalsRouter.put(
   '/:id/avatar',
   celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
-  upload.single('avatar'),
+  celebrate({
+    [Segments.BODY]: {
+      imagem: Joi.string().required(),
+      imagemUpload: Joi.string().required(),
+    },
+  }),
   animalsAvatarController.update,
 );
 

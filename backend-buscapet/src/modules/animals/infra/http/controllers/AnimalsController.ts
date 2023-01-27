@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { instanceToInstance } from 'class-transformer';
 import CreateAnimalService from '../../../services/CreateAnimalService';
 import DeleteAnimalService from '../../../services/DeleteAnimalService';
 import ListAnimalService from '../../../services/ListAnimalService';
@@ -16,7 +17,7 @@ export default class AnimalsController {
 
     const animals = await listAnimals.execute({ user_id, isOng, name });
 
-    return response.json(animals);
+    return response.json(instanceToInstance(animals));
   }
 
   public async show(request: Request, response: Response): Promise<Response> {
@@ -28,7 +29,7 @@ export default class AnimalsController {
 
     const animal = await showAnimal.execute({ id, user_id, isOng });
 
-    return response.json(animal);
+    return response.json(instanceToInstance(animal));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
