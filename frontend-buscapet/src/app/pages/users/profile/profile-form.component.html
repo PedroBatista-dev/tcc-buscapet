@@ -9,30 +9,30 @@
 
   <app-server-error-messages [server-error-messages]="serverErrorMessages"></app-server-error-messages>
 
-  <form [formGroup]="resourceForm" (submit)="submitForm()">
+  <form [formGroup]="!alter ? resourceForm : passwordForm" (submit)="submitForm()">
     <div class="card">
       <div class="card-body d-flex flex-column justify-content-center align-items-center">
         <a class="nav-link d-flex align-items-center" [routerLink]="['/users', localStorage.obterIdUsuario(), 'avatar']"
-          id="navbarPerfilLink">
-          <img [src]="this.localStorage.obterUrlAvatar() ? this.localStorage.obterUrlAvatar() : avatar" class="rounded-circle"
+          id="navbarPerfilLink" placement="bottom" ngbTooltip="Alterar Imagem">
+          <img [src]="this.localStorage.obterUrlAvatar() !== 'null' ? this.localStorage.obterUrlAvatar() : '../../../../assets/avatar.png'" class="rounded-circle"
             height="200" alt="Avatar" loading="lazy" />
         </a>
         <div class="form-group">
-          <div class="form-row">
+          <div class="form-row" *ngIf="!alter">
             <div class="form-group col-md-12">
               <label for="name">Nome</label>
               <input type="text" class="form-control" id="name" formControlName="name" primeiraLetraMaiuscula>
               <app-form-field-error [form-control]="$any(resourceForm).get('name')"></app-form-field-error>
             </div>
           </div>
-          <div class="form-row">
+          <div class="form-row" *ngIf="!alter">
             <div class="form-group col-md-12">
               <label for="name">E-mail</label>
               <input type="email" class="form-control" id="email" formControlName="email">
               <app-form-field-error [form-control]="$any(resourceForm).get('email')"></app-form-field-error>
             </div>
           </div>
-          <div *ngIf="localStorage.obterIsOng() === 'false'" class="form-row">
+          <div *ngIf="localStorage.obterIsOng() === 'false' && !alter" class="form-row">
             <div class="form-group col-md-12">
               <label for="name">CPF</label>
               <input type="text" class="form-control" id="cpf" formControlName="cpf" cpf
@@ -40,7 +40,7 @@
               <app-form-field-error [form-control]="$any(resourceForm).get('cpf')"></app-form-field-error>
             </div>
           </div>
-          <div *ngIf="localStorage.obterIsOng() === 'true'" class="form-row">
+          <div *ngIf="localStorage.obterIsOng() === 'true' && !alter" class="form-row">
             <div class="form-group col-md-12">
               <label for="name">CNPJ</label>
               <input type="text" class="form-control" id="cnpj" formControlName="cnpj" cnpj
@@ -48,12 +48,33 @@
               <app-form-field-error [form-control]="$any(resourceForm).get('cnpj')"></app-form-field-error>
             </div>
           </div>
-          <div class="form-row" *ngIf="!edit">
+          <div class="form-row" *ngIf="alter">
+            <div class="form-group col-md-12">
+              <label for="old_password">Senha Atual</label>
+              <input type="password" class="form-control" id="old_password" formControlName="old_password">
+              <app-form-field-error [form-control]="$any(passwordForm).get('old_password')"></app-form-field-error>
+            </div>
+          </div>
+          <div class="form-row" *ngIf="alter">
+            <div class="form-group col-md-12">
+              <label for="password">Senha Atual</label>
+              <input type="password" class="form-control" id="password" formControlName="password">
+              <app-form-field-error [form-control]="$any(passwordForm).get('password')"></app-form-field-error>
+            </div>
+          </div>
+          <div class="form-row" *ngIf="alter">
+            <div class="form-group col-md-12">
+              <label for="password_confirmation">Senha Atual</label>
+              <input type="password" class="form-control" id="password_confirmation" formControlName="password_confirmation">
+              <app-form-field-error [form-control]="$any(passwordForm).get('password_confirmation')"></app-form-field-error>
+            </div>
+          </div>
+          <div class="form-row" *ngIf="!edit && !alter">
             <div class="form-group col-md-4">
               <button type="button" (click)="editProfile()" class="btn btn-md">Editar</button>
             </div>
-            <div class="form-group col-md-8">
-              <button type="button" class="btn btn-md">Alterar Senha</button>
+            <div class="form-group col-md-8" *ngIf="!edit && !alter">
+              <button type="button" (click)="alterPass()" class="btn btn-md">Alterar Senha</button>
             </div>
           </div>
           <div class="form-row" *ngIf="edit">
@@ -61,13 +82,19 @@
               <button type="submit" [disabled]="submittingForm || resourceForm.invalid" class="btn btn-md">Salvar</button>
             </div>
             <div class="form-group col-md-4">
-              <button type="button" (click)="cancel()" class="btn btn-md">Cancelar</button>
+              <button type="button" (click)="cancelEdit()" class="btn btn-md">Cancelar</button>
+            </div>
+          </div>
+          <div class="form-row" *ngIf="alter">
+            <div class="form-group col-md-4">
+              <button type="button" (click)="saveAlter()" [disabled]="passwordForm.invalid" class="btn btn-md">Salvar</button>
+            </div>
+            <div class="form-group col-md-4">
+              <button type="button" (click)="cancelAlter()" class="btn btn-md">Cancelar</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <button [disabled]="submittingForm || resourceForm.invalid" type="submit"  class="btn btn-md mt-2">Salvar</button> -->
   </form>
 </div>

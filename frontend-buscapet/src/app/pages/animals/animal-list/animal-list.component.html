@@ -27,6 +27,7 @@
       <table class="table table-hover">
         <thead>
           <tr class="bg-info text-light">
+            <th></th>
             <th>Animal</th>
             <th>Espécie</th>
             <th>Raça</th>
@@ -37,6 +38,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let animal of resources">
+            <td class="column-img">
+              <a [routerLink]="[animal.id, 'avatar']"
+                id="navbarPerfilLink" placement="bottom" ngbTooltip="Alterar Imagem">
+                <img [src]="animal.avatar_url ? animal.avatar_url : '../../../../assets/avatar_animal.jpg'" class="rounded-circle" height="60" alt="Avatar" loading="lazy" />
+              </a>
+            </td>
             <td>
               <strong>{{animal.name}}</strong>
             </td>
@@ -53,8 +60,8 @@
               <strong>{{animal.sex}}</strong>
             </td>
             <td>
-              <a [routerLink]="[animal.id, 'editar']" class="btn btn-sm mr-2"><i class="fas fa-pencil-alt"></i></a>
-              <button (click)="deleteResource(animal)" class="btn btn-sm"><i class="fas fa-trash-alt"></i></button>
+              <a [routerLink]="[animal.id, 'editar']" class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Editar"><i class="fas fa-pencil-alt"></i></a>
+              <button (click)="deleteResource(animal)" class="btn btn-sm" placement="bottom" ngbTooltip="Deletar"><i class="fas fa-trash-alt"></i></button>
             </td>
           </tr>
         </tbody>

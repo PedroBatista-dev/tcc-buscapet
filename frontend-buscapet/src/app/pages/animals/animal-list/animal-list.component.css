@@ -13,6 +13,12 @@
   color: white;
 }
 
+.column-img {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
 ngb-pagination {
   height: 40px;
 }

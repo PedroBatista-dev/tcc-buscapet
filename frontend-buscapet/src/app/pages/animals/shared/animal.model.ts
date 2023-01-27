@@ -14,6 +14,7 @@ export class Animal extends BaseResourceModel{
     public status?: string,
     public other_animals?: string,
     public avatar?: string,
+    public avatar_url?: string,
     public color?: Color,
     public breed?: Breed,
     public animals_vaccine?: Vaccine[],

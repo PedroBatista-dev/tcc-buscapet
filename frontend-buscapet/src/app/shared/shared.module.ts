@@ -13,6 +13,7 @@ import { CustomFormsModule } from 'ng2-validation';
 import { NgBrazil } from 'ng-brazil';
 
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
     NgBrazil,
     NgbPaginationModule,
     NgbTypeaheadModule,
+    NgbTooltipModule
   ],
   exports: [
     CommonModule,
@@ -42,6 +44,7 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
     ServerErrorMessagesComponent,
     NgbPaginationModule,
     NgbTypeaheadModule,
+    NgbTooltipModule,
     PrimeiraLetraMaiusculaDirective,
   ]
 })

@@ -11,6 +11,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LogoutComponent } from './components/logout/logout.component';
 
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 
 @NgModule({
@@ -25,7 +27,8 @@ import { LogoutComponent } from './components/logout/logout.component';
     BrowserModule,
     HttpClientModule,
     RouterModule,
-    NgbCollapseModule
+    NgbCollapseModule,
+    NgbTooltipModule
   ],
   exports: [
     BrowserModule,

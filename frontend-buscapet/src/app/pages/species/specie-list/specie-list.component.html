@@ -37,8 +37,8 @@
               <strong>{{specie.name}}</strong>
             </td>
             <td>
-              <a [routerLink]="[specie.id, 'editar']" class="btn btn-sm mr-2"><i class="fas fa-pencil-alt"></i></a>
-              <button (click)="deleteResource(specie)" class="btn btn-sm"><i class="fas fa-trash-alt"></i></button>
+              <a [routerLink]="[specie.id, 'editar']" class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Editar"><i class="fas fa-pencil-alt"></i></a>
+              <button (click)="deleteResource(specie)" class="btn btn-sm" placement="bottom" ngbTooltip="Deletar"><i class="fas fa-trash-alt"></i></button>
             </td>
           </tr>
         </tbody>

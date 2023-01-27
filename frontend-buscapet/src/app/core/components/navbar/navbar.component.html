@@ -40,8 +40,8 @@
       <ul class="navbar-nav ms-auto d-flex flex-row">
         <li class="nav-item">
           <a class="nav-link d-flex align-items-center" [routerLink]="['users', localStorageUtils.obterIdUsuario(), 'avatar']"
-            id="navbarPerfilLink">
-            <img [src]="this.localStorageUtils.obterUrlAvatar() ? this.localStorageUtils.obterUrlAvatar() : avatar" class="rounded-circle" height="45"
+            id="navbarPerfilLink" placement="bottom" ngbTooltip="Alterar Imagem">
+            <img [src]="this.localStorageUtils.obterUrlAvatar() !== 'null' ? this.localStorageUtils.obterUrlAvatar() : '../../../../assets/avatar.png'" class="rounded-circle" height="45"
               alt="Avatar" loading="lazy" />
           </a>
         </li>

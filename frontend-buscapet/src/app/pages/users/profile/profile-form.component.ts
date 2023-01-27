@@ -1,11 +1,12 @@
 import { Component, ElementRef, Injector, ViewChildren } from '@angular/core';
-import { FormControlName, Validators } from '@angular/forms';
+import { FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { MASKS, NgBrazilValidators } from 'ng-brazil';
 
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { SpecieService } from '../../species/shared/specie.service';
 import { User } from '../shared/user.model';
 import { ProfileService } from '../shared/profile.service';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'app-profile-form',
@@ -18,8 +19,10 @@ export class ProfileFormComponent extends BaseResourceFormComponent<User> {
 
   public MASKS = MASKS;
 
-  avatar: string = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp';
   edit: boolean = false;
+  alter: boolean = false;
+  passwordForm!: FormGroup;
+
 
   constructor(protected profileService: ProfileService, protected override injector: Injector, public specieService: SpecieService) {
     super(injector, new User(), profileService, User.fromJson);
@@ -36,6 +39,15 @@ export class ProfileFormComponent extends BaseResourceFormComponent<User> {
       isOng: [null],
       cpf: [{ value: null, disabled: true }],
       cnpj: [{ value: null, disabled: true }],
+    });
+
+    let senha = new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(15)]);
+    let senhaConfirm = new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(15), CustomValidators.equalTo(senha)]);
+
+    this.passwordForm = this.formBuilder.group({
+      old_password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(15)]],
+      password: senha,
+      password_confirmation: senhaConfirm,
     });
   }
 
@@ -65,7 +77,7 @@ export class ProfileFormComponent extends BaseResourceFormComponent<User> {
     }
   }
 
-  cancel(): void {
+  cancelEdit(): void {
     this.edit = false;
     this.resourceForm?.patchValue(this.resource);
 
@@ -86,6 +98,25 @@ export class ProfileFormComponent extends BaseResourceFormComponent<User> {
       this.resourceForm.get('cpf')?.clearValidators();
       this.resourceForm.get('cpf')?.updateValueAndValidity();
     }
+  }
+
+  alterPass() {
+    this.alter = true;
+  }
+
+  cancelAlter(): void {
+    this.alter = false;
+
+    this.passwordForm.get('old_password')?.setValue(null);
+    this.passwordForm.get('password')?.setValue(null);
+    this.passwordForm.get('password_confirmation')?.setValue(null);
+  }
+
+  saveAlter(): void {
+    this.resourceService.update(this.passwordForm.value, 'password').subscribe({
+      next: (resource) => this.actionsForSuccess(resource),
+      error: (error) => this.actionsForError(error)
+    });
   }
 
 }
