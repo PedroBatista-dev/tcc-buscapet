@@ -19,6 +19,18 @@ animalsRouter.get(
 );
 
 animalsRouter.get(
+  '/dashboard/:text',
+  celebrate({
+    [Segments.PARAMS]: {
+      text: Joi.string()
+        .required()
+        .valid('colors', 'species', 'breeds', 'adoptions'),
+    },
+  }),
+  animalsController.dashboard,
+);
+
+animalsRouter.get(
   '/:id',
   celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
   animalsController.show,

@@ -6,6 +6,7 @@ import DeleteAnimalService from '../../../services/DeleteAnimalService';
 import ListAnimalService from '../../../services/ListAnimalService';
 import ShowAnimalService from '../../../services/ShowAnimalService';
 import UpdateAnimalService from '../../../services/UpdateAnimalService';
+import DashboardAnimalService from '@modules/animals/services/DashboardAnimalService';
 
 export default class AnimalsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -18,6 +19,21 @@ export default class AnimalsController {
     const animals = await listAnimals.execute({ user_id, isOng, name });
 
     return response.json(instanceToInstance(animals));
+  }
+
+  public async dashboard(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const user_id = request.user.id;
+    const isOng = request.user.isOng;
+    const { text } = request.params;
+
+    const dashboardAnimals = container.resolve(DashboardAnimalService);
+
+    const dashboard = await dashboardAnimals.execute({ user_id, isOng, text });
+
+    return response.json(instanceToInstance(dashboard));
   }
 
   public async show(request: Request, response: Response): Promise<Response> {

@@ -94,6 +94,72 @@ export class AnimalsRepository implements IAnimalsRepository {
     }
   }
 
+  public async findDashboard(
+    user_id: string,
+    isOng: boolean,
+    text: string,
+  ): Promise<any> {
+    let nameCount;
+
+    if (text === 'colors') {
+      await this.ormRepository
+        .query(
+          `
+      select c.name, count(*)
+      from animals a
+      left join colors c
+      on a.color_id  = c.id
+      where a.user_id = $1
+      group by c.name;
+    `,
+          [user_id],
+        )
+        .then(value => (nameCount = value));
+    } else if (text === 'species') {
+      await this.ormRepository
+        .query(
+          `
+      select s.name, count(*)
+      from animals a
+      left join species s
+      on a.specie_id = s.id
+      where a.user_id = $1
+      group by s.name;
+    `,
+          [user_id],
+        )
+        .then(value => (nameCount = value));
+    } else if (text === 'breeds') {
+      await this.ormRepository
+        .query(
+          `
+      select b.name, count(*)
+      from animals a
+      left join breeds b
+      on a.breed_id  = b.id
+      where a.user_id = $1
+      group by b.name;
+    `,
+          [user_id],
+        )
+        .then(value => (nameCount = value));
+    } else {
+      await this.ormRepository
+        .query(
+          `
+          select a.status, count(*)
+          from adoptions a
+          where a.ong_id  = $1
+          group by a.status;
+    `,
+          [user_id],
+        )
+        .then(value => (nameCount = value));
+    }
+
+    return nameCount;
+  }
+
   public async findByName(
     name: string,
     user_id: string,
