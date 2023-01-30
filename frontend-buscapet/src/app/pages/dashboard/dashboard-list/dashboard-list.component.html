@@ -7,5 +7,22 @@
     </div>
   </div>
 
+  <div class="">
+    <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasetsAdoptions" [labels]="pieChartLabelsAdoptions"
+      [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+    </canvas>
+
+    <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasetsSpecies" [labels]="pieChartLabelsSpecies"
+      [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+    </canvas>
+
+    <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasetsBreeds" [labels]="pieChartLabelsBreeds"
+      [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+    </canvas>
+
+    <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasetsColors" [labels]="pieChartLabelsColors"
+      [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+    </canvas>
+  </div>
 
 </div>

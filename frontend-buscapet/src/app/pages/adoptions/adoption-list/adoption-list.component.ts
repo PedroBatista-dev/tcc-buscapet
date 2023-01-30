@@ -5,7 +5,6 @@ import { Adoption } from '../shared/adoption.model';
 import { AdoptionService } from '../shared/adoption.service';
 
 import Swal from 'sweetalert2';
-import { jsPDF } from "jspdf";
 import { Router } from '@angular/router';
 
 @Component({

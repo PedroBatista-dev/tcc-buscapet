@@ -14,6 +14,7 @@ import { NgBrazil } from 'ng-brazil';
 
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {  NgChartsModule  } from 'ng2-charts';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     NgBrazil,
     NgbPaginationModule,
     NgbTypeaheadModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    NgChartsModule
   ],
   exports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     NgbTypeaheadModule,
     NgbTooltipModule,
     PrimeiraLetraMaiusculaDirective,
+    NgChartsModule
   ]
 })
 export class SharedModule { }

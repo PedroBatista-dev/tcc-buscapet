@@ -16,6 +16,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
   currentAction!: string;
   resourceForm!: FormGroup;
+  remember = new FormControl(true);
   pageTitle!: string;
   serverErrorMessages!: string[];
   submittingForm: boolean = false;
@@ -217,7 +218,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       }
     } else {
       if (this.currentAction === "login") {
-        const remember = this.resourceForm.get('remember')!.value ? 'sim' : 'nao';
+        const remember = this.remember.value ? 'sim' : 'nao';
         this.localStorage.salvarDadosLocaisUsuario(resource, remember);
         this.router.navigate(['dashboard']);
       } else {
