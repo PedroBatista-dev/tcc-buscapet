@@ -17,16 +17,21 @@ class ShowAnimalService {
   ) {}
 
   public async execute({ id, user_id, isOng }: IRequest): Promise<IAnimal> {
-    if (!isOng) {
-      throw new AppError('JWT Token inválido');
-    }
+    if (isOng) {
+      const animal = await this.animalsRepository.findById(id, user_id);
+      if (!animal) {
+        throw new AppError('Animal não encontrado!');
+      }
 
-    const animal = await this.animalsRepository.findById(id, user_id);
-    if (!animal) {
-      throw new AppError('Animal não encontrado!');
-    }
+      return animal;
+    } else {
+      const animal = await this.animalsRepository.findByIdAll(id);
+      if (!animal) {
+        throw new AppError('Animal não encontrado!');
+      }
 
-    return animal;
+      return animal;
+    }
   }
 }
 

@@ -101,7 +101,7 @@ export class AnimalsRepository implements IAnimalsRepository {
   ): Promise<any> {
     let nameCount;
 
-    if (text === 'colors') {
+    if (text === 'colors' && isOng) {
       await this.ormRepository
         .query(
           `
@@ -115,7 +115,7 @@ export class AnimalsRepository implements IAnimalsRepository {
           [user_id],
         )
         .then(value => (nameCount = value));
-    } else if (text === 'species') {
+    } else if (text === 'species' && isOng) {
       await this.ormRepository
         .query(
           `
@@ -129,7 +129,7 @@ export class AnimalsRepository implements IAnimalsRepository {
           [user_id],
         )
         .then(value => (nameCount = value));
-    } else if (text === 'breeds') {
+    } else if (text === 'breeds' && isOng) {
       await this.ormRepository
         .query(
           `
@@ -144,17 +144,31 @@ export class AnimalsRepository implements IAnimalsRepository {
         )
         .then(value => (nameCount = value));
     } else {
-      await this.ormRepository
-        .query(
-          `
+      if (isOng) {
+        await this.ormRepository
+          .query(
+            `
           select a.status, count(*)
           from adoptions a
           where a.ong_id  = $1
           group by a.status;
     `,
-          [user_id],
-        )
-        .then(value => (nameCount = value));
+            [user_id],
+          )
+          .then(value => (nameCount = value));
+      } else {
+        await this.ormRepository
+          .query(
+            `
+          select a.status, count(*)
+          from adoptions a
+          where a.adopter_id  = $1
+          group by a.status;
+    `,
+            [user_id],
+          )
+          .then(value => (nameCount = value));
+      }
     }
 
     return nameCount;
@@ -194,6 +208,13 @@ export class AnimalsRepository implements IAnimalsRepository {
       where: {
         id,
       },
+      relations: [
+        'color',
+        'specie',
+        'breed',
+        'animals_vaccine',
+        'animals_vaccine.vaccine',
+      ],
     });
 
     return animal;
