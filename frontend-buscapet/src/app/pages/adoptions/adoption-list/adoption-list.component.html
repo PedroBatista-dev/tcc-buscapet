@@ -23,7 +23,8 @@
         <thead>
           <tr class="bg-info text-light">
             <th>Animal Solicitado</th>
-            <th>Solicitado por</th>
+            <th *ngIf="localStorageUtils.obterIsOng() === 'true'">Solicitado por</th>
+            <th *ngIf="localStorageUtils.obterIsOng() === 'false'">Solicitado para</th>
             <th>Data da Solicitação</th>
             <th *ngIf="status.value === 'Aprovada'">Data da Aprovação</th>
             <th *ngIf="status.value === 'Reprovada'">Data da Reprovação</th>
@@ -35,8 +36,11 @@
             <td>
               <strong>{{adoption.animal!.name}}</strong>
             </td>
-            <td>
+            <td *ngIf="localStorageUtils.obterIsOng() === 'true'">
               <strong>{{adoption.adopter!.name}}</strong>
+            </td>
+            <td *ngIf="localStorageUtils.obterIsOng() === 'false'">
+              <strong>{{adoption.ong!.name}}</strong>
             </td>
             <td>
               <strong>{{adoption.created_at | date:'dd/MM/yyyy'}}</strong>
@@ -45,10 +49,11 @@
               <strong>{{adoption.updated_at | date:'dd/MM/yyyy'}}</strong>
             </td>
             <td>
-              <a [routerLink]="[adoption.adopter!.id, 'visualizar']" class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Visualizar"><i class="fas fa-eye"></i></a>
-              <!-- <button (click)="deleteResource(adoption)" class="btn btn-sm"><i class="fas fa-eye"></i></button> -->
-              <button *ngIf="status.value === 'Solicitada'" (click)="alterStatus(adoption.id!, 'Aprovada')" class="btn btn-sm" placement="bottom" ngbTooltip="Aprovar"><i class="fas fa-check"></i></button>
-              <button *ngIf="status.value === 'Solicitada'" (click)="alterStatus(adoption.id!, 'Reprovada')" class="btn btn-sm" placement="bottom" ngbTooltip="Reprovar"><i class="fas fa-ban"></i></button>
+              <a *ngIf="localStorageUtils.obterIsOng() === 'true'" [routerLink]="[adoption.adopter!.id, 'visualizar-adodante']" class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Visualizar"><i class="fas fa-eye"></i></a>
+              <a *ngIf="localStorageUtils.obterIsOng() === 'false'" [routerLink]="[adoption.animal!.id, 'visualizar-animal']" class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Visualizar"><i class="fas fa-eye"></i></a>
+              <button *ngIf="status.value === 'Solicitada' && localStorageUtils.obterIsOng() === 'true'" (click)="alterStatus(adoption.id!, 'Aprovada')" class="btn btn-sm" placement="bottom" ngbTooltip="Aprovar"><i class="fas fa-check"></i></button>
+              <button *ngIf="status.value === 'Solicitada' && localStorageUtils.obterIsOng() === 'true'" (click)="alterStatus(adoption.id!, 'Reprovada')" class="btn btn-sm" placement="bottom" ngbTooltip="Reprovar"><i class="fas fa-ban"></i></button>
+              <button *ngIf="status.value === 'Solicitada' && localStorageUtils.obterIsOng() === 'false'" (click)="deleteResource(adoption)" class="btn btn-sm" placement="bottom" ngbTooltip="Cancelar"><i class="fas fa-ban"></i></button>
               <button *ngIf="status.value === 'Aprovada'" (click)="gerarPDF(adoption)" class="btn btn-sm" placement="bottom" ngbTooltip="Emitir Certificado"><i class="fas fa-medal"></i></button>
             </td>
           </tr>

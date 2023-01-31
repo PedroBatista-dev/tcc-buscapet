@@ -21,7 +21,6 @@ export class AdoptionCertificateComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams
       .subscribe(params => {
-        console.log(params);
         this.adopter = params['adopter'];
         this.animal = params['animal'];
         this.data = params['data'];

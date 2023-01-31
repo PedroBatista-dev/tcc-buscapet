@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 
-import { Dashboard } from '../shared/dashboard.model';
 import { DashboardService } from '../shared/dashboard.service';
 
 import Swal from 'sweetalert2';
+import { LocalStorageUtils } from 'src/app/shared/utils/localstorage';
 
 @Component({
   selector: 'app-dashboard-list',
@@ -13,8 +13,10 @@ import Swal from 'sweetalert2';
 })
 export class DashboardListComponent implements OnInit {
 
+  localStorageUtils = new LocalStorageUtils();
+
   public pieChartOptions: ChartOptions<'pie'> = {
-    responsive: true,
+    responsive: false,
   };
   public pieChartLabelsSpecies = [];
   public pieChartDatasetsSpecies = [ {
@@ -40,45 +42,6 @@ export class DashboardListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dashboardService.getDashboard('dashboard/species').subscribe({
-      next: (resources) => {
-        this.pieChartLabelsSpecies = resources.map(r => r.name!);
-        const data = resources.map(r => r.count!);
-        this.pieChartDatasetsSpecies = [ { data } ];
-      },
-      error: () => Swal.fire({
-              title: 'Erro!',
-              text: 'Erro ao tentar listar.',
-              icon: 'error',
-              confirmButtonColor: '#44C5CD',
-        })
-    });
-    this.dashboardService.getDashboard('dashboard/breeds').subscribe({
-      next: (resources) => {
-        this.pieChartLabelsBreeds = resources.map(r => r.name!);
-        const data = resources.map(r => r.count!);
-        this.pieChartDatasetsBreeds = [ { data } ];
-      },
-      error: () => Swal.fire({
-              title: 'Erro!',
-              text: 'Erro ao tentar listar.',
-              icon: 'error',
-              confirmButtonColor: '#44C5CD',
-        })
-    });
-    this.dashboardService.getDashboard('dashboard/colors').subscribe({
-      next: (resources) => {
-        this.pieChartLabelsColors = resources.map(r => r.name!);
-        const data = resources.map(r => r.count!);
-        this.pieChartDatasetsColors = [ { data } ];
-      },
-      error: () => Swal.fire({
-              title: 'Erro!',
-              text: 'Erro ao tentar listar.',
-              icon: 'error',
-              confirmButtonColor: '#44C5CD',
-        })
-    });
     this.dashboardService.getDashboard('dashboard/adoptions').subscribe({
       next: (resources) => {
         this.pieChartLabelsAdoptions = resources.map(r => r.status!);
@@ -86,12 +49,55 @@ export class DashboardListComponent implements OnInit {
         this.pieChartDatasetsAdoptions = [ { data } ];
       },
       error: () => Swal.fire({
-              title: 'Erro!',
-              text: 'Erro ao tentar listar.',
-              icon: 'error',
-              confirmButtonColor: '#44C5CD',
-        })
+            title: 'Erro!',
+            text: 'Erro ao tentar listar.',
+            icon: 'error',
+            confirmButtonColor: '#44C5CD',
+      })
     });
+
+    if (this.localStorageUtils.obterIsOng() === 'true') {
+      this.dashboardService.getDashboard('dashboard/species').subscribe({
+        next: (resources) => {
+          this.pieChartLabelsSpecies = resources.map(r => r.name!);
+          const data = resources.map(r => r.count!);
+          this.pieChartDatasetsSpecies = [ { data } ];
+        },
+        error: () => Swal.fire({
+                title: 'Erro!',
+                text: 'Erro ao tentar listar.',
+                icon: 'error',
+                confirmButtonColor: '#44C5CD',
+          })
+      });
+      this.dashboardService.getDashboard('dashboard/breeds').subscribe({
+        next: (resources) => {
+          this.pieChartLabelsBreeds = resources.map(r => r.name!);
+          const data = resources.map(r => r.count!);
+          this.pieChartDatasetsBreeds = [ { data } ];
+        },
+        error: () => Swal.fire({
+                title: 'Erro!',
+                text: 'Erro ao tentar listar.',
+                icon: 'error',
+                confirmButtonColor: '#44C5CD',
+          })
+      });
+      this.dashboardService.getDashboard('dashboard/colors').subscribe({
+        next: (resources) => {
+          this.pieChartLabelsColors = resources.map(r => r.name!);
+          const data = resources.map(r => r.count!);
+          this.pieChartDatasetsColors = [ { data } ];
+        },
+        error: () => Swal.fire({
+                title: 'Erro!',
+                text: 'Erro ao tentar listar.',
+                icon: 'error',
+                confirmButtonColor: '#44C5CD',
+          })
+      });
+    }
+
   }
 
 }

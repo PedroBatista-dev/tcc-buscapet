@@ -12,6 +12,6 @@ export class NavbarComponent {
   isCollapsed: boolean = true;
   localStorageUtils = new LocalStorageUtils();
 
-  constructor(private router: Router){}
+  constructor(){}
 
 }

@@ -29,7 +29,6 @@
           <tr class="bg-info text-light">
             <th></th>
             <th>Animal</th>
-            <th>Espécie</th>
             <th>Raça</th>
             <th>Cor</th>
             <th>Sexo</th>
@@ -48,16 +47,13 @@
               <strong>{{animal.name}}</strong>
             </td>
             <td>
-              <strong>{{animal.specie?.name}}</strong>
-            </td>
-            <td>
               <strong>{{animal.breed?.name}}</strong>
             </td>
             <td>
               <strong>{{animal.color?.name}}</strong>
             </td>
             <td>
-              <strong>{{animal.sex}}</strong>
+              <strong>{{animal.sex === 'M' ? 'Macho' : 'Fêmea'}}</strong>
             </td>
             <td>
               <a [routerLink]="[animal.id, 'editar']" class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Editar"><i class="fas fa-pencil-alt"></i></a>

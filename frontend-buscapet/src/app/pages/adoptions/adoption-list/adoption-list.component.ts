@@ -6,6 +6,7 @@ import { AdoptionService } from '../shared/adoption.service';
 
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { LocalStorageUtils } from 'src/app/shared/utils/localstorage';
 
 @Component({
   selector: 'app-adoption-list',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AdoptionListComponent extends BaseResourceListComponent<Adoption> {
 
+  localStorageUtils = new LocalStorageUtils();
   @ViewChild('content', { static: false }) el!: ElementRef;
 
   constructor(private adoptionService: AdoptionService, protected override injector: Injector, private router: Router) {
@@ -47,6 +49,8 @@ export class AdoptionListComponent extends BaseResourceListComponent<Adoption> {
       }
     });
   }
+
+  cancel(): void {}
 
   gerarPDF(adoption: Adoption): void {
     this.router.navigate(['/adocoes/certificado'],

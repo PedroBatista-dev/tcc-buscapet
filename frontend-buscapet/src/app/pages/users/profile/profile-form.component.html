@@ -57,14 +57,14 @@
           </div>
           <div class="form-row" *ngIf="alter">
             <div class="form-group col-md-12">
-              <label for="password">Senha Atual</label>
+              <label for="password">Nova Senha</label>
               <input type="password" class="form-control" id="password" formControlName="password">
               <app-form-field-error [form-control]="$any(passwordForm).get('password')"></app-form-field-error>
             </div>
           </div>
           <div class="form-row" *ngIf="alter">
             <div class="form-group col-md-12">
-              <label for="password_confirmation">Senha Atual</label>
+              <label for="password_confirmation">Confirmação de Senha</label>
               <input type="password" class="form-control" id="password_confirmation" formControlName="password_confirmation">
               <app-form-field-error [form-control]="$any(passwordForm).get('password_confirmation')"></app-form-field-error>
             </div>

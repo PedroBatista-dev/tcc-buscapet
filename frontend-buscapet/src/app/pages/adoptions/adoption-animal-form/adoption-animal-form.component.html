@@ -1,0 +1,57 @@
+<div class="form-vaccines">
+  <app-bread-crumb [items]="[{text: 'Adoções', link: '/adocoes'}, {text: 'Animal para Adoção'}]"></app-bread-crumb>
+
+  <div class="row mb-4">
+    <div class="col-md-9">
+      <h1 class="h2 border-start ps-2">
+        Animal para Adoção
+      </h1>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row ">
+        <div class="d-flex align-items-center col-12">
+          <img [src]="resource.avatar_url ? resource.avatar_url : '../../../../assets/avatar_animal.jpg'" class="mr-2 rounded-circle"
+            height="80" alt="Avatar" loading="lazy" />
+          <h3>{{ resource.name }}</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <p><span class="font-weight-bold">Idade:</span> {{ resource.age }} ano(s)</p>
+        </div>
+        <div class="col-4">
+          <p><span class="font-weight-bold">Sexo:</span> {{ resource.sex === 'M' ? 'Macho' : 'Fêmea' }}</p>
+        </div>
+        <div class="col-4">
+          <p><span class="font-weight-bold">Porte:</span> {{ getSize(resource.size!) }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <p><span class="font-weight-bold">Espécie:</span> {{ resource.specie?.name }}</p>
+        </div>
+        <div class="col-4">
+          <p><span class="font-weight-bold">Raça:</span> {{ resource.breed?.name }}</p>
+        </div>
+        <div class="col-4">
+          <p><span class="font-weight-bold">Cor:</span> {{ resource.color?.name }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p><span class="font-weight-bold">Se dá bem com outros animais?</span> {{ resource.other_animals }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p><span class="font-weight-bold">Vacinas: </span> <span *ngFor="let vac of resource.animals_vaccine">{{ vac.vaccine?.name }}; </span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
