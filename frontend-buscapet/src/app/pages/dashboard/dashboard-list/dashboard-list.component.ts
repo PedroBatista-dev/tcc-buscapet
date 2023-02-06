@@ -5,6 +5,8 @@ import { DashboardService } from '../shared/dashboard.service';
 
 import Swal from 'sweetalert2';
 import { LocalStorageUtils } from 'src/app/shared/utils/localstorage';
+import { QuizService } from '../../quiz/shared/quiz.service';
+import { Quiz } from '../../quiz/shared/quiz.model';
 
 @Component({
   selector: 'app-dashboard-list',
@@ -14,6 +16,7 @@ import { LocalStorageUtils } from 'src/app/shared/utils/localstorage';
 export class DashboardListComponent implements OnInit {
 
   localStorageUtils = new LocalStorageUtils();
+  quiz = new Quiz();
 
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: false,
@@ -38,7 +41,7 @@ export class DashboardListComponent implements OnInit {
   public pieChartPlugins = [];
 
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService, private quizService: QuizService) {
   }
 
   ngOnInit(): void {
@@ -95,6 +98,18 @@ export class DashboardListComponent implements OnInit {
                 icon: 'error',
                 confirmButtonColor: '#44C5CD',
           })
+      });
+    } else {
+      this.quizService.getById(this.localStorageUtils.obterIdUsuario()!).subscribe({
+        next: (resource) => {
+          this.quiz = resource;
+        },
+        error: () => Swal.fire({
+              title: 'Atenção!',
+              text: 'Preencha o questionário de adoção para realizar adoções.',
+              icon: 'warning',
+              confirmButtonColor: '#44C5CD',
+        })
       });
     }
 

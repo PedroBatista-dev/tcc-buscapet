@@ -1,0 +1,14 @@
+.form-quiz {
+  padding: 100px 0 50px 200px;
+}
+
+@media (max-width: 991.98px) {
+  .form-quiz {
+    padding-left: 0;
+  }
+}
+
+.btn {
+  background-color: #44C5CD;
+  color: white
+}

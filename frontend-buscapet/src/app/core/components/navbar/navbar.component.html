@@ -8,6 +8,9 @@
         <a [routerLink]="['users', localStorageUtils.obterIdUsuario(), 'profile']" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
           <i class="fas fa-user-circle fa-fw mr-3"></i><span>Perfil</span>
         </a>
+        <a *ngIf="localStorageUtils.obterIsOng() === 'false'" routerLink="questionario"
+          class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
+            class="fas fa-list-ul mr-3"></i><span>Questionário</span></a>
         <a *ngIf="localStorageUtils.obterIsOng() === 'true'" routerLink="especies" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i
             class="fas fa-cat fa-fw mr-3"></i><span>Espécies</span></a>
         <a *ngIf="localStorageUtils.obterIsOng() === 'true'" routerLink="racas" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active"><i

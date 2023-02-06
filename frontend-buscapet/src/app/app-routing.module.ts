@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'racas', loadChildren: () => import('./pages/breeds/breeds.module').then(m => m.BreedsModule) },
   { path: 'animais', loadChildren: () => import('./pages/animals/animals.module').then(m => m.AnimalsModule) },
   { path: 'adocoes', loadChildren: () => import('./pages/adoptions/adoptions.module').then(m => m.AdoptionsModule) },
+  { path: 'questionario', loadChildren: () => import('./pages/quiz/quiz.module').then(m => m.QuizModule) },
   { path: 'sair', component: LogoutComponent },
   { path: 'nao-encontrado', component: NotFoundComponent },
   { path: '**', component: NotFoundComponent }

@@ -7,6 +7,16 @@
     </div>
   </div>
 
+  <div *ngIf="localStorageUtils.obterIsOng() === 'false' && !quiz.id" class="row mb-2" >
+    <div class="col">
+      <div class="card">
+        <div class="card-body d-flex card-alert">
+          <span><i class="far fa-bell mr-3"></i>Preencha o questionário de adoção para realizar adoções.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row mb-2">
     <div class="col">
       <div class="card">

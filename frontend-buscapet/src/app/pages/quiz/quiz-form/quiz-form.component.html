@@ -1,0 +1,109 @@
+<div class="form-quiz">
+
+  <div class="row mb-4">
+    <div class="col-md-9">
+      <h1 class="h2 border-start ps-2">
+        {{pageTitle}}
+      </h1>
+    </div>
+  </div>
+
+  <app-server-error-messages [server-error-messages]="serverErrorMessages"></app-server-error-messages>
+
+  <form [formGroup]="resourceForm" (submit)="submitForm()">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="birth_date">Data de Nascimento</label>
+            <input type="date" class="form-control" id="birth_date" formControlName="birth_date" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('birth_date')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="marital_status">Estado Civil</label>
+            <input type="text" class="form-control" id="marital_status" formControlName="marital_status" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('marital_status')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="professional_activity">Atividade Profissional</label>
+            <input type="text" class="form-control" id="professional_activity" formControlName="professional_activity" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('professional_activity')"></app-form-field-error>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-9">
+            <label for="address">Endereço</label>
+            <input type="text" class="form-control" id="address" formControlName="address" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('address')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="complement">Complemento</label>
+            <input type="text" class="form-control" id="complement" formControlName="complement" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('complement')"></app-form-field-error>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="district">Bairro</label>
+            <input type="text" class="form-control" id="district" formControlName="district" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('district')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="city">Cidade</label>
+            <input type="text" class="form-control" id="city" formControlName="city" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('city')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="state">UF</label>
+            <input type="text" class="form-control" id="state" formControlName="state" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('state')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="cep">Cep</label>
+            <input type="text" class="form-control" id="cep" formControlName="cep" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('cep')"></app-form-field-error>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="profile_instragam">Perfil no Instragram</label>
+            <input type="text" class="form-control" id="profile_instragam" formControlName="profile_instragam" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('profile_instragam')"></app-form-field-error>
+          </div>
+          <div class="form-group col-md-8">
+            <label for="for_who">Você pretende adotar um animal para quem?</label>
+            <input type="text" class="form-control" id="for_who" formControlName="for_who" primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('for_who')"></app-form-field-error>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="why_adopt">Por que gostaria de adotar um animal?</label>
+            <textarea type="text" class="form-control" id="why_adopt" formControlName="why_adopt"
+              primeiraLetraMaiuscula> </textarea>
+            <app-form-field-error [form-control]="$any(resourceForm).get('why_adopt')"></app-form-field-error>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="average_life">O tempo médio de vida de um animal é de 15 anos. Você está ciente e pronto para este compromisso?</label>
+            <input type="text" class="form-control" id="average_life" formControlName="average_life"
+              primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('average_life')"></app-form-field-error>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="financial_conditions">Você terá gastos com alimentação, higiene, abrigo adequado, vacinas anuais e consultas veterinárias. Está em condições
+            financeiras para isso?</label>
+            <input type="text" class="form-control" id="financial_conditions" formControlName="financial_conditions"
+              primeiraLetraMaiuscula>
+            <app-form-field-error [form-control]="$any(resourceForm).get('financial_conditions')"></app-form-field-error>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button [disabled]="submittingForm || resourceForm.invalid" type="submit" class="btn btn-md mt-2">Salvar</button>
+  </form>
+</div>
