@@ -4,6 +4,8 @@ import { QuizRoutingModule } from './quiz-routing.module';
 import { QuizFormComponent } from './quiz-form/quiz-form.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { TextMaskModule } from 'angular2-text-mask';
+
 
 @NgModule({
   declarations: [
@@ -11,7 +13,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   ],
   imports: [
     SharedModule,
-    QuizRoutingModule
+    QuizRoutingModule,
+    TextMaskModule
   ]
 })
 export class QuizModule { }

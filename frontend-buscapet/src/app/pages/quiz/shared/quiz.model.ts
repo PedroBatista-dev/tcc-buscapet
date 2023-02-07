@@ -3,7 +3,7 @@ import { BaseResourceModel } from '../../../shared/models/base-resource.model';
 export class Quiz extends BaseResourceModel{
   constructor(
     public override id?: string,
-    public birth_date?: Date,
+    public birth_date?: Date | string,
     public marital_status?: string,
     public professional_activity?: string,
     public address?: string,

@@ -37,6 +37,8 @@ export class FormFieldErrorComponent implements OnInit {
       return `* CPF inválido`;
     else if(this.formControl.errors?.['cnpj'])
       return `* CNPJ inválido`;
+    else if(this.formControl.errors?.['cep'])
+      return `* CEP inválido`;
     else
     return null;
   }
