@@ -25,7 +25,7 @@ quizRouter.post(
         })
         .required(),
       marital_status: Joi.string()
-        .valid('Casado', 'Solteiro', 'Separado', 'Divorciado', 'Viuvo')
+        .valid('Casado', 'Solteiro', 'Divorciado', 'Viuvo')
         .required(),
       professional_activity: Joi.string().min(2).required(),
       address: Joi.string().min(2).required(),
@@ -57,7 +57,7 @@ quizRouter.put(
         })
         .required(),
       marital_status: Joi.string()
-        .valid('Casado', 'Solteiro', 'Separado', 'Divorciado', 'Viuvo')
+        .valid('Casado', 'Solteiro', 'Divorciado', 'Viuvo')
         .required(),
       professional_activity: Joi.string().min(2).required(),
       address: Joi.string().min(2).required(),
