@@ -19,6 +19,19 @@ animalsRouter.get(
 );
 
 animalsRouter.get(
+  '/filter',
+  celebrate({
+    [Segments.QUERY]: {
+      name: Joi.string().allow(''),
+      sex: Joi.string().allow(''),
+      size: Joi.string().allow(''),
+      other: Joi.string().allow(''),
+    },
+  }),
+  animalsController.filter,
+);
+
+animalsRouter.get(
   '/dashboard/:text',
   celebrate({
     [Segments.PARAMS]: {

@@ -7,6 +7,7 @@ import ListAnimalService from '../../../services/ListAnimalService';
 import ShowAnimalService from '../../../services/ShowAnimalService';
 import UpdateAnimalService from '../../../services/UpdateAnimalService';
 import DashboardAnimalService from '@modules/animals/services/DashboardAnimalService';
+import FilterAnimalService from '@modules/animals/services/FilterAnimalService copy';
 
 export default class AnimalsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -17,6 +18,24 @@ export default class AnimalsController {
     const listAnimals = container.resolve(ListAnimalService);
 
     const animals = await listAnimals.execute({ user_id, isOng, name });
+
+    return response.json(instanceToInstance(animals));
+  }
+
+  public async filter(request: Request, response: Response): Promise<Response> {
+    const name = request.query.name as string;
+    const sex = request.query.sex as string;
+    const size = request.query.size as string;
+    const other = request.query.other as string;
+
+    const filterAnimals = container.resolve(FilterAnimalService);
+
+    const animals = await filterAnimals.execute({
+      name,
+      sex,
+      size,
+      other,
+    });
 
     return response.json(instanceToInstance(animals));
   }

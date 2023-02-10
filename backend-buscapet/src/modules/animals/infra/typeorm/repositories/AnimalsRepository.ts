@@ -94,6 +94,34 @@ export class AnimalsRepository implements IAnimalsRepository {
     }
   }
 
+  public async filter(
+    name: string,
+    sex: string,
+    size: string,
+    other: string,
+  ): Promise<Animal[]> {
+    const busca: Record<string, any> = {
+      status: 'Adocao',
+    };
+    if (name) {
+      busca.name = Like(`%${name}%`);
+    }
+    if (sex) {
+      busca.sex = sex;
+    }
+    if (size) {
+      busca.size = size;
+    }
+    if (other) {
+      busca.other_animals = other;
+    }
+    const animals = await this.ormRepository.find({
+      where: busca,
+      relations: ['color', 'specie', 'breed', 'animals_vaccine'],
+    });
+    return animals;
+  }
+
   public async findDashboard(
     user_id: string,
     isOng: boolean,

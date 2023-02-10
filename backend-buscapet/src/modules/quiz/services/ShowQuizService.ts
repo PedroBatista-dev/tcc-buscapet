@@ -1,4 +1,3 @@
-import AppError from '../../../shared/errors/AppError';
 import { IQuizRepository } from '../domain/repositories/IQuizRepository';
 import { inject, injectable } from 'tsyringe';
 import { IQuiz } from '../domain/models/IQuiz';
@@ -14,11 +13,8 @@ class ShowQuizService {
     private quizRepository: IQuizRepository,
   ) {}
 
-  public async execute({ user_id }: IRequest): Promise<IQuiz> {
+  public async execute({ user_id }: IRequest): Promise<IQuiz | undefined> {
     const quiz = await this.quizRepository.findByUserId(user_id);
-    if (!quiz) {
-      throw new AppError('Questinário não encontrado!');
-    }
 
     return quiz;
   }
