@@ -208,13 +208,19 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
     const baseComponentParent = this.route.snapshot.parent!.url[0]!.path;
 
+    console.log(baseComponentParent)
+
     if(baseComponentParent !== 'users') {
-      if (this.currentAction === "novo") {
+      if (this.currentAction === "novo" && baseComponentParent !== 'questionario') {
         this.router.navigateByUrl(baseComponentParent, { skipLocationChange: true }).then(
           () => this.router.navigate([baseComponentParent, resource.id, "editar"])
         );
       } else {
-        this.router.navigate([baseComponentParent]);
+        if (baseComponentParent === 'questionario') {
+          location.reload();
+        }else {
+          this.router.navigate([baseComponentParent]);
+        }
       }
     } else {
       if (this.currentAction === "login") {

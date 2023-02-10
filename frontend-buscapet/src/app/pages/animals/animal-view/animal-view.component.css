@@ -1,9 +1,9 @@
-.form-adoptions {
+.form-animal {
   padding: 100px 0 50px 200px;
 }
 
 @media (max-width: 991.98px) {
-  .form-adoptions {
+  .form-animal {
     padding-left: 0;
   }
 }

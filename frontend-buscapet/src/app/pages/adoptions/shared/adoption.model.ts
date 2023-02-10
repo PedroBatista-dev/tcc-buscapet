@@ -9,6 +9,7 @@ export class Adoption extends BaseResourceModel{
     public animal?: Animal,
     public ong?: User,
     public adopter?: User,
+    public animal_id?: string,
     public created_at?: Date,
     public updated_at?: Date
   ){

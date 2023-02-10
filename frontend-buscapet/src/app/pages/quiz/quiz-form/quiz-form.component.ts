@@ -10,6 +10,8 @@ import { Quiz } from '../shared/quiz.model';
 import { QuizService } from '../shared/quiz.service';
 import { CepConsulta } from '../shared/viacep.model';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-quiz-form',
   templateUrl: './quiz-form.component.html',
@@ -34,14 +36,22 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
     this.buildResourceForm();
     this.resourceService.getById('').subscribe({
         next: (resource) => {
-          this.currentAction = 'editar';
-          resource.birth_date = moment(resource.birth_date).utc().format('yyyy-MM-DD');
-          this.resource = resource;
-          this.resourceForm?.patchValue(resource);
+          if (resource.id) {
+            this.currentAction = 'editar';
+            resource.birth_date = moment(resource.birth_date).utc().format('yyyy-MM-DD');
+            this.resource = resource;
+            this.resourceForm?.patchValue(resource);
+          } else {
+            this.currentAction = 'novo';
+          }
         },
-        error: (erro) => {
-          this.currentAction = 'novo';
-          console.log(erro);
+        error: () => {
+          Swal.fire({
+              title: 'Erro!',
+              text: 'Ocorreu um erro no servidor, tente mais tarde.',
+              icon: 'error',
+              confirmButtonColor: '#44C5CD',
+          });
         }
     });
   }
@@ -64,8 +74,8 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
       profile_instragam: [null, [Validators.required]],
       for_who: [null, [Validators.required]],
       why_adopt: [null, [Validators.required]],
-      average_life: [null, [Validators.required]],
-      financial_conditions: [null, [Validators.required]],
+      average_life: [false, [Validators.required]],
+      financial_conditions: [false, [Validators.required]],
     },
     {
       validators: [validarData("birth_date")],
@@ -73,11 +83,11 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
   }
 
   protected override creationPageTitle(): string {
-    return "Cadastro Quiz";
+    return "Cadastro de Questionário";
   }
 
   protected override editionPageTitle(): string {
-    return `Editando Quiz`;
+    return `Editando Questionário`;
   }
 
   protected override updateResource():void {
@@ -91,7 +101,6 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
   }
 
   buscarCep() {
-
     const cep = StringUtils.somenteNumeros(this.resourceForm.get('cep')!.value);
     if (cep.length < 8) return;
 
@@ -106,7 +115,6 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
   }
 
   preencherEnderecoConsulta(cepConsulta: CepConsulta) {
-
     this.resourceForm.patchValue({
       address: cepConsulta.logradouro,
       district: cepConsulta.bairro,

@@ -127,7 +127,8 @@
           <div class="form-group col-md-12">
             <div class="custom-control custom-switch">
               <input type="checkbox" class="custom-control-input" id="average_life" formControlName="average_life">
-              <label class="custom-control-label" for="average_life">O tempo médio de vida de um animal é de 15 anos. Você está ciente e pronto para este compromisso?</label>
+              <label class="custom-control-label" for="average_life">O tempo médio de vida de um animal é de 15 anos. Você está ciente e pronto para este compromisso?
+                <span [ngClass]="resourceForm.get('average_life')?.value ? 'text-success' : 'text-danger'">{{ resourceForm.get('average_life')?.value ? 'Sim' : 'Não' }}</span></label>
             </div>
             <app-form-field-error [form-control]="$any(resourceForm).get('average_life')"></app-form-field-error>
           </div>
@@ -137,7 +138,7 @@
             <div class="custom-control custom-switch">
               <input type="checkbox" class="custom-control-input" id="financial_conditions" formControlName="financial_conditions">
               <label class="custom-control-label" for="financial_conditions">Você terá gastos com alimentação, higiene, abrigo adequado, vacinas anuais e consultas veterinárias. Está em condições
-              financeiras para isso?</label>
+              financeiras para isso? <span [ngClass]="resourceForm.get('financial_conditions')?.value ? 'text-success' : 'text-danger'">{{ resourceForm.get('financial_conditions')?.value ? 'Sim' : 'Não' }}</span></label>
             </div>
             <app-form-field-error [form-control]="$any(resourceForm).get('financial_conditions')"></app-form-field-error>
           </div>

@@ -23,4 +23,13 @@ export class AnimalService extends BaseResourceService<Animal> {
       catchError(this.handleError)
     );
   }
+
+  getFilter(name: string, sex: string, size: string, other: string): Observable<Animal[]> {
+    let url = `${this.apiPath}/filter?name=${name}&sex=${sex}&size=${size}&other=${other}`;
+
+    return this.http.get<Animal[]>(url, this.obterAuthHeaderJson()).pipe(
+      map(this.jsonDataToResources.bind(this)),
+      catchError(this.handleError)
+    );
+  }
 }

@@ -7,7 +7,7 @@ import { AnimalFormComponent } from '../animal-form/animal-form.component';
 @Injectable({
   providedIn: 'root'
 })
-export class AnimalGuard implements CanDeactivate<AnimalFormComponent> {
+export class AnimalGuard implements CanDeactivate<AnimalFormComponent>, CanActivate {
 
     localStorageUtils = new LocalStorageUtils();
 
@@ -21,17 +21,12 @@ export class AnimalGuard implements CanDeactivate<AnimalFormComponent> {
         return true
     }
 
-    // canActivate() {
-    //     if (this.localStorageUtils.obterRemember() === 'nao') {
-    //       this.localStorageUtils.limparDadosLocaisUsuario();
-    //       return true;
-    //     }
+    canActivate() {
+        if(this.localStorageUtils.obterIsOng() === 'false'){
+            this.router.navigate(['/animais', 'filtrar']);
+        }
 
-    //     if(this.localStorageUtils.obterTokenUsuario()){
-    //         this.router.navigate(['/vacinas']); // mudar para dashboard
-    //     }
-
-    //     return true;
-    // }
+        return true;
+    }
 
 }

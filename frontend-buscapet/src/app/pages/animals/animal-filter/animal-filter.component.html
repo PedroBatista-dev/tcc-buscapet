@@ -1,0 +1,111 @@
+<div class="filter-animals">
+  <div class="row mb-4">
+    <div class="col-md-9">
+      <h1 class="h2 border-start ps-2">
+        Animais
+      </h1>
+    </div>
+  </div>
+
+  <div class="card mb-2">
+    <div class="card-body">
+      <form>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="name">Nome</label>
+            <input id="name" class="form-control" type="text" [formControl]="filter"
+              primeiraLetraMaiuscula />
+          </div>
+          <div class="form-group col-md-2">
+            <label for="sex">Sexo</label>
+            <select class="form-control" [formControl]="filterSex">
+              <option value=""></option>
+              <option value="F">Fêmea</option>
+              <option value="M">Macho</option>
+            </select>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="size">Porte</label>
+            <select class="form-control" [formControl]="filterSize">
+              <option value=""></option>
+              <option value="P">Pequeno</option>
+              <option value="M">Médio</option>
+              <option value="G">Grande</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="other_animals">Se dá bem com outros animais?</label>
+            <select class="form-control" [formControl]="filterOther">
+              <option value=""></option>
+              <option value="Sim">Sim</option>
+              <option value="Sim, com os da mesma espécie">Sim, com os da mesma espécie</option>
+              <option value="Sim, com os do mesmo sexo">Sim, com os do mesmo sexo</option>
+              <option value="Sim, com os do mesmo porte">Sim, com os do mesmo porte</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <button class="btn btn-md btn-filtar" type="button" (click)="getAllResource()">Filtrar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr class="bg-info text-light">
+            <th></th>
+            <th>Animal</th>
+            <th>Raça</th>
+            <th>Cor</th>
+            <th>Sexo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let animal of resources">
+            <td class="column-img">
+              <a [routerLink]="[animal.id, 'avatar']"
+                id="navbarPerfilLink" placement="bottom" ngbTooltip="Alterar Imagem">
+                <img [src]="animal.avatar_url ? animal.avatar_url : '../../../../assets/avatar_animal.jpg'" class="rounded-circle" height="60" alt="Avatar" loading="lazy" />
+              </a>
+            </td>
+            <td>
+              <strong>{{animal.name}}</strong>
+            </td>
+            <td>
+              <strong>{{animal.breed?.name}}</strong>
+            </td>
+            <td>
+              <strong>{{animal.color?.name}}</strong>
+            </td>
+            <td>
+              <strong>{{animal.sex === 'M' ? 'Macho' : 'Fêmea'}}</strong>
+            </td>
+            <td>
+              <a [routerLink]="['/animais', animal.id, 'visualizar-animal']"
+                class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Visualizar"><i class="fas fa-eye"></i></a>
+              <button (click)="solicitarAdocao(animal)" class="btn btn-sm" placement="bottom"
+                ngbTooltip="Solicitar adoção"><i class="fas fa-folder-plus"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize.value"
+          (pageChange)="getAllResource()" >
+        </ngb-pagination>
+        <select class="form-select form-select-sm rounded col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2" [formControl]="pageSize" (ngModelChange)="getAllResource()">
+          <option value="5">5 itens</option>
+          <option value="10">10 itens</option>
+          <option value="15">15 itens</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+.filter-animals {
+  padding: 100px 0 50px 200px;
+}
+
+@media (max-width: 991.98px) {
+  .filter-animals {
+      padding-left: 0;
+    }
+}
+
+.btn-filtar {
+  background-color: #F77E06;
+  color: white;
+}
+
+.column-img {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+ngb-pagination {
+  height: 40px;
+}
+
+ngb-pagination ::ng-deep ul>li:not(.active)>a {
+  background-color: white !important;
+  color: black !important;
+}
+
+ngb-pagination ::ng-deep ul>li.active>a {
+  background-color: #44C5CD !important;
+  border-color: #44C5CD !important;
+}
+
+ngb-pagination ::ng-deep ul>li.active>a>span {
+  display: none;
+}
