@@ -1,5 +1,5 @@
 import AppError from '../../../shared/errors/AppError';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { IQuiz } from '../domain/models/IQuiz';
 import { IQuizRepository } from '../domain/repositories/IQuizRepository';
 
@@ -22,6 +22,7 @@ interface IRequest {
   isOng: boolean;
 }
 
+@injectable()
 class UpdateQuizService {
   constructor(
     @inject('QuizRepository')

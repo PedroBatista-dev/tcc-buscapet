@@ -8,11 +8,11 @@ export default class QuizController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
-    const listVaccines = container.resolve(ShowQuizService);
+    const listQuiz = container.resolve(ShowQuizService);
 
-    const vaccines = await listVaccines.execute({ user_id });
+    const quiz = await listQuiz.execute({ user_id });
 
-    return response.json(vaccines);
+    return response.json(quiz);
   }
 
   public async show(request: Request, response: Response): Promise<Response> {

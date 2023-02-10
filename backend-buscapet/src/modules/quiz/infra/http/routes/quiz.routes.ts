@@ -16,14 +16,7 @@ quizRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      birth_date: Joi.date()
-        .max('01-01-2005')
-        .iso()
-        .messages({
-          'date.format': `Date format is YYYY-MM-DD`,
-          'date.max': `Age must be 18+`,
-        })
-        .required(),
+      birth_date: Joi.date().required(),
       marital_status: Joi.string()
         .valid('Casado', 'Solteiro', 'Divorciado', 'Viuvo')
         .required(),
@@ -48,14 +41,7 @@ quizRouter.put(
   '/',
   celebrate({
     [Segments.BODY]: {
-      birth_date: Joi.date()
-        .max('01-01-2005')
-        .iso()
-        .messages({
-          'date.format': `Date format is YYYY-MM-DD`,
-          'date.max': `Age must be 18+`,
-        })
-        .required(),
+      birth_date: Joi.date().required(),
       marital_status: Joi.string()
         .valid('Casado', 'Solteiro', 'Divorciado', 'Viuvo')
         .required(),
