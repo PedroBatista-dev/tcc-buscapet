@@ -39,6 +39,8 @@ export class FormFieldErrorComponent implements OnInit {
       return `* CNPJ inválido`;
     else if(this.formControl.errors?.['cep'])
       return `* CEP inválido`;
+    else if(this.formControl.errors?.['dateValidator'])
+      return `* O usuário precisa ser maior de 18 anos`;
     else
     return null;
   }

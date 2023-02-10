@@ -5,6 +5,7 @@ import { MASKS, NgBrazilValidators } from 'ng-brazil';
 
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { StringUtils } from 'src/app/shared/utils/string-utils';
+import { validarData } from 'src/app/shared/validators/validar-data';
 import { Quiz } from '../shared/quiz.model';
 import { QuizService } from '../shared/quiz.service';
 import { CepConsulta } from '../shared/viacep.model';
@@ -22,6 +23,9 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
 
   quiz: Quiz = new Quiz();
 
+  maxDate: string = '';
+
+
   constructor(protected quizService: QuizService, protected override injector: Injector) {
     super(injector, new Quiz(), quizService, Quiz.fromJson);
   }
@@ -37,7 +41,7 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
         },
         error: (erro) => {
           this.currentAction = 'novo';
-          console.log(erro)
+          console.log(erro);
         }
     });
   }
@@ -62,6 +66,9 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
       why_adopt: [null, [Validators.required]],
       average_life: [null, [Validators.required]],
       financial_conditions: [null, [Validators.required]],
+    },
+    {
+      validators: [validarData("birth_date")],
     });
   }
 
@@ -71,6 +78,16 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
 
   protected override editionPageTitle(): string {
     return `Editando Quiz`;
+  }
+
+  protected override updateResource():void {
+    const resource: Quiz = this.jsonDataToResourceFn(this.resourceForm.value);
+    this.quizService.update(resource).subscribe({
+      next: (resource) => this.actionsForSuccess(resource),
+      error: (error) => this.actionsForError(error)
+    });
+
+    this.changesNoSave = false;
   }
 
   buscarCep() {
@@ -97,9 +114,5 @@ export class QuizFormComponent extends BaseResourceFormComponent<Quiz> {
       city: cepConsulta.localidade,
       state: cepConsulta.uf
     });
-  }
-
-  imprimir(): void {
-    console.log(this.resourceForm.value)
   }
 }
