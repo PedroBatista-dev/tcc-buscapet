@@ -77,9 +77,11 @@ export class ProfileFormComponent extends BaseResourceFormComponent<User> {
     }
   }
 
-  cancelEdit(): void {
+  cancelEdit(value: string = ''): void {
     this.edit = false;
-    this.resourceForm?.patchValue(this.resource);
+
+    if (value !== 'submit')
+      this.resourceForm?.patchValue(this.resource);
 
     this.resourceForm.get('name')?.disable();
     this.resourceForm.get('name')?.clearValidators();
@@ -114,9 +116,17 @@ export class ProfileFormComponent extends BaseResourceFormComponent<User> {
 
   saveAlter(): void {
     this.resourceService.update(this.passwordForm.value, 'password').subscribe({
-      next: (resource) => this.actionsForSuccess(resource),
+      next: (resource) => {
+        this.actionsForSuccess(resource);
+        this.cancelAlter();
+      },
       error: (error) => this.actionsForError(error)
     });
+  }
+
+  override submitForm(): void {
+    super.submitForm();
+    this.cancelEdit('submit');
   }
 
 }

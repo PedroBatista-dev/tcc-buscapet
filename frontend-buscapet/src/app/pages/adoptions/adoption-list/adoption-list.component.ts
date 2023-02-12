@@ -16,7 +16,6 @@ import { LocalStorageUtils } from 'src/app/shared/utils/localstorage';
 export class AdoptionListComponent extends BaseResourceListComponent<Adoption> {
 
   localStorageUtils = new LocalStorageUtils();
-  @ViewChild('content', { static: false }) el!: ElementRef;
 
   constructor(private adoptionService: AdoptionService, protected override injector: Injector, private router: Router) {
     super(adoptionService, injector);
@@ -24,33 +23,44 @@ export class AdoptionListComponent extends BaseResourceListComponent<Adoption> {
   }
 
   alterStatus(id: string, status: string): void {
-    const resource: Adoption = { status};
-    this.resourceService.update(resource, id)
-    .subscribe({
-      next: (resource) => {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Solicitação processada com sucesso!',
-          showConfirmButton: false,
-          timer: 1500
+    const resource: Adoption = { status: status };
+    Swal.fire({
+      title: 'Deseja realmente realizar este ação?',
+      text: "Lembre-se que não poderá reverter esta ação!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#44C5CD',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, confirmar!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.resourceService.update(resource, id)
+        .subscribe({
+          next: (resource) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Solicitação processada com sucesso!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.getAllResource();
+          },
+          error: (error) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Ocorreu um erro ao processar sua solicitação!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            console.log(error)
+          }
         });
-        this.getAllResource();
-      },
-      error: (error) => {
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Ocorreu um erro ao processar sua solicitação!',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        console.log(error)
       }
     });
   }
-
-  cancel(): void {}
 
   gerarPDF(adoption: Adoption): void {
     this.router.navigate(['/adocoes/certificado'],

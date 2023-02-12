@@ -6,11 +6,11 @@ import { AnimalService } from '../shared/animal.service';
 
 import Swal from 'sweetalert2';
 import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, map, Observable, OperatorFunction } from 'rxjs';
-import { Breed } from '../../breeds/shared/breed.model';
-import { Color } from '../../colors/shared/color.model';
 import { ColorService } from '../../colors/shared/color.service';
 import { AdoptionService } from '../../adoptions/shared/adoption.service';
+import { Quiz } from '../../quiz/shared/quiz.model';
+import { QuizService } from '../../quiz/shared/quiz.service';
+import { LocalStorageUtils } from 'src/app/shared/utils/localstorage';
 
 @Component({
   selector: 'app-animal-filter',
@@ -23,12 +23,30 @@ export class AnimalFilterComponent extends BaseResourceListComponent<Animal> {
     status: new FormControl('Adocao'),
   });
 
+  localStorageUtils = new LocalStorageUtils();
+  quiz = new Quiz();
+
   filterSex = new FormControl('');
   filterSize = new FormControl('');
   filterOther = new FormControl('');
 
-  constructor(private animalService: AnimalService, protected colorService: ColorService, protected override injector: Injector, private adoptionService: AdoptionService) {
+  constructor(private animalService: AnimalService, protected colorService: ColorService, protected override injector: Injector, private adoptionService: AdoptionService, private quizService: QuizService) {
     super(animalService, injector);
+  }
+
+  override ngOnInit(): void {
+    this.quizService.getById(this.localStorageUtils.obterIdUsuario()!).subscribe({
+        next: (resource) => {
+          this.quiz = resource;
+        },
+        error: () => Swal.fire({
+              title: 'Atenção!',
+              text: 'Preencha o questionário de adoção para realizar adoções.',
+              icon: 'warning',
+              confirmButtonColor: '#44C5CD',
+        })
+    });
+    this.getAllResource();
   }
 
   solicitarAdocao(animal: Animal): void {

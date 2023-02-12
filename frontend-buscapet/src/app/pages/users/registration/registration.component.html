@@ -13,7 +13,7 @@
       <div class="form-row">
         <div class="form-group col-md-12">
           <label for="name">Nome</label>
-          <input type="text" class="form-control" id="name" formControlName="name">
+          <input type="text" class="form-control" id="name" formControlName="name" primeiraLetraMaiuscula>
           <app-form-field-error [form-control]="$any(resourceForm).get('name')"></app-form-field-error>
         </div>
       </div>

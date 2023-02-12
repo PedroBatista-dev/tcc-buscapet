@@ -225,7 +225,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
         const remember = this.remember.value ? 'sim' : 'nao';
         this.localStorage.salvarDadosLocaisUsuario(resource, remember);
         this.router.navigate(['dashboard']);
-      } else {
+      } else if (this.currentAction !== "editar") {
         this.router.navigate([baseComponentParent, 'login']);
       }
     }

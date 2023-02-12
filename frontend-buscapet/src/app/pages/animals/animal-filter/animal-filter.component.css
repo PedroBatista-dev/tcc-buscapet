@@ -13,6 +13,11 @@
   color: white;
 }
 
+.card-alert {
+  background-color: #F77E06;
+  color: white;
+}
+
 .column-img {
   padding: 0;
   display: flex;

@@ -19,7 +19,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
   getAll(name: string, status: string): Observable<T[]> {
     let url = this.apiPath;
 
-     if (name) {
+    if (name) {
       url = `${this.apiPath}/?name=${name}`;
     }
 
