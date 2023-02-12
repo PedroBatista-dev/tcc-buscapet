@@ -3,6 +3,10 @@ import { ICreateVaccine } from '../../../domain/models/ICreateVaccine';
 import { v4 as uuidv4 } from 'uuid';
 import Vaccine from '../../../infra/typeorm/entities/Vaccine';
 
+interface IFindVaccines {
+  vaccine_id: string;
+}
+
 export class FakeVaccinesRepository implements IVaccinesRepository {
   private vaccines: Vaccine[] = [];
 
@@ -65,11 +69,13 @@ export class FakeVaccinesRepository implements IVaccinesRepository {
   }
 
   public async findAllByIds(
-    vaccines: Vaccine[],
+    vaccines: IFindVaccines[],
     user_id: string,
   ): Promise<Vaccine[]> {
+    const vaccineIds = vaccines.map(vaccine => vaccine.vaccine_id);
+
     const idVaccines = this.vaccines.filter(
-      vaccine => vaccines.includes(vaccine) && vaccine.user_id === user_id,
+      vaccine => vaccineIds.includes(vaccine.id) && vaccine.user_id === user_id,
     );
     return idVaccines;
   }

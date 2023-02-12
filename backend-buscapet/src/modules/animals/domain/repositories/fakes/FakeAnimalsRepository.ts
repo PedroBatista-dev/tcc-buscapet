@@ -11,7 +11,6 @@ export class FakeAnimalsRepository implements IAnimalsRepository {
     age,
     sex,
     size,
-    status,
     other_animals,
     color,
     breed,
@@ -25,12 +24,11 @@ export class FakeAnimalsRepository implements IAnimalsRepository {
     animal.age = age;
     animal.sex = sex;
     animal.size = size;
-    animal.status = status;
     animal.other_animals = other_animals;
     animal.color_id = color.id;
     animal.breed_id = breed.id;
     animal.specie_id = specie.id;
-    animal.status = status;
+    animal.status = 'Criado';
     animal.user_id = user_id;
 
     this.animals.push(animal);
@@ -89,5 +87,31 @@ export class FakeAnimalsRepository implements IAnimalsRepository {
   public async findByIdAll(id: string): Promise<Animal | undefined> {
     const animal = this.animals.find(animal => animal.id === id);
     return animal;
+  }
+
+  public async findDashboard(
+    user_id: string,
+    isOng: boolean,
+    text: string,
+  ): Promise<any> {
+    const animal = this.animals.find(animal => animal.user_id === user_id);
+    return `${text} - ${animal?.name} - ${isOng}`;
+  }
+
+  public async filter(
+    name: string,
+    sex: string,
+    size: string,
+    other: string,
+  ): Promise<Animal[]> {
+    const animals = this.animals.filter(
+      animal =>
+        animal.name === name &&
+        animal.sex === sex &&
+        animal.size === size &&
+        animal.other_animals === other,
+    );
+
+    return animals;
   }
 }

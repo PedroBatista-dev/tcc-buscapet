@@ -1,5 +1,5 @@
 import Specie from '../entities/Specie';
-import { getRepository, Like, Repository } from 'typeorm';
+import { getRepository, ILike, Repository } from 'typeorm';
 import { ISpeciesRepository } from '@modules/species/domain/repositories/ISpeciesRepository';
 import { ICreateSpecie } from '@modules/species/domain/models/ICreateSpecie';
 
@@ -32,7 +32,7 @@ export class SpeciesRepository implements ISpeciesRepository {
     if (name) {
       const species = await this.ormRepository.find({
         where: {
-          name: Like(`%${name}%`),
+          name: ILike(`%${name}%`),
           user_id,
         },
         relations: ['breeds'],

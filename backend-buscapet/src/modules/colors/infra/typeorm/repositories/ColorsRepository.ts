@@ -1,5 +1,5 @@
 import Color from '../entities/Color';
-import { getRepository, Like, Repository } from 'typeorm';
+import { getRepository, ILike, Repository } from 'typeorm';
 import { IColorsRepository } from '@modules/colors/domain/repositories/IColorsRepository';
 import { ICreateColor } from '@modules/colors/domain/models/ICreateColor';
 
@@ -32,7 +32,7 @@ export class ColorsRepository implements IColorsRepository {
     if (name) {
       const colors = await this.ormRepository.find({
         where: {
-          name: Like(`%${name}%`),
+          name: ILike(`%${name}%`),
           user_id,
         },
       });

@@ -41,7 +41,7 @@ describe('ResetPassword', () => {
 
   it('Não deve ser capaz de resetar a senha de um usuário com token inválido', async () => {
     expect(
-      resetPassword.execute({ token: 'abc', password: 'user1234' }),
+      resetPassword.execute({ token: 'abc', password: 'user12345' }),
     ).rejects.toBeInstanceOf(AppError);
   });
 });

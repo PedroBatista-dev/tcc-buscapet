@@ -42,8 +42,6 @@ class UpdateUserAvatarService {
     fs.writeFile(filePath, base64Image, { encoding: 'base64' }, function (err) {
       if (err) {
         console.log(err);
-      } else {
-        console.log('Arquivo criado');
       }
     });
 

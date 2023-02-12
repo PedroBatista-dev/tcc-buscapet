@@ -163,13 +163,7 @@ describe('CreateAdoption', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deve ser capaz de criar uma adoção com status inválido', async () => {
-    await updateStatusAnimal.execute({
-      id: animal.id,
-      status: 'Criado',
-      user_id: userJ.id,
-    });
-
+  it('Não deve ser capaz de criar uma adoção repetida', async () => {
     expect(
       createAdoption.execute({
         animal_id: animal.id,
@@ -179,7 +173,13 @@ describe('CreateAdoption', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('Não deve ser capaz de criar uma adoção repetida', async () => {
+  it('Não deve ser capaz de criar uma adoção com status inválido', async () => {
+    await updateStatusAnimal.execute({
+      id: animal.id,
+      status: 'Criado',
+      user_id: userJ.id,
+    });
+
     expect(
       createAdoption.execute({
         animal_id: animal.id,

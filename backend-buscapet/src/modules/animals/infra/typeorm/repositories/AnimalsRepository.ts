@@ -1,5 +1,5 @@
 import Animal from '../entities/Animal';
-import { getRepository, Like, Repository } from 'typeorm';
+import { getRepository, ILike, Repository } from 'typeorm';
 import { IAnimalsRepository } from '@modules/animals/domain/repositories/IAnimalsRepository';
 import { ICreateAnimal } from '@modules/animals/domain/models/ICreateAnimal';
 
@@ -61,7 +61,7 @@ export class AnimalsRepository implements IAnimalsRepository {
       if (isOng) {
         const animals = await this.ormRepository.find({
           where: {
-            name: Like(`%${name}%`),
+            name: ILike(`%${name}%`),
             user_id,
           },
           relations: ['color', 'specie', 'breed', 'animals_vaccine'],
@@ -70,7 +70,7 @@ export class AnimalsRepository implements IAnimalsRepository {
       } else {
         const animals = await this.ormRepository.find({
           where: {
-            name: Like(`%${name}%`),
+            name: ILike(`%${name}%`),
           },
           relations: ['color', 'specie', 'breed', 'animals_vaccine'],
         });
@@ -104,7 +104,7 @@ export class AnimalsRepository implements IAnimalsRepository {
       status: 'Adocao',
     };
     if (name) {
-      busca.name = Like(`%${name}%`);
+      busca.name = ILike(`%${name}%`);
     }
     if (sex) {
       busca.sex = sex;

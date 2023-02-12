@@ -7,7 +7,7 @@ import ListAnimalService from '../../../services/ListAnimalService';
 import ShowAnimalService from '../../../services/ShowAnimalService';
 import UpdateAnimalService from '../../../services/UpdateAnimalService';
 import DashboardAnimalService from '@modules/animals/services/DashboardAnimalService';
-import FilterAnimalService from '@modules/animals/services/FilterAnimalService copy';
+import FilterAnimalService from '@modules/animals/services/FilterAnimalService';
 
 export default class AnimalsController {
   public async index(request: Request, response: Response): Promise<Response> {

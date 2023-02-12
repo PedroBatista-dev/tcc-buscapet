@@ -1,5 +1,5 @@
 import Vaccine from '../entities/Vaccine';
-import { getRepository, In, Like, Repository } from 'typeorm';
+import { getRepository, In, ILike, Repository } from 'typeorm';
 import { IVaccinesRepository } from '@modules/vaccines/domain/repositories/IVaccinesRepository';
 import { ICreateVaccine } from '@modules/vaccines/domain/models/ICreateVaccine';
 
@@ -36,7 +36,7 @@ export class VaccinesRepository implements IVaccinesRepository {
     if (name) {
       const vaccines = await this.ormRepository.find({
         where: {
-          name: Like(`%${name}%`),
+          name: ILike(`%${name}%`),
           user_id,
         },
       });

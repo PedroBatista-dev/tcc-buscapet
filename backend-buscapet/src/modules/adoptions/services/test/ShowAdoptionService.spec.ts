@@ -129,7 +129,6 @@ describe('ShowAdoption', () => {
   it('Deve ser capaz de mostrar uma adoção pelo id', async () => {
     const idAdoption = await showAdoption.execute({
       id: adoption.id,
-      status: 'Solicitada',
       user_id: userF.id,
       isOng: userF.isOng,
     });
@@ -147,7 +146,6 @@ describe('ShowAdoption', () => {
     expect(
       showAdoption.execute({
         id: 'abc',
-        status: 'Solicitada',
         user_id: userF.id,
         isOng: userF.isOng,
       }),

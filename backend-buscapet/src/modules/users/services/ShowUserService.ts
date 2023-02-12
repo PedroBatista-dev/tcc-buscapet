@@ -17,7 +17,7 @@ class ShowUserService {
   public async execute({ id }: IRequest): Promise<IUser> {
     const user = await this.usersRepository.findById(id);
     if (!user) {
-      throw new AppError('Vacina não encontrada!');
+      throw new AppError('Usuário não encontrado!');
     }
 
     return user;
