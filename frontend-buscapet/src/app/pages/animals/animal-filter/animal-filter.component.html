@@ -13,8 +13,7 @@
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="name">Nome</label>
-            <input id="name" class="form-control" type="text" [formControl]="filter"
-              primeiraLetraMaiuscula />
+            <input id="name" class="form-control" type="text" [formControl]="filter" />
           </div>
           <div class="form-group col-md-2">
             <label for="sex">Sexo</label>
@@ -70,10 +69,8 @@
         <tbody>
           <tr *ngFor="let animal of resources">
             <td class="column-img">
-              <a [routerLink]="[animal.id, 'avatar']"
-                id="navbarPerfilLink" placement="bottom" ngbTooltip="Alterar Imagem">
-                <img [src]="animal.avatar_url ? animal.avatar_url : '../../../../assets/avatar_animal.jpg'" class="rounded-circle" height="60" alt="Avatar" loading="lazy" />
-              </a>
+              <img [src]="animal.avatar_url ? animal.avatar_url : '../../../../assets/avatar_animal.png'" class="rounded-circle"
+                height="60" alt="Avatar" loading="lazy" />
             </td>
             <td>
               <strong>{{animal.name}}</strong>

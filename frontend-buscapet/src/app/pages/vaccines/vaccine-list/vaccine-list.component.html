@@ -10,15 +10,13 @@
   <div class="card">
     <div class="card-body">
       <div class="d-flex justify-content-between">
-        <form>
-          <div class="mb-3 row">
-            <div class="col-xs-3 col-sm d-flex">
-              <input id="table-filtering-search" placeholder="Pesquisar" class="form-control mr-1" type="text"
-                [formControl]="filter" primeiraLetraMaiuscula />
-              <button class="btn btn-sm" type="button" (click)="getAllResource()"><i class="fas fa-search"></i></button>
-            </div>
+        <div class="mb-3 row">
+          <div class="col-xs-3 col-sm d-flex">
+            <input id="table-filtering-search" placeholder="Pesquisar" class="form-control mr-1" type="text"
+              [formControl]="filter" (keyup.enter)="getAllResource()" />
+            <button class="btn btn-sm" type="button" (click)="getAllResource()"><i class="fas fa-search"></i></button>
           </div>
-        </form>
+        </div>
         <div class="mb-4">
           <a [routerLink]="['novo']" class="btn btn-md btn-novo">Novo</a>
         </div>

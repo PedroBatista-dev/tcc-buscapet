@@ -208,8 +208,6 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
     const baseComponentParent = this.route.snapshot.parent!.url[0]!.path;
 
-    console.log(baseComponentParent)
-
     if(baseComponentParent !== 'users') {
       if (this.currentAction === "novo" && baseComponentParent !== 'questionario') {
         this.router.navigateByUrl(baseComponentParent, { skipLocationChange: true }).then(
