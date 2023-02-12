@@ -150,7 +150,9 @@ animalsRouter.put(
   '/:id/status',
   celebrate({
     [Segments.BODY]: {
-      status: Joi.string().valid('Criado', 'Adocao', 'Adotado').required(),
+      status: Joi.string()
+        .valid('Criado', 'Disponivel', 'Adocao', 'Adotado')
+        .required(),
     },
     [Segments.PARAMS]: { id: Joi.string().uuid().required() },
   }),

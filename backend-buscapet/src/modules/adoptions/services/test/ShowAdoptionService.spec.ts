@@ -114,7 +114,7 @@ describe('ShowAdoption', () => {
 
     await updateStatusAnimal.execute({
       id: animal.id,
-      status: 'Adocao',
+      status: 'Disponivel',
       user_id: userJ.id,
     });
 

@@ -36,10 +36,12 @@ let vaccine: IVaccine;
 let fakeAnimalsRepository: FakeAnimalsRepository;
 let updateStatusAnimal: UpdateStatusAnimalService;
 let animal: IAnimal;
+let animal2: IAnimal;
 
 let fakeAdoptionsRepository: FakeAdoptionsRepository;
 let updateAdoption: UpdateAdoptionService;
 let adoption: IAdoption;
+let adoption2: IAdoption;
 
 describe('UpdateAdoption', () => {
   beforeEach(async () => {
@@ -56,7 +58,10 @@ describe('UpdateAdoption', () => {
     updateStatusAnimal = new UpdateStatusAnimalService(fakeAnimalsRepository);
 
     fakeAdoptionsRepository = new FakeAdoptionsRepository();
-    updateAdoption = new UpdateAdoptionService(fakeAdoptionsRepository);
+    updateAdoption = new UpdateAdoptionService(
+      fakeAdoptionsRepository,
+      fakeAnimalsRepository,
+    );
 
     userJ = await fakeUsersRepository.create({
       name: 'user J',
@@ -111,9 +116,23 @@ describe('UpdateAdoption', () => {
       animals_vaccine: [{ vaccine_id: vaccine.id }],
     });
 
+    animal2 = await fakeAnimalsRepository.create({
+      name: 'Panqueca',
+      age: 1,
+      sex: 'F',
+      size: 'P',
+      other_animals: 'Não',
+      color: color,
+      breed: breed,
+      specie: specie,
+      user_id: userJ.id,
+      status: 'Criado',
+      animals_vaccine: [{ vaccine_id: vaccine.id }],
+    });
+
     await updateStatusAnimal.execute({
       id: animal.id,
-      status: 'Adocao',
+      status: 'Disponivel',
       user_id: userJ.id,
     });
 
@@ -123,9 +142,16 @@ describe('UpdateAdoption', () => {
       adopter: userF,
       ong: userJ,
     });
+
+    adoption2 = await fakeAdoptionsRepository.create({
+      status: 'Solicitada',
+      animal: animal2,
+      adopter: userF,
+      ong: userJ,
+    });
   });
 
-  it('Deve ser capaz de atualizar uma adoção pelo id', async () => {
+  it('Deve ser capaz de aprovar uma adoção pelo id', async () => {
     const adoptionUp = await updateAdoption.execute({
       id: adoption.id,
       status: 'Aprovada',
@@ -137,6 +163,23 @@ describe('UpdateAdoption', () => {
       expect.objectContaining({
         id: adoption.id,
         status: 'Aprovada',
+        ong_id: userJ.id,
+      }),
+    );
+  });
+
+  it('Deve ser capaz de reprovar uma adoção pelo id', async () => {
+    const adoptionUp = await updateAdoption.execute({
+      id: adoption2.id,
+      status: 'Reprovada',
+      ong_id: userJ.id,
+      isOng: userJ.isOng,
+    });
+
+    expect(adoptionUp).toEqual(
+      expect.objectContaining({
+        id: adoption2.id,
+        status: 'Reprovada',
         ong_id: userJ.id,
       }),
     );

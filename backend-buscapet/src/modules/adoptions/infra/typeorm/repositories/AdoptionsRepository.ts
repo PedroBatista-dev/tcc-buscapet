@@ -104,6 +104,7 @@ export class AdoptionsRepository implements IAdoptionsRepository {
         animal_id,
         adopter_id,
         ong_id,
+        status: 'Solicitada',
       },
     });
 

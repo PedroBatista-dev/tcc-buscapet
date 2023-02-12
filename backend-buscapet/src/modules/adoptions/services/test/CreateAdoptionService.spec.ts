@@ -36,6 +36,7 @@ let vaccine: IVaccine;
 let fakeAnimalsRepository: FakeAnimalsRepository;
 let updateStatusAnimal: UpdateStatusAnimalService;
 let animal: IAnimal;
+let animal2: IAnimal;
 
 let fakeAdoptionsRepository: FakeAdoptionsRepository;
 let createAdoption: CreateAdoptionService;
@@ -116,9 +117,29 @@ describe('CreateAdoption', () => {
       animals_vaccine: [{ vaccine_id: vaccine.id }],
     });
 
+    animal2 = await fakeAnimalsRepository.create({
+      name: 'Panqueca',
+      age: 1,
+      sex: 'F',
+      size: 'P',
+      other_animals: 'Não',
+      color: color,
+      breed: breed,
+      specie: specie,
+      user_id: userJ.id,
+      status: 'Criado',
+      animals_vaccine: [{ vaccine_id: vaccine.id }],
+    });
+
     await updateStatusAnimal.execute({
       id: animal.id,
-      status: 'Adocao',
+      status: 'Disponivel',
+      user_id: userJ.id,
+    });
+
+    await updateStatusAnimal.execute({
+      id: animal2.id,
+      status: 'Disponivel',
       user_id: userJ.id,
     });
 
@@ -146,7 +167,7 @@ describe('CreateAdoption', () => {
   it('Não deve ser capaz de criar uma adoção com id do adotante inválido', async () => {
     expect(
       createAdoption.execute({
-        animal_id: animal.id,
+        animal_id: animal2.id,
         adopter_id: 'abc',
         isOng: userF.isOng,
       }),
@@ -164,9 +185,21 @@ describe('CreateAdoption', () => {
   });
 
   it('Não deve ser capaz de criar uma adoção repetida', async () => {
+    await createAdoption.execute({
+      animal_id: animal2.id,
+      adopter_id: userF.id,
+      isOng: userF.isOng,
+    });
+
+    await updateStatusAnimal.execute({
+      id: animal2.id,
+      status: 'Disponivel',
+      user_id: userJ.id,
+    });
+
     expect(
       createAdoption.execute({
-        animal_id: animal.id,
+        animal_id: animal2.id,
         adopter_id: userF.id,
         isOng: userF.isOng,
       }),

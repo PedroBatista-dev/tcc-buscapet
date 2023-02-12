@@ -101,7 +101,7 @@ export class AnimalsRepository implements IAnimalsRepository {
     other: string,
   ): Promise<Animal[]> {
     const busca: Record<string, any> = {
-      status: 'Adocao',
+      status: 'Disponivel',
     };
     if (name) {
       busca.name = ILike(`%${name}%`);

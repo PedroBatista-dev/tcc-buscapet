@@ -35,7 +35,7 @@ class CreateAdoptionService {
     if (!animalExists) {
       throw new AppError('Animal não encontrado!');
     }
-    if (animalExists.status !== 'Adocao') {
+    if (animalExists.status !== 'Disponivel') {
       throw new AppError('Animal indisponível para adoção!');
     }
 
@@ -65,6 +65,10 @@ class CreateAdoptionService {
       ong: ongExists,
       adopter: adopterExists,
     });
+
+    animalExists.status = 'Adocao';
+
+    await this.animalsRepository.save(animalExists);
 
     return adoption;
   }

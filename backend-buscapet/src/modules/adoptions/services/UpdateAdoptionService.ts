@@ -2,6 +2,7 @@ import AppError from '../../../shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import { IAdoption } from '../domain/models/IAdoption';
 import { IAdoptionsRepository } from '../domain/repositories/IAdoptionsRepository';
+import { IAnimalsRepository } from '@modules/animals/domain/repositories/IAnimalsRepository';
 
 interface IRequest {
   id: string;
@@ -15,6 +16,8 @@ class UpdateAdoptionService {
   constructor(
     @inject('AdoptionsRepository')
     private adoptionsRepository: IAdoptionsRepository,
+    @inject('AnimalsRepository')
+    private animalsRepository: IAnimalsRepository,
   ) {}
   public async execute({
     id,
@@ -35,9 +38,25 @@ class UpdateAdoptionService {
       throw new AppError('Adoção aprovada ou reprovada não pode ser alterada!');
     }
 
+    const animal = await this.animalsRepository.findById(
+      adoption.animal_id,
+      ong_id,
+    );
+    if (!animal) {
+      throw new AppError('Animal não encontrado!');
+    }
+
     adoption.status = status;
 
     await this.adoptionsRepository.save(adoption);
+
+    if (status === 'Aprovada') {
+      animal.status = 'Adotado';
+    } else {
+      animal.status = 'Disponivel';
+    }
+
+    await this.animalsRepository.save(animal);
 
     return adoption;
   }

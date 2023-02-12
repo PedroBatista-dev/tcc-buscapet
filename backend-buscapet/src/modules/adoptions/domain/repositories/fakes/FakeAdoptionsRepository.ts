@@ -91,7 +91,8 @@ export class FakeAdoptionsRepository implements IAdoptionsRepository {
       adoption =>
         adoption.animal_id === animal_id &&
         adoption.adopter_id === adopter_id &&
-        adoption.ong_id === ong_id,
+        adoption.ong_id === ong_id &&
+        adoption.status === 'Solicitada',
     );
     return adoption;
   }

@@ -59,7 +59,10 @@ describe('DeleteAdoption', () => {
     updateStatusAnimal = new UpdateStatusAnimalService(fakeAnimalsRepository);
 
     fakeAdoptionsRepository = new FakeAdoptionsRepository();
-    updateAdoption = new UpdateAdoptionService(fakeAdoptionsRepository);
+    updateAdoption = new UpdateAdoptionService(
+      fakeAdoptionsRepository,
+      fakeAnimalsRepository,
+    );
     deleteAdoption = new DeleteAdoptionService(fakeAdoptionsRepository);
 
     userJ = await fakeUsersRepository.create({
@@ -117,7 +120,7 @@ describe('DeleteAdoption', () => {
 
     await updateStatusAnimal.execute({
       id: animal.id,
-      status: 'Adocao',
+      status: 'Disponivel',
       user_id: userJ.id,
     });
 
