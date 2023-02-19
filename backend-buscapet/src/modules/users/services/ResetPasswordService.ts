@@ -1,7 +1,7 @@
 import AppError from '../../../shared/errors/AppError';
 import { isAfter, addHours } from 'date-fns';
 import { hash } from 'bcryptjs';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 import { IUserTokensRepository } from '../domain/repositories/IUserTokensRepository';
 
@@ -10,6 +10,7 @@ interface IRequest {
   password: string;
 }
 
+@injectable()
 class ResetPasswordService {
   constructor(
     @inject('UsersRepository')
