@@ -3,14 +3,14 @@ import { Injectable, Injector } from '@angular/core';
 import { BaseResourceService } from 'src/app/shared/services/base-resource.service';
 import { environment } from 'src/environments/environment';
 
-import { Session } from './session.model';
+import { ResetPassword } from './reset-password.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SessionService extends BaseResourceService<Session> {
+export class ResetPasswordService extends BaseResourceService<ResetPassword> {
 
   constructor(protected override injector: Injector) {
-    super(`${environment.apiUrl}sessions`, injector, Session.fromJson);
+    super(`${environment.apiUrl}password/reset`, injector, ResetPassword.fromJson);
   }
 }
