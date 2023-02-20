@@ -5,7 +5,7 @@
         <a routerLink="dashboard" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
           <i class="fas fa-tachometer-alt fa-fw mr-3"></i><span>Dashboard</span>
         </a>
-        <a [routerLink]="['users', localStorageUtils.obterIdUsuario(), 'profile']" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
+        <a [routerLink]="['users', localStorageUtils.obterIdUsuario(), 'perfil']" class="list-group-item list-group-item-action py-2 ripple" routerLinkActive="active">
           <i class="fas fa-user-circle fa-fw mr-3"></i><span>Perfil</span>
         </a>
         <a *ngIf="localStorageUtils.obterIsOng() === 'false'" routerLink="questionario"

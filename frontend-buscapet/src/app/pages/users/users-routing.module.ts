@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'novo/resetar_senha', component: ResetPasswordComponent, canActivate: [UserGuard], canDeactivate: [UserGuard] },
   { path: 'login', component: LoginComponent, canActivate: [UserGuard] },
   { path: ':id/avatar', component: AvatarUserComponent },
-  { path: ':id/profile', component: ProfileFormComponent }
+  { path: ':id/perfil', component: ProfileFormComponent }
 ];
 
 @NgModule({

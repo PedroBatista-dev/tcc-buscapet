@@ -33,7 +33,7 @@ export class AdoptionCertificateComponent implements OnInit {
     doc.html(this.el.nativeElement, {
       callback: (pdf) => {
 
-        pdf.save("teste.pdf")
+        pdf.save("certificado.pdf")
       }
     });
   }

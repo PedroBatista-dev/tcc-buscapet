@@ -180,7 +180,6 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       next: (resource) => this.actionsForSuccess(resource),
       error: (error) => this.actionsForError(error)
     });
-    this.changesNoSave = false;
   }
 
   protected updateResource():void {
@@ -206,6 +205,10 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       timer: 1500
     });
 
+    this.changesNoSave = false;
+
+    this.serverErrorMessages = [];
+
     const baseComponentParent = this.route.snapshot.parent!.url[0]!.path;
 
     if(baseComponentParent !== 'users') {
@@ -227,6 +230,8 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
         this.router.navigate(['dashboard']);
       } else if (this.currentAction !== "editar") {
         this.router.navigate([baseComponentParent, 'login']);
+      } else if (this.currentAction === "editar") {
+        this.router.navigate([baseComponentParent, resource.id, "perfil"])
       }
     }
 
