@@ -6,7 +6,7 @@ import { LocalStorageUtils } from 'src/app/shared/utils/localstorage';
 @Injectable({
   providedIn: 'root'
 })
-export class AnimalFiltroGuard implements CanActivate {
+export class AnimalFilterGuard implements CanActivate {
 
     localStorageUtils = new LocalStorageUtils();
 
