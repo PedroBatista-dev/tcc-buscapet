@@ -2,7 +2,7 @@ import AppError from '../../../shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import { IAdoption } from '../domain/models/IAdoption';
 import { IAdoptionsRepository } from '../domain/repositories/IAdoptionsRepository';
-import { IAnimalsRepository } from '@modules/animals/domain/repositories/IAnimalsRepository';
+import { IAnimalsRepository } from '../../animals/domain/repositories/IAnimalsRepository';
 
 interface IRequest {
   id: string;

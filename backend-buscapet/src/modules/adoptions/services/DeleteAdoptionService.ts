@@ -1,6 +1,7 @@
 import AppError from '../../../shared/errors/AppError';
 import { IAdoptionsRepository } from '../domain/repositories/IAdoptionsRepository';
 import { inject, injectable } from 'tsyringe';
+import { IAnimalsRepository } from '../../animals/domain/repositories/IAnimalsRepository';
 
 interface IRequest {
   id: string;
@@ -13,6 +14,8 @@ class DeleteAdoptionService {
   constructor(
     @inject('AdoptionsRepository')
     private adoptionsRepository: IAdoptionsRepository,
+    @inject('AnimalsRepository')
+    private animalsRepository: IAnimalsRepository,
   ) {}
 
   public async execute({ id, adopter_id, isOng }: IRequest): Promise<void> {
@@ -35,7 +38,19 @@ class DeleteAdoptionService {
       );
     }
 
+    const animal = await this.animalsRepository.findById(
+      adoption.animal_id,
+      adoption.ong_id,
+    );
+    if (!animal) {
+      throw new AppError('Animal não encontrado!');
+    }
+
     await this.adoptionsRepository.remove(adoption);
+
+    animal.status = 'Disponivel';
+
+    await this.animalsRepository.save(animal);
   }
 }
 
