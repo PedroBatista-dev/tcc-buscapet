@@ -63,7 +63,10 @@ describe('DeleteAdoption', () => {
       fakeAdoptionsRepository,
       fakeAnimalsRepository,
     );
-    deleteAdoption = new DeleteAdoptionService(fakeAdoptionsRepository);
+    deleteAdoption = new DeleteAdoptionService(
+      fakeAdoptionsRepository,
+      fakeAnimalsRepository,
+    );
 
     userJ = await fakeUsersRepository.create({
       name: 'user J',
