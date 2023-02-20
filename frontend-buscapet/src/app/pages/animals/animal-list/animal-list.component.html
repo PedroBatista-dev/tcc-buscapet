@@ -37,11 +37,11 @@
         <tbody>
           <tr *ngFor="let animal of resources">
             <td class="column-img">
-              <a *ngIf="animal.status !== 'Adotado'" [routerLink]="[animal.id, 'avatar']"
+              <a *ngIf="animal.status === 'Criado'" [routerLink]="[animal.id, 'avatar']"
                 id="navbarPerfilLink" placement="bottom" ngbTooltip="Alterar Imagem">
                 <img [src]="animal.avatar_url ? animal.avatar_url : '../../../../assets/avatar_animal.png'" class="rounded-circle" height="60" alt="Avatar" loading="lazy" />
               </a>
-              <img *ngIf="animal.status === 'Adotado'" [src]="animal.avatar_url ? animal.avatar_url : '../../../../assets/avatar_animal.png'" class="rounded-circle"
+              <img *ngIf="animal.status !== 'Criado'" [src]="animal.avatar_url ? animal.avatar_url : '../../../../assets/avatar_animal.png'" class="rounded-circle"
                 height="60" alt="Avatar" loading="lazy" />
             </td>
             <td>
@@ -58,12 +58,14 @@
             </td>
             <td class="text-center">
               <i *ngIf="animal.status === 'Adotado'" class="fas fa-check text-success"></i>
-              <i *ngIf="animal.status !== 'Adotado'" class="fas fa-times text-danger"></i>
+              <i *ngIf="animal.status !== 'Adotado' && animal.status !== 'Adocao'" class="fas fa-times text-danger"></i>
+              <i *ngIf="animal.status === 'Adocao'" class="fas fa-spinner text-warning"></i>
             </td>
             <td>
-              <a *ngIf="animal.status !== 'Adotado'" [routerLink]="[animal.id, 'editar']" class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Editar"><i class="fas fa-pencil-alt"></i></a>
-              <button *ngIf="animal.status !== 'Adotado'" (click)="deleteResource(animal)" class="btn btn-sm" placement="bottom" ngbTooltip="Deletar"><i class="fas fa-trash-alt"></i></button>
+              <a *ngIf="animal.status === 'Criado'" [routerLink]="[animal.id, 'editar']" class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Editar"><i class="fas fa-pencil-alt"></i></a>
+              <button *ngIf="animal.status === 'Criado'" (click)="deleteResource(animal)" class="btn btn-sm" placement="bottom" ngbTooltip="Deletar"><i class="fas fa-trash-alt"></i></button>
               <button *ngIf="animal.status === 'Criado'" (click)="disponibilizarAdocao(animal)" class="btn btn-sm" placement="bottom" ngbTooltip="Disponibilizar para adoção"><i class="fas fa-paw fa-fw"></i></button>
+              <button *ngIf="animal.status === 'Disponivel'" (click)="indisponibilizarAdocao(animal)" class="btn btn-sm" placement="bottom" ngbTooltip="Indisponibilizar para adoção"><i class="fas fa-ban"></i></button>
             </td>
           </tr>
         </tbody>

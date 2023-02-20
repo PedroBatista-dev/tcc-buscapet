@@ -52,7 +52,7 @@ export class AnimalFilterComponent extends BaseResourceListComponent<Animal> {
   solicitarAdocao(animal: Animal): void {
     Swal.fire({
       title: 'Deseja realmente solicitar este animal para adoção?',
-      text: "Lmebre-se que é uma grande responsabilidade!",
+      text: "Lembre-se que é uma grande responsabilidade!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#44C5CD',
