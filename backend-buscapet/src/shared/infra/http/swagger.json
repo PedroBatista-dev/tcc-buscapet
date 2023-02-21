@@ -1,0 +1,2718 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "BuscaPet",
+    "description": "Especificação do projeto API Rest da aplicação BuscaPet. ",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://buscapet.swagger.io/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "animals",
+      "description": "Operações sobre os animais"
+    },
+    {
+      "name": "species",
+      "description": "Operações sobre as espécies"
+    },
+    {
+      "name": "colors",
+      "description": "Operações sobre as cores"
+    },
+    {
+      "name": "breeds",
+      "description": "Operações sobre as raças"
+    },
+    {
+      "name": "vaccines",
+      "description": "Operações sobre as vacinas"
+    },
+    {
+      "name": "users",
+      "description": "Operações sobre os usuários"
+    },
+    {
+      "name": "sessions",
+      "description": "Operações sobre os sessões"
+    },
+    {
+      "name": "profile",
+      "description": "Operações sobre os perfis"
+    },
+    {
+      "name": "password",
+      "description": "Operações sobre os usuários"
+    },
+    {
+      "name": "adoptions",
+      "description": "Operações sobre as adoções"
+    },
+    {
+      "name": "quiz",
+      "description": "Operações sobre os questionários"
+    }
+  ],
+  "paths": {
+    "/animals": {
+      "post": {
+        "tags": [
+          "animals"
+        ],
+        "summary": "Adicionar um novo animal",
+        "description": "Adicionar um novo animal na aplicação",
+        "operationId": "addAnimal",
+        "requestBody": {
+          "description": "Dados para cadastrar um novo animal",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Animal"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Animal"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Animal"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "animals"
+        ],
+        "summary": "Buscar os animais",
+        "description": "Buscar os animais",
+        "operationId": "getAnimals",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/animals/{id}": {
+      "put": {
+        "tags": [
+          "animals"
+        ],
+        "summary": "Atualizar um animal existente",
+        "description": "Atualizar um animal existente por id",
+        "operationId": "updateAnimal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do animal",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados para atualizar um animal existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Animal"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Animal"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Animal"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Animal não encontrado"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "animals"
+        ],
+        "summary": "Buscar um animal",
+        "description": "Buscar um animal por id",
+        "operationId": "getAnimalById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do animal",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "animals"
+        ],
+        "summary": "Excluir um animal",
+        "description": "Excluir um animal por id",
+        "operationId": "deleteAnimal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do animal",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Id inválido"
+          }
+        }
+      }
+    },
+    "/animals/{id}/provide": {
+      "put": {
+        "tags": [
+          "animals"
+        ],
+        "summary": "Atualizar o status do animal existente",
+        "description": "Atualizar o status do animal existente por id",
+        "operationId": "updateStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do animal",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Animal não encontrado"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/animals/filter": {
+      "post": {
+        "tags": [
+          "animals"
+        ],
+        "summary": "Filtrar busca por animais",
+        "description": "Filtrar busca por animais",
+        "operationId": "filterAnimals",
+        "requestBody": {
+          "description": "Dados para filtrar busca por animais",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Simba"
+                  },
+                  "sex": {
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "size": {
+                    "type": "string",
+                    "example": "Médio"
+                  },
+                  "other_animals": {
+                    "type": "string",
+                    "example": "Sim, com cães e gatos"
+                  },
+                  "breed_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "specie_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "color_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Animal"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Animal"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      }
+    },
+    "/species": {
+      "post": {
+        "tags": [
+          "species"
+        ],
+        "summary": "Adicionar uma nova espécie",
+        "description": "Adicionar uma nova espécie na aplicação",
+        "operationId": "addSpecie",
+        "requestBody": {
+          "description": "Dados para cadastrar uma nova espécie",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Specie"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Specie"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Specie"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specie"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specie"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "species"
+        ],
+        "summary": "Buscar as espécies",
+        "description": "Buscar as espécies",
+        "operationId": "getSpecies",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specie"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specie"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/species/{id}": {
+      "put": {
+        "tags": [
+          "species"
+        ],
+        "summary": "Atualizar uma espécie existente",
+        "description": "Atualizar uma espécie existente por id",
+        "operationId": "updateSpecie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da espécie",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados para atualizar uma espécie existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Specie"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Specie"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Specie"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specie"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specie"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Espécie não encontrada"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "species"
+        ],
+        "summary": "Buscar uma espécie",
+        "description": "Buscar uma espécie por id",
+        "operationId": "getSpecieById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da espécie",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specie"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specie"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "species"
+        ],
+        "summary": "Excluir uma espécie",
+        "description": "Excluir uma espécie por id",
+        "operationId": "deleteSpecie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da espécie",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Id inválido"
+          }
+        }
+      }
+    },
+    "/colors": {
+      "post": {
+        "tags": [
+          "colors"
+        ],
+        "summary": "Adicionar uma nova cor",
+        "description": "Adicionar uma nova cor na aplicação",
+        "operationId": "addColor",
+        "requestBody": {
+          "description": "Dados para cadastrar uma nova cor",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Color"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Color"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Color"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "colors"
+        ],
+        "summary": "Buscar as cores",
+        "description": "Buscar as cores",
+        "operationId": "getColors",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/colors/{id}": {
+      "put": {
+        "tags": [
+          "colors"
+        ],
+        "summary": "Atualizar uma cor existente",
+        "description": "Atualizar uma cor existente por id",
+        "operationId": "updateColor",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da cor",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados para atualizar uma cor existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Color"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Color"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Color"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Espécie não encontrada"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "colors"
+        ],
+        "summary": "Buscar uma cor",
+        "description": "Buscar uma cor por id",
+        "operationId": "getColorById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da cor",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "colors"
+        ],
+        "summary": "Excluir uma cor",
+        "description": "Excluir uma cor por id",
+        "operationId": "deleteColor",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da cor",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Id inválido"
+          }
+        }
+      }
+    },
+    "/breeds": {
+      "post": {
+        "tags": [
+          "breeds"
+        ],
+        "summary": "Adicionar uma nova raça",
+        "description": "Adicionar uma nova raça na aplicação",
+        "operationId": "addBreed",
+        "requestBody": {
+          "description": "Dados para cadastrar uma nova raça",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Breed"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Breed"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Breed"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Breed"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Breed"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "breeds"
+        ],
+        "summary": "Buscar as raças",
+        "description": "Buscar as raças",
+        "operationId": "getBreeds",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Breed"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Breed"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/breeds/{id}": {
+      "put": {
+        "tags": [
+          "breeds"
+        ],
+        "summary": "Atualizar uma raça existente",
+        "description": "Atualizar uma raça existente por id",
+        "operationId": "updateBreed",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da raça",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados para atualizar uma raça existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Breed"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Breed"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Breed"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Breed"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Breed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Espécie não encontrada"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "breeds"
+        ],
+        "summary": "Buscar uma raça",
+        "description": "Buscar uma raça por id",
+        "operationId": "getBreedById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da raça",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Breed"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Breed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "breeds"
+        ],
+        "summary": "Excluir uma raça",
+        "description": "Excluir uma raça por id",
+        "operationId": "deleteBreed",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da raça",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Id inválido"
+          }
+        }
+      }
+    },
+    "/vaccines": {
+      "post": {
+        "tags": [
+          "vaccines"
+        ],
+        "summary": "Adicionar uma nova vacina",
+        "description": "Adicionar uma nova vacina na aplicação",
+        "operationId": "addVaccine",
+        "requestBody": {
+          "description": "Dados para cadastrar uma nova vacina",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Vaccine"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Vaccine"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Vaccine"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vaccine"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vaccine"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "vaccines"
+        ],
+        "summary": "Buscar as vacinas",
+        "description": "Buscar as vacinas",
+        "operationId": "getVaccines",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vaccine"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vaccine"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/vaccines/{id}": {
+      "put": {
+        "tags": [
+          "vaccines"
+        ],
+        "summary": "Atualizar uma vacina existente",
+        "description": "Atualizar uma vacina existente por id",
+        "operationId": "updateVaccine",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da vacina",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados para atualizar uma vacina existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Vaccine"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Vaccine"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Vaccine"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vaccine"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vaccine"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Espécie não encontrada"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "vaccines"
+        ],
+        "summary": "Buscar uma vacina",
+        "description": "Buscar uma vacina por id",
+        "operationId": "getVaccineById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da vacina",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vaccine"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vaccine"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "vaccines"
+        ],
+        "summary": "Excluir uma vacina",
+        "description": "Excluir uma vacina por id",
+        "operationId": "deleteVaccine",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da vacina",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Id inválido"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Adicionar um novo usuário",
+        "description": "Adicionar um novo usuário na aplicação",
+        "operationId": "addUser",
+        "requestBody": {
+          "description": "Dados para cadastrar um novo usuário",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Buscar os usuários",
+        "description": "Buscar os usuários",
+        "operationId": "getUsers",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/users/avatar": {
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Atualizar a foto de perfil",
+        "description": "Atualizar a foto de perfil",
+        "operationId": "updateAvatar",
+        "requestBody": {
+          "description": "Dados para atualizar a foto de perfil",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "example": "./ana_selfie.png"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "example": "./ana_selfie.png"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "example": "./ana_selfie.png"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": [
+          "sessions"
+        ],
+        "summary": "Adicionar uma nova sessão",
+        "description": "Adicionar uma nova sessão na aplicação",
+        "operationId": "addSession",
+        "requestBody": {
+          "description": "Dados para cadastrar uma nova sessão",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "put": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Atualizar um perfil existente",
+        "description": "Atualizar um perfil existente por id",
+        "operationId": "updateProfile",
+        "requestBody": {
+          "description": "Dados para atualizar uma vacina existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "name",
+                  "email",
+                  "old_password",
+                  "password",
+                  "password_confirmation"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Ana"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  },
+                  "old_password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "required": [
+                  "name",
+                  "email",
+                  "old_password",
+                  "password",
+                  "password_confirmation"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Ana"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  },
+                  "old_password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "name",
+                  "email",
+                  "old_password",
+                  "password",
+                  "password_confirmation"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Ana"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  },
+                  "old_password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Buscar um perfil",
+        "description": "Buscar um perfil por id",
+        "operationId": "getProfileById",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/password/forgot": {
+      "post": {
+        "tags": [
+          "password"
+        ],
+        "summary": "Redefinir uma nova senha",
+        "description": "Redefinir uma nova senha na aplicação",
+        "operationId": "addPasswordForgot",
+        "requestBody": {
+          "description": "Dados para cadastrar uma nova senha",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email"
+                ],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "required": [
+                  "email"
+                ],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "email"
+                ],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "ana@gmail.com"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Operação bem-sucedida"
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      }
+    },
+    "/password/reset": {
+      "post": {
+        "tags": [
+          "password"
+        ],
+        "summary": "Adicionar uma nova senha",
+        "description": "Adicionar uma nova senha na aplicação",
+        "operationId": "addPasswordReset",
+        "requestBody": {
+          "description": "Dados para cadastrar uma nova senha",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "token",
+                  "password",
+                  "password_confirmation"
+                ],
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "format": "token"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "required": [
+                  "token",
+                  "password",
+                  "password_confirmation"
+                ],
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "format": "token"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "token",
+                  "password",
+                  "password_confirmation"
+                ],
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "format": "token"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Operação bem-sucedida"
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      }
+    },
+    "/quiz": {
+      "post": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Adicionar um novo questionário",
+        "description": "Adicionar um novo questionário na aplicação",
+        "operationId": "addQuiz",
+        "requestBody": {
+          "description": "Dados para cadastrar um novo questionário",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Quiz"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Quiz"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Quiz"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Atualizar um questionário existente",
+        "description": "Atualizar um questionário existente por id",
+        "operationId": "updateQuiz",
+        "requestBody": {
+          "description": "Dados para atualizar um questionário existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Quiz"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Quiz"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Quiz"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Animal não encontrado"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Buscar os questionários",
+        "description": "Buscar os questionários",
+        "operationId": "getQuiz",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/quiz/{id}": {
+      "get": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Buscar um questionário",
+        "description": "Buscar um questionário por id",
+        "operationId": "getQuizById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do questionário",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/adoptions": {
+      "post": {
+        "tags": [
+          "adoptions"
+        ],
+        "summary": "Adicionar uma nova adoção",
+        "description": "Adicionar uma nova adoção na aplicação",
+        "operationId": "addAdoption",
+        "requestBody": {
+          "description": "Dados para cadastrar uma nova adoção",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Adoption"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Adoption"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Adoption"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Adoption"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Adoption"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Entrada inválida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "adoptions"
+        ],
+        "summary": "Buscar uma adoção",
+        "description": "Buscar uma adoção",
+        "operationId": "getAdoption",
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Adoption"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Adoption"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/adoptions/{id}": {
+      "put": {
+        "tags": [
+          "adoptions"
+        ],
+        "summary": "Atualizar uma adoção existente",
+        "description": "Atualizar uma adoção existente por id",
+        "operationId": "updateAdoption",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da adoção",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados para atualizar uma adoção existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "status"
+                ],
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "Cancelado"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "required": [
+                  "status"
+                ],
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "Cancelado"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "status"
+                ],
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "Cancelado"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Adoption"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Adoption"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Espécie não encontrada"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "adoptions"
+        ],
+        "summary": "Buscar uma adoção",
+        "description": "Buscar uma adoção por id",
+        "operationId": "getAdoptionById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da adoção",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Adoption"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Adoption"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Animal": {
+        "required": [
+          "name",
+          "age",
+          "sex",
+          "size",
+          "other_animals",
+          "breed",
+          "specie",
+          "color"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Simba"
+          },
+          "age": {
+            "type": "number",
+            "example": 7
+          },
+          "sex": {
+            "type": "string",
+            "example": "M"
+          },
+          "size": {
+            "type": "string",
+            "example": "M"
+          },
+          "other_animals": {
+            "type": "string",
+            "example": "Sim, com cães e gatos"
+          },
+          "breed": {
+            "required": [
+              "id",
+              "name",
+              "specie_id",
+              "created_at",
+              "updated_at",
+              "user_id"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string",
+                "example": "Pitbull"
+              },
+              "specie_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date"
+              },
+              "updated_at": {
+                "type": "string",
+                "format": "date"
+              },
+              "user_id": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          "specie": {
+            "required": [
+              "id",
+              "name",
+              "breeds",
+              "created_at",
+              "updated_at",
+              "user_id"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string",
+                "example": "Canina"
+              },
+              "breeds": {
+                "type": "array",
+                "format": "object"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date"
+              },
+              "updated_at": {
+                "type": "string",
+                "format": "date"
+              },
+              "user_id": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          "color": {
+            "required": [
+              "id",
+              "name",
+              "created_at",
+              "updated_at",
+              "user_id"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string",
+                "example": "Marrom"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date"
+              },
+              "updated_at": {
+                "type": "string",
+                "format": "date"
+              },
+              "user_id": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          "animals_vaccine": {
+            "type": "array",
+            "format": "object"
+          }
+        },
+        "xml": {
+          "name": "animal"
+        }
+      },
+      "Specie": {
+        "required": [
+          "name",
+          "user_id",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Canina"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "specie"
+        }
+      },
+      "Color": {
+        "required": [
+          "name",
+          "user_id",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Caramelo"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "color"
+        }
+      },
+      "Breed": {
+        "required": [
+          "name",
+          "specie_id",
+          "user_id",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Pitbull"
+          },
+          "specie_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "breed"
+        }
+      },
+      "Vaccine": {
+        "required": [
+          "name",
+          "user_id",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "V8"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "vaccine"
+        }
+      },
+      "User": {
+        "required": [
+          "name",
+          "email",
+          "password",
+          "profile",
+          "document",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Ana"
+          },
+          "email": {
+            "type": "string",
+            "example": "ana@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          },
+          "profile": {
+            "type": "string",
+            "example": "Adotante"
+          },
+          "document": {
+            "type": "string",
+            "example": "119.897.658.65"
+          },
+          "avatar": {
+            "type": "string",
+            "example": "ana_selfie.png"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "user"
+        }
+      },
+      "Quiz": {
+        "required": [
+          "birth_date",
+          "marital_status",
+          "professional_activity",
+          "address",
+          "complement",
+          "district",
+          "city",
+          "state",
+          "cep",
+          "profile_instagram",
+          "for_who",
+          "why_adopt",
+          "average_life",
+          "financial_conditions",
+          "user_id",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "birth_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "marital_status": {
+            "type": "string",
+            "example": "Casado"
+          },
+          "professional_activity": {
+            "type": "string",
+            "example": "Engenheira"
+          },
+          "address": {
+            "type": "string",
+            "example": "Av. Pão de Açúcar, 4982"
+          },
+          "complement": {
+            "type": "string",
+            "example": "Apto 202"
+          },
+          "district": {
+            "type": "string",
+            "example": "Copacaban"
+          },
+          "city": {
+            "type": "string",
+            "example": "Rio de Janeiro"
+          },
+          "state": {
+            "type": "string",
+            "example": "Rio de Janeiro"
+          },
+          "cep": {
+            "type": "string",
+            "example": "35986-012"
+          },
+          "profile_instagram": {
+            "type": "string",
+            "example": "@aninhaRio"
+          },
+          "for_who": {
+            "type": "string",
+            "example": "Para mim"
+          },
+          "why_adopt": {
+            "type": "string",
+            "example": "Sou apaixonada por animais."
+          },
+          "average_life": {
+            "type": "string",
+            "example": "Sim"
+          },
+          "financial_conditions": {
+            "type": "string",
+            "example": "Sim"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "quiz"
+        }
+      },
+      "Adoption": {
+        "required": [
+          "status",
+          "animal_id",
+          "adotante_id",
+          "ong_id",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "Aprovado"
+          },
+          "animal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "adotante_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ong_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "adoption"
+        }
+      }
+    }
+  }
+}
