@@ -10,7 +10,11 @@ const usersAvatarController = new UserAvatarController();
 
 usersRouter.get('/', usersController.index);
 
-usersRouter.get('/:id', usersController.show);
+usersRouter.get(
+  '/:id',
+  celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
+  usersController.show,
+);
 
 usersRouter.post(
   '/',

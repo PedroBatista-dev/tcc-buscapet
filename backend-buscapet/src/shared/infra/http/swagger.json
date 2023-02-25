@@ -70,17 +70,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Animal"
+                "$ref": "#/components/schemas/Animal_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Animal"
+                "$ref": "#/components/schemas/Animal_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Animal"
+                "$ref": "#/components/schemas/Animal_Body"
               }
             }
           },
@@ -114,18 +114,34 @@
         "summary": "Buscar os animais",
         "description": "Buscar os animais",
         "operationId": "getAnimals",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome do animal",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Simba"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Operação bem-sucedida",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Animal"
+                  "items": {
+                    "$ref": "#/components/schemas/Animal"
+                  }
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Animal"
+                  "items": {
+                    "$ref": "#/components/schemas/Animal"
+                  }
                 }
               }
             }
@@ -161,17 +177,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Animal"
+                "$ref": "#/components/schemas/Animal_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Animal"
+                "$ref": "#/components/schemas/Animal_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Animal"
+                "$ref": "#/components/schemas/Animal_Body"
               }
             }
           },
@@ -273,7 +289,7 @@
         }
       }
     },
-    "/animals/{id}/provide": {
+    "/animals/{id}/status": {
       "put": {
         "tags": [
           "animals"
@@ -293,6 +309,165 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Dados para atualizar o status de um animal existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "status"
+                ],
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "Disponivel"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "required": [
+                  "status"
+                ],
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "Disponivel"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "status"
+                ],
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "Disponivel"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Animal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Animal não encontrado"
+          },
+          "405": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/animals/{id}/avatar": {
+      "put": {
+        "tags": [
+          "animals"
+        ],
+        "summary": "Atualizar o avatar do animal existente",
+        "description": "Atualizar o avatar do animal existente por id",
+        "operationId": "updateAvatar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do animal",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados para atualizar o avatar de um animal existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "imagem",
+                  "imagemUpload"
+                ],
+                "type": "object",
+                "properties": {
+                  "imagem": {
+                    "type": "string",
+                    "example": "animal.png"
+                  },
+                  "imagemUpload": {
+                    "type": "string",
+                    "format": "base64"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "required": [
+                  "imagem",
+                  "imagemUpload"
+                ],
+                "type": "object",
+                "properties": {
+                  "imagem": {
+                    "type": "string",
+                    "example": "animal.png"
+                  },
+                  "imagemUpload": {
+                    "type": "string",
+                    "format": "base64"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "imagem",
+                  "imagemUpload"
+                ],
+                "type": "object",
+                "properties": {
+                  "imagem": {
+                    "type": "string",
+                    "example": "animal.png"
+                  },
+                  "imagemUpload": {
+                    "type": "string",
+                    "format": "base64"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Operação bem-sucedida",
@@ -322,82 +497,143 @@
       }
     },
     "/animals/filter": {
-      "post": {
+      "get": {
         "tags": [
           "animals"
         ],
         "summary": "Filtrar busca por animais",
         "description": "Filtrar busca por animais",
         "operationId": "filterAnimals",
-        "requestBody": {
-          "description": "Dados para filtrar busca por animais",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "example": "Simba"
-                  },
-                  "sex": {
-                    "type": "string",
-                    "example": "M"
-                  },
-                  "size": {
-                    "type": "string",
-                    "example": "Médio"
-                  },
-                  "other_animals": {
-                    "type": "string",
-                    "example": "Sim, com cães e gatos"
-                  },
-                  "breed_id": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "specie_id": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "color_id": {
-                    "type": "string",
-                    "format": "uuid"
-                  }
-                }
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/Animal"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Animal"
-              }
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome do animal",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Simba"
             }
           },
-          "required": true
-        },
+          {
+            "name": "sex",
+            "in": "query",
+            "description": "Sexo do animal",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "M"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Porte do animal",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "M"
+            }
+          },
+          {
+            "name": "other",
+            "in": "query",
+            "description": "Relação com outro animal",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Sim, com cães e gatos"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Operação bem-sucedida",
             "content": {
               "application/json": {
+
                 "schema": {
-                  "$ref": "#/components/schemas/Animal"
+                  "items": {
+                    "$ref": "#/components/schemas/Animal"
+                  }
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Animal"
+                  "items": {
+                    "$ref": "#/components/schemas/Animal"
+                  }
                 }
               }
             }
           },
           "405": {
             "description": "Entrada inválida"
+          }
+        }
+      }
+    },
+    "/animals/dashboard/{text}": {
+      "get": {
+        "tags": [
+          "animals"
+        ],
+        "summary": "Buscar dados para o dashboard do usuário",
+        "description": "Buscar dados para o dashboard do usuário",
+        "operationId": "getDashboard",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "path",
+            "description": "Tipo de dado",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "colors"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Marrom"
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Marrom"
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
           }
         }
       }
@@ -415,17 +651,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Specie"
+                "$ref": "#/components/schemas/Specie_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Specie"
+                "$ref": "#/components/schemas/Specie_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Specie"
+                "$ref": "#/components/schemas/Specie_Body"
               }
             }
           },
@@ -459,18 +695,34 @@
         "summary": "Buscar as espécies",
         "description": "Buscar as espécies",
         "operationId": "getSpecies",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome da Espécie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Canina"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Operação bem-sucedida",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Specie"
+                  "items": {
+                    "$ref": "#/components/schemas/Specie"
+                  }
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Specie"
+                  "items": {
+                    "$ref": "#/components/schemas/Specie"
+                  }
                 }
               }
             }
@@ -506,17 +758,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Specie"
+                "$ref": "#/components/schemas/Specie_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Specie"
+                "$ref": "#/components/schemas/Specie_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Specie"
+                "$ref": "#/components/schemas/Specie_Body"
               }
             }
           },
@@ -631,17 +883,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Color"
+                "$ref": "#/components/schemas/Color_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Color"
+                "$ref": "#/components/schemas/Color_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Color"
+                "$ref": "#/components/schemas/Color_Body"
               }
             }
           },
@@ -675,18 +927,34 @@
         "summary": "Buscar as cores",
         "description": "Buscar as cores",
         "operationId": "getColors",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome da Cor",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Marrom"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Operação bem-sucedida",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Color"
+                  "items": {
+                    "$ref": "#/components/schemas/Color"
+                  }
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Color"
+                  "items": {
+                    "$ref": "#/components/schemas/Color"
+                  }
                 }
               }
             }
@@ -722,17 +990,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Color"
+                "$ref": "#/components/schemas/Color_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Color"
+                "$ref": "#/components/schemas/Color_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Color"
+                "$ref": "#/components/schemas/Color_Body"
               }
             }
           },
@@ -847,17 +1115,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Breed"
+                "$ref": "#/components/schemas/Breed_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Breed"
+                "$ref": "#/components/schemas/Breed_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Breed"
+                "$ref": "#/components/schemas/Breed_Body"
               }
             }
           },
@@ -891,18 +1159,34 @@
         "summary": "Buscar as raças",
         "description": "Buscar as raças",
         "operationId": "getBreeds",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome da Raça",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Pitbull"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Operação bem-sucedida",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Breed"
+                  "items": {
+                    "$ref": "#/components/schemas/Breed"
+                  }
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Breed"
+                  "items": {
+                    "$ref": "#/components/schemas/Breed"
+                  }
                 }
               }
             }
@@ -938,17 +1222,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Breed"
+                "$ref": "#/components/schemas/Breed_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Breed"
+                "$ref": "#/components/schemas/Breed_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Breed"
+                "$ref": "#/components/schemas/Breed_Body"
               }
             }
           },
@@ -1063,17 +1347,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Vaccine"
+                "$ref": "#/components/schemas/Vaccine_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Vaccine"
+                "$ref": "#/components/schemas/Vaccine_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Vaccine"
+                "$ref": "#/components/schemas/Vaccine_Body"
               }
             }
           },
@@ -1107,18 +1391,34 @@
         "summary": "Buscar as vacinas",
         "description": "Buscar as vacinas",
         "operationId": "getVaccines",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome da Vacina",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "V8"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Operação bem-sucedida",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Vaccine"
+                  "items": {
+                    "$ref": "#/components/schemas/Vaccine"
+                  }
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Vaccine"
+                  "items": {
+                    "$ref": "#/components/schemas/Vaccine"
+                  }
                 }
               }
             }
@@ -1154,17 +1454,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Vaccine"
+                "$ref": "#/components/schemas/Vaccine_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Vaccine"
+                "$ref": "#/components/schemas/Vaccine_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Vaccine"
+                "$ref": "#/components/schemas/Vaccine_Body"
               }
             }
           },
@@ -1279,17 +1579,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/User_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/User_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/User_Body"
               }
             }
           },
@@ -1329,12 +1629,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
                 }
               }
             }
@@ -1345,8 +1649,53 @@
         }
       }
     },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Buscar um usuário",
+        "description": "Buscar um usuário por id",
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do Usuário",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Id inválido"
+          },
+          "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
     "/users/avatar": {
-      "patch": {
+      "put": {
         "tags": [
           "users"
         ],
@@ -1358,45 +1707,57 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "imagem",
+                  "imagemUpload"
+                ],
                 "type": "object",
                 "properties": {
-                  "user_id": {
+                  "imagem": {
                     "type": "string",
-                    "format": "uuid"
+                    "example": "ana_selfie.png"
                   },
-                  "filename": {
+                  "imagemUpload": {
                     "type": "string",
-                    "example": "./ana_selfie.png"
+                    "format": "base64"
                   }
                 }
               }
             },
             "application/xml": {
               "schema": {
+                "required": [
+                  "imagem",
+                  "imagemUpload"
+                ],
                 "type": "object",
                 "properties": {
-                  "user_id": {
+                  "imagem": {
                     "type": "string",
-                    "format": "uuid"
+                    "example": "ana_selfie.png"
                   },
-                  "filename": {
+                  "imagemUpload": {
                     "type": "string",
-                    "example": "./ana_selfie.png"
+                    "format": "base64"
                   }
                 }
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
+                "required": [
+                  "imagem",
+                  "imagemUpload"
+                ],
                 "type": "object",
                 "properties": {
-                  "user_id": {
+                  "imagem": {
                     "type": "string",
-                    "format": "uuid"
+                    "example": "ana_selfie.png"
                   },
-                  "filename": {
+                  "imagemUpload": {
                     "type": "string",
-                    "example": "./ana_selfie.png"
+                    "format": "base64"
                   }
                 }
               }
@@ -1522,7 +1883,7 @@
         }
       }
     },
-    "/profile": {
+    "/profile/{id}": {
       "put": {
         "tags": [
           "profile"
@@ -1530,17 +1891,29 @@
         "summary": "Atualizar um perfil existente",
         "description": "Atualizar um perfil existente por id",
         "operationId": "updateProfile",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do Usuário",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "requestBody": {
-          "description": "Dados para atualizar uma vacina existente",
+          "description": "Dados para atualizar um perfil existente",
           "content": {
             "application/json": {
               "schema": {
                 "required": [
                   "name",
                   "email",
-                  "old_password",
-                  "password",
-                  "password_confirmation"
+                  "isOng",
+                  "cpf",
+                  "cnpj"
                 ],
                 "type": "object",
                 "properties": {
@@ -1552,17 +1925,17 @@
                     "type": "string",
                     "example": "ana@gmail.com"
                   },
-                  "old_password": {
-                    "type": "string",
-                    "format": "password"
+                  "isOng": {
+                    "type": "boolean",
+                    "example": false
                   },
-                  "password": {
+                  "cpf": {
                     "type": "string",
-                    "format": "password"
+                    "example": "119.897.658.65"
                   },
-                  "password_confirmation": {
+                  "cnpj": {
                     "type": "string",
-                    "format": "password"
+                    "example": ""
                   }
                 }
               }
@@ -1572,9 +1945,9 @@
                 "required": [
                   "name",
                   "email",
-                  "old_password",
-                  "password",
-                  "password_confirmation"
+                  "isOng",
+                  "cpf",
+                  "cnpj"
                 ],
                 "type": "object",
                 "properties": {
@@ -1586,17 +1959,17 @@
                     "type": "string",
                     "example": "ana@gmail.com"
                   },
-                  "old_password": {
-                    "type": "string",
-                    "format": "password"
+                  "isOng": {
+                    "type": "boolean",
+                    "example": false
                   },
-                  "password": {
+                  "cpf": {
                     "type": "string",
-                    "format": "password"
+                    "example": "119.897.658.65"
                   },
-                  "password_confirmation": {
+                  "cnpj": {
                     "type": "string",
-                    "format": "password"
+                    "example": ""
                   }
                 }
               }
@@ -1606,9 +1979,9 @@
                 "required": [
                   "name",
                   "email",
-                  "old_password",
-                  "password",
-                  "password_confirmation"
+                  "isOng",
+                  "cpf",
+                  "cnpj"
                 ],
                 "type": "object",
                 "properties": {
@@ -1620,17 +1993,17 @@
                     "type": "string",
                     "example": "ana@gmail.com"
                   },
-                  "old_password": {
-                    "type": "string",
-                    "format": "password"
+                  "isOng": {
+                    "type": "boolean",
+                    "example": false
                   },
-                  "password": {
+                  "cpf": {
                     "type": "string",
-                    "format": "password"
+                    "example": "119.897.658.65"
                   },
-                  "password_confirmation": {
+                  "cnpj": {
                     "type": "string",
-                    "format": "password"
+                    "example": ""
                   }
                 }
               }
@@ -1669,6 +2042,18 @@
         "summary": "Buscar um perfil",
         "description": "Buscar um perfil por id",
         "operationId": "getProfileById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do Usuário",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Operação bem-sucedida",
@@ -1689,6 +2074,117 @@
             "description": "Id inválido"
           },
           "404": {
+            "description": "Exceção de validação"
+          }
+        }
+      }
+    },
+    "/profile/password": {
+      "put": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Atualizar a senha de um perfil existente",
+        "description": "Atualizar a senha de um perfil existente por id",
+        "operationId": "updatePasswordProfile",
+        "requestBody": {
+          "description": "Dados para atualizar a senha de um perfil existente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "old_password",
+                  "password",
+                  "password_confirmation"
+                ],
+                "type": "object",
+                "properties": {
+                  "old_password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "required": [
+                  "old_password",
+                  "password",
+                  "password_confirmation"
+                ],
+                "type": "object",
+                "properties": {
+                  "old_password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "old_password",
+                  "password",
+                  "password_confirmation"
+                ],
+                "type": "object",
+                "properties": {
+                  "old_password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "password_confirmation": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Operação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "405": {
             "description": "Exceção de validação"
           }
         }
@@ -1776,7 +2272,7 @@
                 "required": [
                   "token",
                   "password",
-                  "password_confirmation"
+                  "passwordConfirmation"
                 ],
                 "type": "object",
                 "properties": {
@@ -1788,7 +2284,7 @@
                     "type": "string",
                     "format": "password"
                   },
-                  "password_confirmation": {
+                  "passwordConfirmation": {
                     "type": "string",
                     "format": "password"
                   }
@@ -1800,7 +2296,7 @@
                 "required": [
                   "token",
                   "password",
-                  "password_confirmation"
+                  "passwordConfirmation"
                 ],
                 "type": "object",
                 "properties": {
@@ -1812,7 +2308,7 @@
                     "type": "string",
                     "format": "password"
                   },
-                  "password_confirmation": {
+                  "passwordConfirmation": {
                     "type": "string",
                     "format": "password"
                   }
@@ -1824,7 +2320,7 @@
                 "required": [
                   "token",
                   "password",
-                  "password_confirmation"
+                  "passwordConfirmation"
                 ],
                 "type": "object",
                 "properties": {
@@ -1836,7 +2332,7 @@
                     "type": "string",
                     "format": "password"
                   },
-                  "password_confirmation": {
+                  "passwordConfirmation": {
                     "type": "string",
                     "format": "password"
                   }
@@ -1869,17 +2365,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Quiz"
+                "$ref": "#/components/schemas/Quiz_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Quiz"
+                "$ref": "#/components/schemas/Quiz_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Quiz"
+                "$ref": "#/components/schemas/Quiz_Body"
               }
             }
           },
@@ -1918,17 +2414,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Quiz"
+                "$ref": "#/components/schemas/Quiz_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Quiz"
+                "$ref": "#/components/schemas/Quiz_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Quiz"
+                "$ref": "#/components/schemas/Quiz_Body"
               }
             }
           },
@@ -2002,7 +2498,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Id do questionário",
+            "description": "Id do Usuário",
             "required": true,
             "schema": {
               "type": "string",
@@ -2048,17 +2544,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Adoption"
+                "$ref": "#/components/schemas/Adoption_Body"
               }
             },
             "application/xml": {
               "schema": {
-                "$ref": "#/components/schemas/Adoption"
+                "$ref": "#/components/schemas/Adoption_Body"
               }
             },
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Adoption"
+                "$ref": "#/components/schemas/Adoption_Body"
               }
             }
           },
@@ -2092,18 +2588,34 @@
         "summary": "Buscar uma adoção",
         "description": "Buscar uma adoção",
         "operationId": "getAdoption",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status da Adoção",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Solicitada"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Operação bem-sucedida",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Adoption"
+                  "items": {
+                    "$ref": "#/components/schemas/Adoption"
+                  }
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Adoption"
+                  "items": {
+                    "$ref": "#/components/schemas/Adoption"
+                  }
                 }
               }
             }
@@ -2119,14 +2631,14 @@
         "tags": [
           "adoptions"
         ],
-        "summary": "Atualizar uma adoção existente",
-        "description": "Atualizar uma adoção existente por id",
+        "summary": "Atualizar o status de uma adoção existente",
+        "description": "Atualizar o status de uma adoção existente por id",
         "operationId": "updateAdoption",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "Id da adoção",
+            "description": "Id da Adoção",
             "required": true,
             "schema": {
               "type": "string",
@@ -2135,7 +2647,7 @@
           }
         ],
         "requestBody": {
-          "description": "Dados para atualizar uma adoção existente",
+          "description": "Dados para atualizar o status de uma adoção existente",
           "content": {
             "application/json": {
               "schema": {
@@ -2146,7 +2658,7 @@
                 "properties": {
                   "status": {
                     "type": "string",
-                    "example": "Cancelado"
+                    "example": "Aprovada"
                   }
                 }
               }
@@ -2160,7 +2672,7 @@
                 "properties": {
                   "status": {
                     "type": "string",
-                    "example": "Cancelado"
+                    "example": "Aprovada"
                   }
                 }
               }
@@ -2174,7 +2686,7 @@
                 "properties": {
                   "status": {
                     "type": "string",
-                    "example": "Cancelado"
+                    "example": "Aprovada"
                   }
                 }
               }
@@ -2220,7 +2732,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Id da adoção",
+            "description": "Id da Adoção",
             "required": true,
             "schema": {
               "type": "string",
@@ -2251,12 +2763,97 @@
             "description": "Exceção de validação"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "adoptions"
+        ],
+        "summary": "Excluir uma adoção",
+        "description": "Excluir uma adoção por id",
+        "operationId": "deleteVaccine",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da Adoção",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Id inválido"
+          }
+        }
       }
     }
   },
   "components": {
     "schemas": {
       "Animal": {
+        "required": [
+          "name",
+          "age",
+          "sex",
+          "size",
+          "other_animals",
+          "breed",
+          "specie",
+          "color"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Simba"
+          },
+          "age": {
+            "type": "number",
+            "example": 7
+          },
+          "sex": {
+            "type": "string",
+            "example": "M"
+          },
+          "size": {
+            "type": "string",
+            "example": "M"
+          },
+          "other_animals": {
+            "type": "string",
+            "example": "Sim, com cães e gatos"
+          },
+          "breed": {
+            "type": "object",
+            "$ref": "#/components/schemas/Breed"
+          },
+          "specie": {
+            "type": "object",
+            "$ref": "#/components/schemas/Specie"
+          },
+          "color": {
+            "type": "object",
+            "$ref": "#/components/schemas/Color"
+          },
+          "animals_vaccine": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Animals_Vaccine"
+            }
+          }
+        },
+        "xml": {
+          "name": "animal"
+        }
+      },
+      "Animal_Body": {
         "required": [
           "name",
           "age",
@@ -2290,114 +2887,22 @@
             "example": "Sim, com cães e gatos"
           },
           "breed": {
-            "required": [
-              "id",
-              "name",
-              "specie_id",
-              "created_at",
-              "updated_at",
-              "user_id"
-            ],
             "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "name": {
-                "type": "string",
-                "example": "Pitbull"
-              },
-              "specie_id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "created_at": {
-                "type": "string",
-                "format": "date"
-              },
-              "updated_at": {
-                "type": "string",
-                "format": "date"
-              },
-              "user_id": {
-                "type": "string",
-                "format": "uuid"
-              }
-            }
+            "$ref": "#/components/schemas/Breed"
           },
           "specie": {
-            "required": [
-              "id",
-              "name",
-              "breeds",
-              "created_at",
-              "updated_at",
-              "user_id"
-            ],
             "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "name": {
-                "type": "string",
-                "example": "Canina"
-              },
-              "breeds": {
-                "type": "array",
-                "format": "object"
-              },
-              "created_at": {
-                "type": "string",
-                "format": "date"
-              },
-              "updated_at": {
-                "type": "string",
-                "format": "date"
-              },
-              "user_id": {
-                "type": "string",
-                "format": "uuid"
-              }
-            }
+            "$ref": "#/components/schemas/Specie"
           },
           "color": {
-            "required": [
-              "id",
-              "name",
-              "created_at",
-              "updated_at",
-              "user_id"
-            ],
             "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "name": {
-                "type": "string",
-                "example": "Marrom"
-              },
-              "created_at": {
-                "type": "string",
-                "format": "date"
-              },
-              "updated_at": {
-                "type": "string",
-                "format": "date"
-              },
-              "user_id": {
-                "type": "string",
-                "format": "uuid"
-              }
-            }
+            "$ref": "#/components/schemas/Color"
           },
           "animals_vaccine": {
             "type": "array",
-            "format": "object"
+            "items": {
+              "$ref": "#/components/schemas/Animals_Vaccine"
+            }
           }
         },
         "xml": {
@@ -2406,28 +2911,50 @@
       },
       "Specie": {
         "required": [
-          "name",
-          "user_id",
-          "created_at",
-          "updated_at"
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Canina"
+          },
+          "breeds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Breed"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "xml": {
+          "name": "specie"
+        }
+      },
+      "Specie_Body": {
+        "required": [
+          "name"
         ],
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
             "example": "Canina"
-          },
-          "user_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
           }
         },
         "xml": {
@@ -2436,28 +2963,44 @@
       },
       "Color": {
         "required": [
-          "name",
-          "user_id",
-          "created_at",
-          "updated_at"
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Marrom"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "xml": {
+          "name": "color"
+        }
+      },
+      "Color_Body": {
+        "required": [
+          "name"
         ],
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "example": "Caramelo"
-          },
-          "user_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
+            "example": "Marrom"
           }
         },
         "xml": {
@@ -2466,11 +3009,39 @@
       },
       "Breed": {
         "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Pitbull"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "xml": {
+          "name": "breed"
+        }
+      },
+      "Breed_Body": {
+        "required": [
           "name",
-          "specie_id",
-          "user_id",
-          "created_at",
-          "updated_at"
+          "specie"
         ],
         "type": "object",
         "properties": {
@@ -2478,21 +3049,9 @@
             "type": "string",
             "example": "Pitbull"
           },
-          "specie_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "user_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
+          "specie": {
+            "type": "object",
+            "$ref": "#/components/schemas/Specie"
           }
         },
         "xml": {
@@ -2501,13 +3060,14 @@
       },
       "Vaccine": {
         "required": [
-          "name",
-          "user_id",
-          "created_at",
-          "updated_at"
+          "name"
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "name": {
             "type": "string",
             "example": "V8"
@@ -2529,15 +3089,95 @@
           "name": "vaccine"
         }
       },
+      "Vaccine_Body": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "V8"
+          }
+        },
+        "xml": {
+          "name": "vaccine"
+        }
+      },
+      "Animals_Vaccine": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "vaccine_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "xml": {
+          "name": "vaccine"
+        }
+      },
       "User": {
         "required": [
           "name",
           "email",
           "password",
           "profile",
-          "document",
-          "created_at",
-          "updated_at"
+          "document"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Ana"
+          },
+          "email": {
+            "type": "string",
+            "example": "ana@gmail.com"
+          },
+          "isOng": {
+            "type": "boolean",
+            "example": false
+          },
+          "cpf": {
+            "type": "string",
+            "example": "119.897.658.65"
+          },
+          "cnpj": {
+            "type": "string",
+            "example": ""
+          },
+          "avatar": {
+            "type": "string",
+            "example": "ana_selfie.png"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "user"
+        }
+      },
+      "User_Body": {
+        "required": [
+          "name",
+          "email",
+          "password",
+          "passwordConfirmation",
+          "isOng",
+          "cpf"
         ],
         "type": "object",
         "properties": {
@@ -2551,27 +3191,23 @@
           },
           "password": {
             "type": "string",
-            "format": "password"
+            "example": "@Ana123456"
           },
-          "profile": {
+          "passwordConfirmation": {
             "type": "string",
-            "example": "Adotante"
+            "example": "@Ana123456"
           },
-          "document": {
+          "isOng": {
+            "type": "boolean",
+            "example": false
+          },
+          "cpf": {
             "type": "string",
             "example": "119.897.658.65"
           },
-          "avatar": {
+          "cnpj": {
             "type": "string",
-            "example": "ana_selfie.png"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
+            "example": ""
           }
         },
         "xml": {
@@ -2593,13 +3229,14 @@
           "for_who",
           "why_adopt",
           "average_life",
-          "financial_conditions",
-          "user_id",
-          "created_at",
-          "updated_at"
+          "financial_conditions"
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "birth_date": {
             "type": "string",
             "format": "date"
@@ -2673,6 +3310,85 @@
           "name": "quiz"
         }
       },
+      "Quiz_Body": {
+        "required": [
+          "birth_date",
+          "marital_status",
+          "professional_activity",
+          "address",
+          "district",
+          "city",
+          "state",
+          "cep",
+          "profile_instagram",
+          "for_who",
+          "why_adopt",
+          "average_life",
+          "financial_conditions"
+        ],
+        "type": "object",
+        "properties": {
+          "birth_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "marital_status": {
+            "type": "string",
+            "example": "Casado"
+          },
+          "professional_activity": {
+            "type": "string",
+            "example": "Engenheira"
+          },
+          "address": {
+            "type": "string",
+            "example": "Av. Pão de Açúcar, 4982"
+          },
+          "complement": {
+            "type": "string",
+            "example": "Apto 202"
+          },
+          "district": {
+            "type": "string",
+            "example": "Copacaban"
+          },
+          "city": {
+            "type": "string",
+            "example": "Rio de Janeiro"
+          },
+          "state": {
+            "type": "string",
+            "example": "Rio de Janeiro"
+          },
+          "cep": {
+            "type": "string",
+            "example": "35986-012"
+          },
+          "profile_instagram": {
+            "type": "string",
+            "example": "@aninhaRio"
+          },
+          "for_who": {
+            "type": "string",
+            "example": "Para mim"
+          },
+          "why_adopt": {
+            "type": "string",
+            "example": "Sou apaixonada por animais."
+          },
+          "average_life": {
+            "type": "string",
+            "example": "Sim"
+          },
+          "financial_conditions": {
+            "type": "string",
+            "example": "Sim"
+          }
+        },
+        "xml": {
+          "name": "quiz"
+        }
+      },
       "Adoption": {
         "required": [
           "status",
@@ -2686,7 +3402,7 @@
         "properties": {
           "status": {
             "type": "string",
-            "example": "Aprovado"
+            "example": "Solicitada"
           },
           "animal_id": {
             "type": "string",
@@ -2707,6 +3423,21 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "xml": {
+          "name": "adoption"
+        }
+      },
+      "Adoption_Body": {
+        "required": [
+          "animal_id"
+        ],
+        "type": "object",
+        "properties": {
+          "animal_id": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "xml": {

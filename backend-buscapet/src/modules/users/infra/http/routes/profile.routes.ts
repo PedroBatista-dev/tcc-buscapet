@@ -8,7 +8,11 @@ const profileController = new ProfileController();
 
 profileRouter.use(isAuthenticated);
 
-profileRouter.get('/:id', profileController.show);
+profileRouter.get(
+  '/:id',
+  celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
+  profileController.show,
+);
 
 profileRouter.put(
   '/password',
@@ -38,6 +42,7 @@ profileRouter.put(
         then: Joi.string().required(),
       }),
     },
+    [Segments.PARAMS]: { id: Joi.string().uuid().required() },
   }),
   profileController.update,
 );
