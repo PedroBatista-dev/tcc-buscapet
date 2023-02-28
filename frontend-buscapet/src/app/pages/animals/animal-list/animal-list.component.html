@@ -56,7 +56,7 @@
             <td>
               <strong>{{animal.sex === 'M' ? 'Macho' : 'Fêmea'}}</strong>
             </td>
-            <td class="text-center">
+            <td>
               <i *ngIf="animal.status === 'Adotado'" class="fas fa-check text-success"></i>
               <i *ngIf="animal.status !== 'Adotado' && animal.status !== 'Adocao'" class="fas fa-times text-danger"></i>
               <i *ngIf="animal.status === 'Adocao'" class="fas fa-spinner text-warning"></i>
