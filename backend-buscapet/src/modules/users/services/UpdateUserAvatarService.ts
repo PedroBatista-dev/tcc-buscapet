@@ -6,6 +6,8 @@ import crypto from 'crypto';
 import { IUsersRepository } from '../domain/repositories/IUsersRepository';
 import { inject, injectable } from 'tsyringe';
 import { IUser } from '../domain/models/IUser';
+import DiskStorageProvider from '../../../shared/providers/StorageProvider/DiskStorageProvider';
+import S3StorageProvider from '../../../shared/providers/StorageProvider/S3StorageProvider';
 
 interface IRequest {
   user_id: string;
@@ -35,7 +37,7 @@ class UpdateUserAvatarService {
 
     const filename = `${fileHash}-${imagem}`;
 
-    const filePath = path.join(uploadConfig.directory, filename);
+    const filePath = path.join(uploadConfig.tmpFolder, filename);
 
     const base64Image = imagemUpload.split(';base64,').pop()!;
 
@@ -45,16 +47,26 @@ class UpdateUserAvatarService {
       }
     });
 
-    if (user.avatar) {
-      const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
-      const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath);
-
-      if (userAvatarFileExists) {
-        await fs.promises.unlink(userAvatarFilePath);
+    if (uploadConfig.driver === 's3') {
+      const storageProvider = new S3StorageProvider();
+      if (user.avatar) {
+        await storageProvider.deleteFile(user.avatar);
       }
-    }
 
-    user.avatar = filename;
+      const avatarFileName = await storageProvider.saveFile(filename);
+
+      user.avatar = avatarFileName;
+    } else {
+      const storageProvider = new DiskStorageProvider();
+
+      if (user.avatar) {
+        await storageProvider.deleteFile(user.avatar);
+      }
+
+      const avatarFileName = await storageProvider.saveFile(filename);
+
+      user.avatar = avatarFileName;
+    }
 
     await this.usersRepository.save(user);
 

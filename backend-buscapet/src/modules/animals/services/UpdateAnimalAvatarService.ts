@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
 import { inject, injectable } from 'tsyringe';
 import { IAnimal } from '../domain/models/IAnimal';
+import DiskStorageProvider from '../../../shared/providers/StorageProvider/DiskStorageProvider';
 
 interface IRequest {
   animal_id: string;
@@ -28,6 +29,8 @@ class UpdateAnimalAvatarService {
     user_id,
   }: IRequest): Promise<IAnimal> {
     const animal = await this.animalsRepository.findById(animal_id, user_id);
+    const storageProvider = new DiskStorageProvider();
+
     if (!animal) {
       throw new AppError('Animal não encontrado!');
     }
@@ -36,7 +39,7 @@ class UpdateAnimalAvatarService {
 
     const filename = `${fileHash}-${imagem}`;
 
-    const filePath = path.join(uploadConfig.directory, filename);
+    const filePath = path.join(uploadConfig.tmpFolder, filename);
 
     const base64Image = imagemUpload.split(';base64,').pop()!;
 
@@ -47,20 +50,12 @@ class UpdateAnimalAvatarService {
     });
 
     if (animal.avatar) {
-      const animalAvatarFilePath = path.join(
-        uploadConfig.directory,
-        animal.avatar,
-      );
-      const animalAvatarFileExists = await fs.promises.stat(
-        animalAvatarFilePath,
-      );
-
-      if (animalAvatarFileExists) {
-        await fs.promises.unlink(animalAvatarFilePath);
-      }
+      await storageProvider.deleteFile(animal.avatar);
     }
 
-    animal.avatar = filename;
+    const avatarFileName = await storageProvider.saveFile(filename);
+
+    animal.avatar = avatarFileName;
 
     await this.animalsRepository.save(animal);
 
