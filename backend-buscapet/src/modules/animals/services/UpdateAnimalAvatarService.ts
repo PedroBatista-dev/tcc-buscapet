@@ -7,6 +7,7 @@ import { IAnimalsRepository } from '../domain/repositories/IAnimalsRepository';
 import { inject, injectable } from 'tsyringe';
 import { IAnimal } from '../domain/models/IAnimal';
 import DiskStorageProvider from '../../../shared/providers/StorageProvider/DiskStorageProvider';
+import S3StorageProvider from '../../../shared/providers/StorageProvider/S3StorageProvider';
 
 interface IRequest {
   animal_id: string;
@@ -49,13 +50,26 @@ class UpdateAnimalAvatarService {
       }
     });
 
-    if (animal.avatar) {
-      await storageProvider.deleteFile(animal.avatar);
+    if (uploadConfig.driver === 's3') {
+      const storageProvider = new S3StorageProvider();
+      if (animal.avatar) {
+        await storageProvider.deleteFile(animal.avatar);
+      }
+
+      const avatarFileName = await storageProvider.saveFile(filename);
+
+      animal.avatar = avatarFileName;
+    } else {
+      const storageProvider = new DiskStorageProvider();
+
+      if (animal.avatar) {
+        await storageProvider.deleteFile(animal.avatar);
+      }
+
+      const avatarFileName = await storageProvider.saveFile(filename);
+
+      animal.avatar = avatarFileName;
     }
-
-    const avatarFileName = await storageProvider.saveFile(filename);
-
-    animal.avatar = avatarFileName;
 
     await this.animalsRepository.save(animal);
 

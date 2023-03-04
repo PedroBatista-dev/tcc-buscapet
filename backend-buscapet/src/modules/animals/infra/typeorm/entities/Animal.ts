@@ -91,7 +91,7 @@ class Animal implements IAnimal {
       return null;
     }
 
-    return `${process.env.APP_API_URL}/files/${this.avatar}`;
+    return `${process.env.APP_API_URL}/${this.avatar}`;
   }
 }
 
